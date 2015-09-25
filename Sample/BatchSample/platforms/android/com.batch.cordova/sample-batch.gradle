@@ -1,0 +1,10 @@
+repositories {    
+  jcenter()
+  flatDir {
+      dirs 'libs'
+   }
+}
+
+dependencies {
+   compile(name:'Batch', ext:'aar')
+}

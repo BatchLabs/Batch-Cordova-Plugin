@@ -1,0 +1,26 @@
+{
+    "com.batch.cordova": {
+        "source": {
+            "type": "local",
+            "path": "/Users/arnaud/Downloads/Batch_Cordova_1.4 2/batch-cordova-plugin"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-whitelist": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-whitelist@1"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-statusbar": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-statusbar"
+        },
+        "is_top_level": true,
+        "variables": {}
+    }
+}

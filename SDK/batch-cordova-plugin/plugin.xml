@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="com.batch.cordova"
+        version="1.4">
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+        <engine name="cordova-android" version=">=4.0.0-dev" />
+        <engine name="cordova-ios" version=">=3.6.0" />
+    </engines>
+    <name>Batch</name>
+    <description>Plugin for the Batch SDK</description>
+    <author>Batch.com</author>
+    <keywords>batch</keywords>
+    <license>Custom</license>
+    <js-module src="www/batch.js" name="batch">
+        <clobbers target="batch" />
+    </js-module>
+
+    <platform name="android">
+        <config-file target="config.xml" parent="/*">
+            <feature name="Batch">
+                <param name="android-package" value="com.batch.cordova.android.BatchCordovaPlugin" />
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/BatchCordovaPlugin.java" target-dir="src/com/batch/cordova/android" />
+        <source-file src="src/android/Batch.aar" target-dir="libs" />
+        <source-file src="src/android/batch_bridge.jar" target-dir="libs" />
+
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <uses-permission android:name="android.permission.WAKE_LOCK" />
+            <uses-permission android:name="android.permission.VIBRATE" />
+
+            <permission
+                    android:name="$PACKAGE_NAME.permission.C2D_MESSAGE"
+                    android:protectionLevel="signature"/>
+            <uses-permission
+                    android:name="$PACKAGE_NAME.permission.C2D_MESSAGE"/>
+            <uses-permission
+                    android:name="com.google.android.c2dm.permission.RECEIVE"/>
+
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <service android:name="com.batch.android.BatchPushService" />
+
+            <receiver
+                    android:name="com.batch.android.BatchPushReceiver"
+                    android:permission="com.google.android.c2dm.permission.SEND" >
+                <intent-filter>
+                    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                    <category android:name="$PACKAGE_NAME" />
+                </intent-filter>
+            </receiver>
+        </config-file>
+
+        <framework src="com.google.android.gms:play-services-gcm:+" />
+        <framework src="src/android/batch.gradle" custom="true" type="gradleReference" />
+    </platform>
+
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="Batch">
+                <param name="ios-package" value="BatchCordovaPlugin" />
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+        <header-file src="src/ios/BatchCordovaPlugin.h" />
+        <source-file src="src/ios/BatchCordovaPlugin.m" />
+
+        <resource-file src="src/ios/Batch.bundle" />
+
+        <framework src="libsqlite3.dylib" />
+        <framework src="src/ios/BatchBridge.framework" custom="true" />
+
+    </platform>
+
+</plugin>
