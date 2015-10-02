@@ -53,11 +53,11 @@ var app = {
     //
     // In this case, the method tries to read the "alert" key of the custom payload, and display it.
     // Note that "alert" is not a default Android/iOS push key, so you need to add it yourself
-    onBatchPush: function(push) {
-        console.debug("Got a push payload from Batch", push);
+    onBatchPush: function(pushEvent) {
+        console.debug("Got a push payload from Batch", pushEvent.payload);
 
-        if (typeof push.payload.alert !== "undefined") {
-            alert(push.payload.alert);
+        if (typeof pushEvent.payload.alert !== "undefined") {
+            alert(pushEvent.payload.alert);
         }
     },
     setupBatchUnlockListeners: function() {

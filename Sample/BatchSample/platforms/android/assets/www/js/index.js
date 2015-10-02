@@ -34,9 +34,9 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        batch.setConfig({"androidAPIKey":"DEV5538EA690AAE4EB4355FA136A25",
-            "iOSAPIKey":"DEV5538EA690AAE4EB4355FA136A25"});
-        batch.push.setGCMSenderID("95530124108");
+        batch.setConfig({"androidAPIKey":"YOUR_API_KEY",
+            "iOSAPIKey":"YOUR_API_KEY"});
+        batch.push.setGCMSenderID("YOUR_SENDER");
         batch.push.setup();
         batch.unlock.setup();
         
