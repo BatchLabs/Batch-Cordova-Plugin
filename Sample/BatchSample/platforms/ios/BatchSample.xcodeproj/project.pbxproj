@@ -39,11 +39,11 @@
 		7E7966E61810823500FA85AD /* icon-small.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E7966DC1810823500FA85AD /* icon-small.png */; };
 		7E7966E71810823500FA85AD /* icon-small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E7966DD1810823500FA85AD /* icon-small@2x.png */; };
 		D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */; };
-		DA77BA2C839F460784A80977 /* BatchCordovaPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 841F184CA359470EBAECED81 /* BatchCordovaPlugin.m */; };
-		5C7DAB506A3D4B779C02C97D /* Batch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 67518BFD04944439B585CC30 /* Batch.bundle */; };
-		8A0D04BE68124E20859DF814 /* BatchBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05F85A5E6C554C949C7DAAAB /* BatchBridge.framework */; };
 		3AF5CC1266584DDD9FAAEC45 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D50E9A3757F4CCB93CB2B0D /* libsqlite3.dylib */; };
-		9AF4ED9613A5417CA659B53F /* CDVStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = E5BBD9DDD1944EDDBA154EA6 /* CDVStatusBar.m */; };
+		F155EFF3EF834343A9FE493E /* CDVStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 105F2747749F494D8CEC2567 /* CDVStatusBar.m */; };
+		2BC95599FB284298BF992F02 /* BatchCordovaPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 298C9C93601240E7BD8C1301 /* BatchCordovaPlugin.m */; };
+		58FF4DB66713480480ED7CFC /* Batch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5C217C6E2B874BC78FB763A5 /* Batch.bundle */; };
+		61A91C4AE84B43B0BAA0F0B3 /* BatchBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 779143DD044A469D8FBD655D /* BatchBridge.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,13 +109,13 @@
 		EB87FDF31871DA8E0020F90C /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../../www; sourceTree = "<group>"; };
 		EB87FDF41871DAF40020F90C /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ../../config.xml; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = "BatchSample/config.xml"; sourceTree = "<group>"; };
-		841F184CA359470EBAECED81 /* BatchCordovaPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "BatchCordovaPlugin.m"; path = "com.batch.cordova/BatchCordovaPlugin.m"; sourceTree = "<group>"; fileEncoding = 4; };
-		5F4ACBF8B2584A808F25378A /* BatchCordovaPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "BatchCordovaPlugin.h"; path = "com.batch.cordova/BatchCordovaPlugin.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		67518BFD04944439B585CC30 /* Batch.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "Batch.bundle"; path = "Batch.bundle"; sourceTree = "<group>"; };
-		05F85A5E6C554C949C7DAAAB /* BatchBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "BatchBridge.framework"; path = "BatchSample/Plugins/com.batch.cordova/BatchBridge.framework"; sourceTree = "<group>"; };
 		5D50E9A3757F4CCB93CB2B0D /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libsqlite3.dylib"; path = "usr/lib/libsqlite3.dylib"; sourceTree = SDKROOT; fileEncoding = 4; };
-		E5BBD9DDD1944EDDBA154EA6 /* CDVStatusBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVStatusBar.m"; path = "cordova-plugin-statusbar/CDVStatusBar.m"; sourceTree = "<group>"; fileEncoding = 4; };
-		28E8C923F2DB453798325F44 /* CDVStatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVStatusBar.h"; path = "cordova-plugin-statusbar/CDVStatusBar.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		105F2747749F494D8CEC2567 /* CDVStatusBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVStatusBar.m"; path = "cordova-plugin-statusbar/CDVStatusBar.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		4392251F06E846F4BE5016ED /* CDVStatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVStatusBar.h"; path = "cordova-plugin-statusbar/CDVStatusBar.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		298C9C93601240E7BD8C1301 /* BatchCordovaPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "BatchCordovaPlugin.m"; path = "com.batch.cordova/BatchCordovaPlugin.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		392891F5FF2B4AC1B2F53421 /* BatchCordovaPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "BatchCordovaPlugin.h"; path = "com.batch.cordova/BatchCordovaPlugin.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		5C217C6E2B874BC78FB763A5 /* Batch.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "Batch.bundle"; path = "Batch.bundle"; sourceTree = "<group>"; };
+		779143DD044A469D8FBD655D /* BatchBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "BatchBridge.framework"; path = "BatchSample/Plugins/com.batch.cordova/BatchBridge.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,8 +127,8 @@
 				301BF552109A68D80062928A /* libCordova.a in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
 				305D5FD1115AB8F900A74A75 /* MobileCoreServices.framework in Frameworks */,
-				8A0D04BE68124E20859DF814 /* BatchBridge.framework in Frameworks */,
 				3AF5CC1266584DDD9FAAEC45 /* libsqlite3.dylib in Frameworks */,
+				61A91C4AE84B43B0BAA0F0B3 /* BatchBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,7 +190,7 @@
 				308D052D1370CCF300D202BF /* icons */,
 				308D05311370CCF300D202BF /* splash */,
 				8D1107310486CEB800E47090 /* BatchSample-Info.plist */,
-				67518BFD04944439B585CC30 /* Batch.bundle */,
+				5C217C6E2B874BC78FB763A5 /* Batch.bundle */,
 			);
 			name = Resources;
 			path = "BatchSample/Resources";
@@ -202,8 +202,8 @@
 				5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				305D5FD0115AB8F900A74A75 /* MobileCoreServices.framework */,
-				05F85A5E6C554C949C7DAAAB /* BatchBridge.framework */,
 				5D50E9A3757F4CCB93CB2B0D /* libsqlite3.dylib */,
+				779143DD044A469D8FBD655D /* BatchBridge.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -219,10 +219,10 @@
 		307C750510C5A3420062BCA9 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				841F184CA359470EBAECED81 /* BatchCordovaPlugin.m */,
-				5F4ACBF8B2584A808F25378A /* BatchCordovaPlugin.h */,
-				E5BBD9DDD1944EDDBA154EA6 /* CDVStatusBar.m */,
-				28E8C923F2DB453798325F44 /* CDVStatusBar.h */,
+				105F2747749F494D8CEC2567 /* CDVStatusBar.m */,
+				4392251F06E846F4BE5016ED /* CDVStatusBar.h */,
+				298C9C93601240E7BD8C1301 /* BatchCordovaPlugin.m */,
+				392891F5FF2B4AC1B2F53421 /* BatchCordovaPlugin.h */,
 			);
 			name = Plugins;
 			path = "BatchSample/Plugins";
@@ -376,7 +376,7 @@
 				7E7966E11810823500FA85AD /* icon-50@2x.png in Resources */,
 				7E7966E51810823500FA85AD /* icon-76@2x.png in Resources */,
 				30FC414916E50CA1004E6F35 /* icon-72@2x.png in Resources */,
-				5C7DAB506A3D4B779C02C97D /* Batch.bundle in Resources */,
+				58FF4DB66713480480ED7CFC /* Batch.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,8 +408,8 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
-				DA77BA2C839F460784A80977 /* BatchCordovaPlugin.m in Sources */,
-				9AF4ED9613A5417CA659B53F /* CDVStatusBar.m in Sources */,
+				F155EFF3EF834343A9FE493E /* CDVStatusBar.m in Sources */,
+				2BC95599FB284298BF992F02 /* BatchCordovaPlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,6 +455,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"BatchSample/Plugins/com.batch.cordova\"",
+					"\"BatchSample/Plugins/com.batch.cordova\"",
 				);
 			};
 			name = Debug;
@@ -487,6 +488,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"BatchSample/Plugins/com.batch.cordova\"",
 					"\"BatchSample/Plugins/com.batch.cordova\"",
 				);
 			};

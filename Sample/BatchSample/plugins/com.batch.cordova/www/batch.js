@@ -22,6 +22,12 @@ var ACTION_REGISTER_NOTIFS                       = "push.register";
 var ACTION_DISMISS_NOTIFS                        = "push.dismissNotifications";
 var ACTION_CLEAR_BADGE                           = "push.clearBadge";
 
+var ACTION_USER_EDIT                             = "user.edit";
+var ACTION_USER_TRACK_EVENT                      = "user.track.event";
+var ACTION_USER_TRACK_TRANSACTION                = "user.track.transaction";
+var ACTION_USER_DATA_DEBUG                       = "user.data.debug";
+var ACTION_USER_GET_INSTALLATION_ID              = "user.getInstallationID";
+
 var CALLBACK_LOG                                 = "_log";
 var CALLBACK_EVAL                                = "_eval";
 var CALLBACK_DISPATCH_PUSH                       = "_dispatchPush";
@@ -34,10 +40,11 @@ var CALLBACK_ON_REDEEM_CODE_SUCCESS              = "onRedeemCodeSuccess";
 var CALLBACK_ON_REDEEM_CODE_FAILED               = "onRedeemCodeFailed";
 var CALLBACK_ON_RESTORE_SUCCESS                  = "onRestoreSuccess";
 var CALLBACK_ON_RESTORE_FAILED                   = "onRestoreFailed";
-var CALLBACK_ON_AD_INTERSTITIAL_READY            = "adListener_onInterstitialReady";
-var CALLBACK_ON_AD_FAILED_TO_LOAD_INTERSTITIAL   = "adListener_onFailedToLoadInterstitial";
 
 var ACTION_INTERNAL_SETUP_CALLBACK          = "_setupCallback";
+
+var ATTRIBUTE_KEY_REGEXP                         = /^[a-zA-Z0-9_]{1,30}$/;
+var ATTRIBUTE_STRING_MAX_LENGTH                  = 64;
 
 var channel = require('cordova/channel');
 
@@ -125,12 +132,6 @@ function handleCallback(callbackData) {
         case CALLBACK_ON_RESTORE_FAILED:
             fireBatchEvent("restoreFailed", callbackData.result);
             break;
-        case CALLBACK_ON_AD_INTERSTITIAL_READY:
-            fireBatchEvent("interstitialReady", callbackData.result);
-            break;
-        case CALLBACK_ON_AD_FAILED_TO_LOAD_INTERSTITIAL:
-            fireBatchEvent("failedToLoadInterstitial", callbackData.result);
-            break;
     }
 }
 
@@ -144,7 +145,7 @@ function fireBatchEvent(action, parameters) {
 
 /**
  * Batch Cordova Module
- * @version 1.4
+ * @version 1.5
  * @exports batch
  */
 var batch = {
@@ -285,12 +286,14 @@ var batch = {
      * Batch's User profile data
      * @type {object}
      * @namespace
+     * @deprecated
      */
     userProfile: {
         /**
          * Gets the custom identifier that you've previously set (null if none set).
          * You will get the result in a callback you need to provide to this function
          * @param resultCallback Callback function. First and only argument is the custom identifier.
+         * @deprecated Please use Batch.User
          */
         getCustomIdentifier: function(resultCallback) {
             sendToBridge(resultCallback, ACTION_GET_CUSTOM_USER_ID, null);
@@ -300,7 +303,8 @@ var batch = {
          * Set a custom user identifier to Batch, you should use this method if you have your own login system.
          * Be careful: Do not use it if you don't know what you are doing, giving a bad custom user ID can result
          * in failure of targeted push notifications delivery or offer delivery and restore.
-         * @param {userProfileResultCallback} customIdentifier Your custom identifier.
+         * @param {string} customIdentifier Your custom identifier.
+         * @deprecated Please use Batch.User
          */
         setCustomIdentifier: function(customIdentifier) {
             if (customIdentifier !== null && typeof customIdentifier !== "string") {
@@ -314,6 +318,7 @@ var batch = {
          * Gets the application language. If you didn't override it manually, it is the device's language.
          * You will get the result in a callback you need to provide to this function.
          * @param {userProfileResultCallback} resultCallback Callback function. First and only argument is the language code.
+         * @deprecated Please use Batch.User
          */
         getLanguage: function(resultCallback) {
             sendToBridge(resultCallback, ACTION_GET_APP_LANGUAGE, null);
@@ -323,6 +328,7 @@ var batch = {
          * Set the application language. Overrides Batch's automatically detected language.
          * Send "null" to let Batch autodetect it again.
          * @param {string} language Language code. 2 chars minimum.
+         * @deprecated Please use Batch.User
          */
         setLanguage: function(language) {
             if (language !== null && typeof language !== "string") {
@@ -336,6 +342,7 @@ var batch = {
          * Gets the application region. If you didn't override it manually, it is the device's region.
          * You will get the result in a callback you need to provide to this function.
          * @param {userProfileResultCallback} resultCallback Callback function. First and only argument is the region code.
+         * @deprecated Please use Batch.User
          */
         getRegion: function(resultCallback) {
             sendToBridge(resultCallback, ACTION_GET_APP_REGION, null);
@@ -345,6 +352,7 @@ var batch = {
          * Set the application region. Overrides Batch's automatically detected region.
          * Send "null" to let Batch autodetect it again.
          * @param {string} region Region code. 2 chars minimum.
+         * @deprecated Please use Batch.User
          */
         setRegion: function(region) {
             if (region !== null && typeof region !== "string") {
@@ -416,7 +424,7 @@ var batch = {
 
         /**
          * Change the used remote notification types on Android. (Ex: sound, vibrate, alert)
-         * Example : setAndroidNotificationTypes(batch.push.AndroidNotificationTypes.ALERT | batch.push.AndroidNotificationTypes.ALERT) 
+         * Example : setAndroidNotificationTypes(batch.push.AndroidNotificationTypes.ALERT | batch.push.AndroidNotificationTypes.SOUND) 
          * @param {batch.push.AndroidNotificationTypes} notifTypes Any combined value of the AndroidNotificationTypes enum.
          * @return {batch.push}
          */
@@ -431,7 +439,7 @@ var batch = {
 
         /**
          * Change the used remote notification types on iOS. (Ex: sound, vibrate, alert)
-         * Example : setiOSNotificationTypes(batch.push.iOSNotificationTypes.ALERT | batch.push.iOSNotificationTypes.ALERT) 
+         * Example : setiOSNotificationTypes(batch.push.iOSNotificationTypes.ALERT | batch.push.iOSNotificationTypes.SOUND) 
          * @param notifTypes
          * @return {batch.push}
          */
@@ -518,8 +526,405 @@ var batch = {
             sendToBridge(null, ACTION_RESTORE, null);
             return this;
         }
+    },
+
+    /**
+     * Batch's User Module
+     * @type {object}
+     * @namespace
+     */
+    user: {
+        /**
+         * Get the unique installation ID, generated by Batch. Batch must be started to read it.
+         * You will get the result in a callback you need to provide to this function.
+         * @param {installationIDResultCallback} resultCallback Callback function. First and only argument is the Batch-generated installation ID. Might be null/undefined if Batch isn't started.
+         */
+        getInstallationID:function(resultCallback) {
+            sendToBridge(resultCallback, ACTION_USER_GET_INSTALLATION_ID, null);
+            return this;
+        },
+        /**
+         * Get the user data editor. Don't forget to call save when you're done.
+         * @return {BatchUserDataEditor} Batch user data editor
+         */
+        getEditor:function() {
+            return new BatchUserDataEditor();
+        },
+        /**
+         * Print the currently known attributes and tags for a user to the logs.
+         */
+        printDebugInformation:function() {
+            sendToBridge(null, ACTION_USER_DATA_DEBUG, null);
+            return this;
+        },
+        /**
+         * Track an event. Batch must be started at some point, or events won't be sent to the server.
+         * @param {string} name The event name. Must be a string.
+         * @param {string} label The event label (optional). Must be a string.
+         * @param {object} data The event data (optional). Must be an object.
+         * @return {batch.user}
+         */
+        trackEvent:function(name, label, data) {
+            if (ATTRIBUTE_KEY_REGEXP.test(event||"")) {
+                writeBatchLog(false, "BatchUserDataEditor - Invalid event name. Please make sure that the name is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring event '" + name + "'");
+                return this;
+            }
+
+            var parameters = {"name": name};
+
+            if (label instanceof String || typeof label === "string") {
+                if (label.length == 0 || label.length > ATTRIBUTE_STRING_MAX_LENGTH) {
+                    writeBatchLog(false, "BatchUserDataEditor - Label can't be longer than " + ATTRIBUTE_STRING_MAX_LENGTH + " characters. Ignoring event '" + name + "'.");
+                    return this;
+                }
+                parameters["label"] = label;
+            } else if (label != null && typeof label !== "undefined") {
+                writeBatchLog(false, "BatchUserDataEditor - If supplied, label argument must be a string. Ignoring event '" + name + "'.");
+                return this;
+            }
+
+            if (typeof data === "object") {
+                parameters["data"] = data;
+            }
+
+            sendToBridge(null, ACTION_USER_TRACK_EVENT, [parameters]);
+
+            return this;
+        },
+        /**
+         * Track a transaction. Batch must be started at some point, or events won't be sent to the server.
+         * @param {number} amount Transaction's amount.
+         * @param {object} data The transaction data (optional). Must be an object.
+         * @return {batch.user}
+         */
+        trackTransaction:function(amount, data) {
+
+            if (typeof amount === "undefined") {
+                writeBatchLog(false, "BatchUserDataEditor - Amount must be a valid number. Ignoring transaction.");
+                return this;
+            }
+
+            if (!(amount instanceof Number || typeof amount === "number") || isNaN(amount)) {
+                writeBatchLog(false, "BatchUserDataEditor - Amount must be a valid number. Ignoring transaction.");
+                return this;
+            }
+
+            var parameters = {"amount": amount};
+
+            if (typeof data === "object") {
+                parameters["data"] = data;
+            }
+
+            sendToBridge(null, ACTION_USER_TRACK_TRANSACTION, [parameters]);
+
+            return this;
+        }
     }
 };
+
+// BatchUserDataEditor "class"
+
+/**
+ * Batch User Data Editor Operation actions
+ * @enum
+ * @readonly
+ */
+BatchUserDataOperation = {
+    SET_LANGUAGE: "SET_LANGUAGE",
+    SET_REGION: "SET_REGION",
+    SET_IDENTIFIER: "SET_IDENTIFIER",
+    SET_ATTRIBUTE: "SET_ATTRIBUTE",
+    REMOVE_ATTRIBUTE: "REMOVE_ATTRIBUTE",
+    CLEAR_ATTRIBUTES: "CLEAR_ATTRIBUTES",
+    ADD_TAG: "ADD_TAG",
+    REMOVE_TAG: "REMOVE_TAG",
+    CLEAR_TAGS: "CLEAR_TAGS",
+    CLEAR_TAG_COLLECTION: "CLEAR_TAG_COLLECTION"
+};
+
+/**
+ * Private constructor. Please get your instance using batch.user.getEditor()
+ * @constructor
+ */
+BatchUserDataEditor = function() {
+    this._operationQueue = [];
+};
+
+/**
+ * Add an operation to the queue.
+ * Private method.
+ * @param operation {BatchUserDataOperation} operation action to enqueue
+ * @param arguments {object}
+ * @private
+ */
+BatchUserDataEditor.prototype._enqueueOperation = function(operation, arguments) {
+    var operationObject = {"operation": operation};
+
+    if (typeof arguments !== "undefined") {
+        for (var arg in arguments) {
+            if (!arguments.hasOwnProperty(arg)) {
+                continue;
+            }
+            operationObject[arg] = arguments[arg];
+        }
+    }
+
+    this._operationQueue.push(operationObject);
+};
+
+/**
+ * Set the application language. Overrides Batch's automatically detected language.
+ * Send "null" to let Batch autodetect it again.
+ * @param {string} language Language code. 2 chars minimum.
+ */
+BatchUserDataEditor.prototype.setLanguage = function(language) {
+    if (typeof language !== "string" && language !== null) {
+        writeBatchLog(false, "BatchUserDataEditor - Language must be a string or null");
+        return this;
+    }
+
+    this._enqueueOperation(BatchUserDataOperation.SET_LANGUAGE, {"value": language});
+
+    return this;
+};
+
+/**
+ * Set the application region. Overrides Batch's automatically detected region.
+ * Send "null" to let Batch autodetect it again.
+ * @param {string} region Region code. 2 chars minimum.
+ */
+BatchUserDataEditor.prototype.setRegion = function(region) {
+    if (typeof region !== "string" && region !== null) {
+        writeBatchLog(false, "BatchUserDataEditor - Region must be a string or null");
+        return this;
+    }
+
+    this._enqueueOperation(BatchUserDataOperation.SET_REGION, {"value": region});
+
+    return this;
+};
+
+/**
+ * Set a custom user identifier to Batch, you should use this method if you have your own login system.
+ * Be careful: Do not use it if you don't know what you are doing, giving a bad custom user ID can result
+ * in failure of targeted push notifications delivery or offer delivery and restore.
+ * @param {string} identifier Your custom identifier.
+ */
+BatchUserDataEditor.prototype.setIdentifier = function(identifier) {
+    if (typeof identifier !== "string" && identifier !== null) {
+        writeBatchLog(false, "BatchUserDataEditor - Identifier must be a string or null");
+        return this;
+    }
+
+    this._enqueueOperation(BatchUserDataOperation.SET_IDENTIFIER, {"value": identifier});
+
+    return this;
+};
+
+/**
+ * Set an attribute for a key
+ * @param key Attribute key. Cannot be null, empty or undefined. It should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
+ * @param value Attribute value. Accepted types are numbers, booleans, Date objects and strings. Strings must not be empty or longer than 64 characters.
+ * @return {BatchUserDataEditor}
+ */
+BatchUserDataEditor.prototype.setAttribute = function(key, value) {
+    if (!ATTRIBUTE_KEY_REGEXP.test(key||"")) {
+        writeBatchLog(false, "BatchUserDataEditor - Invalid key. Please make sure that the key is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring attribute '" + key + "'");
+        return this;
+    }
+
+    if (typeof key === "undefined" || key === null) {
+        writeBatchLog(false, "BatchUserDataEditor - Value argument cannot be undefined or null");
+        return this;
+    }
+
+    if (typeof value === "undefined") {
+        writeBatchLog(false, "BatchUserDataEditor - A value is required");
+        return this;
+    }
+
+    var operationData = {"value": value, "key": key};
+
+    // Lets guess the type
+    if (value instanceof Date) {
+        // It's a date, yay
+        operationData["value"] = value.getTime();
+        operationData["type"] = "date";
+    } else if (value instanceof Number || typeof value === "number") {
+        if (isNaN(value)) {
+            writeBatchLog(false, "BatchUserDataEditor - Value cannot be NaN");
+            return this;
+        }
+        operationData["type"] = (value % 1 === 0) ? "integer" : "float";
+    } else if (value instanceof String || typeof value === "string") {
+        if (value.length == 0 || value.length > ATTRIBUTE_STRING_MAX_LENGTH) {
+            writeBatchLog(false, "BatchUserDataEditor - String attributes can't be empty or longer than " + ATTRIBUTE_STRING_MAX_LENGTH +" characters. Ignoring attribute '" + key + "'.");
+            return this;
+        }
+        operationData["type"] = "string";
+    } else if (value instanceof Boolean || typeof value === "boolean") {
+        operationData["type"] = "boolean";
+    } else {
+        writeBatchLog(false, "BatchUserDataEditor - Value argument must be one of these types: number, string, boolean, date");
+        return this;
+    }
+
+    this._enqueueOperation(BatchUserDataOperation.SET_ATTRIBUTE, operationData);
+
+    return this;
+};
+
+/**
+ * Remove an attribute
+ * @param {string} key The key of the attribute to remove
+ * @return {BatchUserDataEditor}
+ */
+BatchUserDataEditor.prototype.removeAttribute = function(key) {
+    if (!ATTRIBUTE_KEY_REGEXP.test(key||"")) {
+        writeBatchLog(false, "BatchUserDataEditor - Invalid key. Please make sure that the key is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring attribute '" + key + "'");
+        return this;
+    }
+
+    this._enqueueOperation(BatchUserDataOperation.REMOVE_ATTRIBUTE, {"key": key});
+
+    return this;
+};
+
+/**
+ * Remove all attributes
+ * @return {BatchUserDataEditor}
+ */
+BatchUserDataEditor.prototype.clearAttributes = function() {
+    this._enqueueOperation(BatchUserDataOperation.CLEAR_ATTRIBUTES, {});
+
+    return this;
+};
+
+/**
+ * Add a tag to a collection. If the collection doesn't exist it will be created.
+ * @param {string} collection The tag collection name. Cannot be null or undefined. Must be a string of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
+ * @param {string} tag The tag to add. Cannot be null, undefined or empty. Must be a string no longer than 64 characters.
+ * @return {BatchUserDataEditor}
+ */
+BatchUserDataEditor.prototype.addTag = function(collection, tag) {
+    if (typeof collection !== "string" && !(collection instanceof String)) {
+        writeBatchLog(false, "BatchUserDataEditor - Collection argument must be a string");
+        return this;
+    }
+
+    if (!ATTRIBUTE_KEY_REGEXP.test(collection||"")) {
+        writeBatchLog(false, "BatchUserDataEditor - Invalid collection. Please make sure that the collection is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring collection '" + collection + "'");
+        return this;
+    }
+
+    if (typeof tag === "undefined") {
+        writeBatchLog(false, "BatchUserDataEditor - A tag is required");
+        return this;
+    }
+
+    if (tag instanceof String || typeof tag === "string") {
+        if (tag.length == 0 || tag.length > ATTRIBUTE_STRING_MAX_LENGTH) {
+            writeBatchLog(false, "BatchUserDataEditor - Tags can't be empty or longer than " + ATTRIBUTE_STRING_MAX_LENGTH + " characters. Ignoring tag '" + tag + "'.");
+            return this;
+        }
+    } else {
+        writeBatchLog(false, "BatchUserDataEditor - Tag argument must be a string");
+        return this;
+    }
+
+    this._enqueueOperation(BatchUserDataOperation.ADD_TAG, {"collection": collection, "tag": tag});
+
+    return this;
+};
+
+/**
+ * Remove a tag
+ * @param {string} collection The tag collection name. Cannot be null or undefined. Must be a string of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
+ * @param {string} tag The tag name. Cannot be null, empty or undefined. If the tag doesn't exist, this method will do nothing.
+ * @return {BatchUserDataEditor}
+ */
+BatchUserDataEditor.prototype.removeTag = function(collection, tag) {
+    if (typeof collection !== "string" && !(collection instanceof String)) {
+        writeBatchLog(false, "BatchUserDataEditor - Collection argument must be a string");
+        return this;
+    }
+
+    if (!ATTRIBUTE_KEY_REGEXP.test(collection||"")) {
+        writeBatchLog(false, "BatchUserDataEditor - Invalid collection. Please make sure that the collection is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring collection '" + collection + "'");
+        return this;
+    }
+
+    if (typeof tag === "undefined") {
+        writeBatchLog(false, "BatchUserDataEditor - A tag is required");
+        return this;x
+    }
+
+    if (tag instanceof String || typeof tag === "string") {
+        if (tag.length == 0 || tag.length > ATTRIBUTE_STRING_MAX_LENGTH) {
+            writeBatchLog(false, "BatchUserDataEditor - Tags can't be empty or longer than " + ATTRIBUTE_STRING_MAX_LENGTH + " characters. Ignoring tag '" + tag + "'.");
+            return this;
+        }
+    } else {
+        writeBatchLog(false, "BatchUserDataEditor - Tag argument must be a string");
+    }
+
+    this._enqueueOperation(BatchUserDataOperation.REMOVE_TAG, {"collection": collection, "tag": tag});
+
+    return this;
+};
+
+/**
+ * Removes all tags
+ * @return {BatchUserDataEditor}
+ */
+BatchUserDataEditor.prototype.clearTags = function() {
+    this._enqueueOperation(BatchUserDataOperation.CLEAR_TAGS, {});
+
+    return this;
+};
+
+/**
+ * Removes all tags from a collection
+ * @param {string} collection The tag collection name. Cannot be null or undefined. Must be a string of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
+ * @return {BatchUserDataEditor}
+ */
+BatchUserDataEditor.prototype.clearTagCollection = function(collection) {
+    if (typeof collection !== "string" && !(collection instanceof String)) {
+        writeBatchLog(false, "BatchUserDataEditor - Collection argument must be a string");
+        return this;
+    }
+
+    if (!ATTRIBUTE_KEY_REGEXP.test(collection||"")) {
+        writeBatchLog(false, "BatchUserDataEditor - Invalid collection. Please make sure that the collection is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring collection '" + collection + "'");
+        return this;
+    }
+
+    this._enqueueOperation(BatchUserDataOperation.CLEAR_TAG_COLLECTION, {"collection": collection});
+
+    return this;
+};
+
+/**
+ * Save all of the pending changes made in that editor. This action cannot be undone.
+ * @return {BatchUserDataEditor}
+ */
+BatchUserDataEditor.prototype.save = function() {
+    sendToBridge(null, ACTION_USER_EDIT, [{
+        'operations': this._operationQueue
+    }]);
+
+    this._operationQueue = [];
+
+    return this;
+};
+
+// Generate a BatchUserDataEditor stub for unsupported platforms
+
+BatchUserDataEditorStub = function() {};
+for (var editorPrototypeFunction in BatchUserDataEditor.prototype) {
+    //noinspection JSUnfilteredForInLoop
+    BatchUserDataEditorStub.prototype[editorPrototypeFunction] = function() { return this; };
+}
 
 // Freeze the enums
 if (typeof Object.freeze === "function") {
@@ -567,9 +972,21 @@ if (isPlatformType("android") || isPlatformType("ios")) {
             setup:function () {return this;},
             redeemCode:function () {return this;},
             restore:function () {return this;}
+        },
+        user: {
+            getInstallationID:function () {return this;},
+            getEditor:function () {return new BatchUserDataEditorStub();},
+            trackEvent:function () {return this;},
+            trackTransaction:function () {return this;},
         }
     }
 }
+
+/**
+ * Callback for Batch User's Installation ID getter
+ * @callback installationIDResultCallback
+ * @param {?string} result Variable value
+ */
 
 /**
  * Callback for Batch User Profile getters

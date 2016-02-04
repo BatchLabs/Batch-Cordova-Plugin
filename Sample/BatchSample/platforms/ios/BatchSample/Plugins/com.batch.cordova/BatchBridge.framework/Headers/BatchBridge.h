@@ -35,6 +35,12 @@
 #define DISMISS_NOTIFS              	@"push.dismissNotifications"
 #define CLEAR_BADGE                 	@"push.clearBadge"
 
+#define USER_EDIT                       @"user.edit"
+#define USER_TRACK_EVENT                @"user.track.event"
+#define USER_TRACK_TRANSACTION          @"user.track.transaction"
+#define USER_DATA_DEBUG                 @"user.data.debug"
+#define USER_GET_INSTALLATION_ID        @"user.getInstallationID"
+
 
 /*!
  @class BatchBridge

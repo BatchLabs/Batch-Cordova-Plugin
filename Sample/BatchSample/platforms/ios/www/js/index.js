@@ -34,9 +34,9 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        batch.setConfig({"androidAPIKey":"DEV5538EA690AAE4EB4355FA136A25",
-            "iOSAPIKey":"DEV5538EA690AAE4EB4355FA136A25"});
-        batch.push.setGCMSenderID("95530124108");
+        batch.setConfig({"androidAPIKey":"YOUR_API_KEY",
+            "iOSAPIKey":"YOUR_API_KEY"});
+        batch.push.setGCMSenderID("YOUR_SENDER");
         batch.push.setup();
         batch.unlock.setup();
         
@@ -53,11 +53,11 @@ var app = {
     //
     // In this case, the method tries to read the "alert" key of the custom payload, and display it.
     // Note that "alert" is not a default Android/iOS push key, so you need to add it yourself
-    onBatchPush: function(push) {
-        console.debug("Got a push payload from Batch", push);
+    onBatchPush: function(pushEvent) {
+        console.debug("Got a push payload from Batch", pushEvent.payload);
 
-        if (typeof push.payload.alert !== "undefined") {
-            alert(push.payload.alert);
+        if (typeof pushEvent.payload.alert !== "undefined") {
+            alert(pushEvent.payload.alert);
         }
     },
     setupBatchUnlockListeners: function() {

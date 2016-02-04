@@ -40,10 +40,10 @@
         }
     },
     "installed_plugins": {
-        "com.batch.cordova": {
+        "cordova-plugin-statusbar": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
         },
-        "cordova-plugin-statusbar": {
+        "com.batch.cordova": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
         }
     },

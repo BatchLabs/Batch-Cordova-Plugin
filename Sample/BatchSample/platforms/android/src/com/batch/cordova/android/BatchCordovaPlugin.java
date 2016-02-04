@@ -27,7 +27,7 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
 
     private static final String PLUGIN_VERSION_ENVIRONEMENT_VAR = "batch.plugin.version";
 
-    private static final String PLUGIN_VERSION = "Cordova/1.4";
+    private static final String PLUGIN_VERSION = "Cordova/1.5";
 
     /**
      * Key used to add extra to an intent to prevent it to be used more than once to compute opens
@@ -73,20 +73,26 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
 
                 if ( rawArgs != null && !rawArgs.isEmpty() )
                 {
-                    final List<Object> parametersList = JSONHelper.toList(rawArgs);
-                    if (parametersList != null && parametersList.size() > 0)
+                    try
                     {
-                        final Object firstItem = parametersList.get(0);
-
-                        try
+                        final List<Object> parametersList = JSONHelper.toList(rawArgs);
+                        if (parametersList != null && parametersList.size() > 0)
                         {
-                            parametersMap = (Map<String, Object>) firstItem;
+                            final Object firstItem = parametersList.get(0);
+    
+                            try
+                            {
+                                parametersMap = (Map<String, Object>) firstItem;
+                            }
+                            catch (ClassCastException e)
+                            {
+                                Log.e(TAG, "Error while sending action to Batch: invalid parameters.", e);
+                                // Do nothing here, just ignore
+                            }
                         }
-                        catch (ClassCastException e)
-                        {
-                            Log.e(TAG, "Error while sending action to Batch: invalid parameters.", e);
-                            // Do nothing here, just ignore
-                        }
+                    }
+                    catch (com.batch.android.json.JSONException e) {
+                        throw new JSONException(e.getMessage());
                     }
                 }
 
@@ -129,7 +135,7 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
 
                 result = Bridge.call(action, parametersMap, this);
             }
-            catch (JSONException e)
+            catch (org.json.JSONException e)
             {
                 Log.e(TAG, "Error while deserializing JSON for Batch Bridge", e);
             }
@@ -176,13 +182,17 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
             final Map<String, Object> resultArguments = new HashMap<String, Object>();
             resultArguments.put("action", s);
             resultArguments.put("result", map);
-            final PluginResult result = new PluginResult(PluginResult.Status.OK, JSONHelper.fromMap(resultArguments));
+            final PluginResult result = new PluginResult(PluginResult.Status.OK, new org.json.JSONObject(JSONHelper.fromMap(resultArguments).toString()));
             result.setKeepCallback(true);
             webView.sendPluginResult(result, genericCallbackId);
         }
-        catch (JSONException e)
+        catch (com.batch.android.json.JSONException e1)
         {
-            Log.e(TAG, "Error while serializing callback parameters to JSON", e);
+            Log.e(TAG, "Error while serializing callback parameters to JSON", e1);
+        }
+        catch (org.json.JSONException e2)
+        {
+            Log.e(TAG, "Error while serializing callback parameters to JSON", e2);
         }
     }
 
@@ -200,13 +210,17 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
             final Map<String, Object> resultArguments = new HashMap<String, Object>();
             resultArguments.put("action", "_log");
             resultArguments.put("message", message);
-            final PluginResult result = new PluginResult(PluginResult.Status.OK, JSONHelper.fromMap(resultArguments));
+            final PluginResult result = new PluginResult(PluginResult.Status.OK, new org.json.JSONObject(JSONHelper.fromMap(resultArguments).toString()));
             result.setKeepCallback(true);
             webView.sendPluginResult(result, genericCallbackId);
         }
-        catch (JSONException e)
+        catch (com.batch.android.json.JSONException e1)
         {
-            Log.e(TAG, "Error while serializing callback parameters to JSON", e);
+            Log.e(TAG, "Error while serializing callback parameters to JSON", e1);
+        }
+        catch (org.json.JSONException e2)
+        {
+            Log.e(TAG, "Error while serializing callback parameters to JSON", e2);
         }
     }
 
@@ -273,7 +287,7 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
                     result.setKeepCallback(true);
                     webView.sendPluginResult(result, genericCallbackId);
                 }
-                catch (JSONException e)
+                catch (org.json.JSONException e)
                 {
                     Log.e(TAG, "Error while sending push payload to cordova.", e);
                 }
