@@ -64,9 +64,10 @@ function notificationSettingChanged(event) {
 }
 
 function showPushToken() {
-	var token = batch.push.getLastKnownPushToken();
-	if (typeof token === "undefined" || token === null || token === "") {
+	batch.push.getLastKnownPushToken(function(token) {
+		if (typeof token === "undefined" || token === null || token === "") {
 		token = "Unknown token";
 	}
 	alert("Token: " + token);
+	});
 }

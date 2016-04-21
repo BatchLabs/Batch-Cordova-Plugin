@@ -23,10 +23,6 @@
         <param name="ios-package" value="CDVStatusBar" />
         <param name="onload" value="true" />
     </feature>
-    <feature name="Whitelist">
-        <param name="ios-package" value="CDVNavigationWhitelistPlugin" />
-        <param name="onload" value="true" />
-    </feature>
     <name>BatchSample</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
@@ -46,6 +42,7 @@
     <allow-intent href="itms-apps:*" />
     <preference name="AllowInlineMediaPlayback" value="false" />
     <preference name="BackupWebStorage" value="cloud" />
+    <preference name="DisallowOverscroll" value="true" />
     <preference name="EnableViewportScale" value="false" />
     <preference name="KeyboardDisplayRequiresUserAction" value="true" />
     <preference name="MediaPlaybackRequiresUserAction" value="false" />
@@ -59,5 +56,4 @@
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarStyle" value="lightcontent" />
     <preference name="StatusBarBackgroundColor" value="black" />
-    <preference name="DisallowOverscroll" value="true" />
 </widget>

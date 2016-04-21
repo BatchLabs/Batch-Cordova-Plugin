@@ -20,7 +20,6 @@
 		7D58CF2EC6E14318B56E9DB6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0F78A8C79D41C2A74BA593 /* libsqlite3.dylib */; };
 		B4E70F221A15414F8A959FBF /* BatchBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BF61DE800034929A080A0EC /* BatchBridge.framework */; };
 		D7308E68D09E42EC82213CC9 /* CDVStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FB8C3A0E6284BA6AD6C5D2E /* CDVStatusBar.m */; };
-		0320D170877E44D8ABFB43E5 /* CDVNavigationWhitelistPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = B73ADE92B9B1479DACFA9D3A /* CDVNavigationWhitelistPlugin.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,8 +66,6 @@
 		1BF61DE800034929A080A0EC /* BatchBridge.framework */ = {isa = PBXFileReference; name = "BatchBridge.framework"; path = "BatchSample/Plugins/com.batch.cordova/BatchBridge.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		1FB8C3A0E6284BA6AD6C5D2E /* CDVStatusBar.m */ = {isa = PBXFileReference; name = "CDVStatusBar.m"; path = "cordova-plugin-statusbar/CDVStatusBar.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		088A376AE14C4B5784A1DE65 /* CDVStatusBar.h */ = {isa = PBXFileReference; name = "CDVStatusBar.h"; path = "cordova-plugin-statusbar/CDVStatusBar.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
-		B73ADE92B9B1479DACFA9D3A /* CDVNavigationWhitelistPlugin.m */ = {isa = PBXFileReference; name = "CDVNavigationWhitelistPlugin.m"; path = "cordova-plugin-whitelist/CDVNavigationWhitelistPlugin.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
-		BBA04B2B75AD4AADAFDC1E62 /* CDVNavigationWhitelistPlugin.h */ = {isa = PBXFileReference; name = "CDVNavigationWhitelistPlugin.h"; path = "cordova-plugin-whitelist/CDVNavigationWhitelistPlugin.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,8 +177,6 @@
 				63F680F26847414793FC025C /* BatchCordovaPlugin.h */,
 				1FB8C3A0E6284BA6AD6C5D2E /* CDVStatusBar.m */,
 				088A376AE14C4B5784A1DE65 /* CDVStatusBar.h */,
-				B73ADE92B9B1479DACFA9D3A /* CDVNavigationWhitelistPlugin.m */,
-				BBA04B2B75AD4AADAFDC1E62 /* CDVNavigationWhitelistPlugin.h */,
 			);
 			name = Plugins;
 			path = "BatchSample/Plugins";
@@ -299,7 +294,6 @@
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
 				B2EA71858D664B1E8B8E5B84 /* BatchCordovaPlugin.m in Sources */,
 				D7308E68D09E42EC82213CC9 /* CDVStatusBar.m in Sources */,
-				0320D170877E44D8ABFB43E5 /* CDVNavigationWhitelistPlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

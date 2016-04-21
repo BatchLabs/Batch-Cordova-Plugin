@@ -42,7 +42,7 @@ var app = {
         
         app.setupBatchUnlockListeners();
 
-        //batch.start();
+        batch.start();
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
