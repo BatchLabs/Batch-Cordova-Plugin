@@ -1,4 +1,5 @@
-cordova.define("com.batch.cordova.batch", function(require, exports, module) { var BATCH_PLUGIN_NAME = "Batch";
+cordova.define("com.batch.cordova.batch", function(require, exports, module) {
+var BATCH_PLUGIN_NAME = "Batch";
 
 var ACTION_SET_CONFIG                            = "setConfig";
 var ACTION_START                                 = "start";
