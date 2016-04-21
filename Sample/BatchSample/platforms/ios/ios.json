@@ -9,10 +9,6 @@
                 "parents": {
                     "/*": [
                         {
-                            "xml": "<feature name=\"Batch\"><param name=\"ios-package\" value=\"BatchCordovaPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
                             "xml": "<feature name=\"StatusBar\"><param name=\"ios-package\" value=\"CDVStatusBar\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
                         },
@@ -23,6 +19,10 @@
                         {
                             "xml": "<preference name=\"StatusBarStyle\" value=\"lightcontent\" />",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Batch\"><param name=\"ios-package\" value=\"BatchCordovaPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -30,26 +30,18 @@
         }
     },
     "installed_plugins": {
-        "com.batch.cordova": {
-            "PACKAGE_NAME": "com.batch.cordova.sample"
-        },
         "cordova-plugin-statusbar": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
         },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
+        },
+        "com.batch.cordova": {
+            "PACKAGE_NAME": "com.batch.cordova.sample"
         }
     },
     "dependent_plugins": {},
     "modules": [
-        {
-            "file": "plugins/com.batch.cordova/www/batch.js",
-            "id": "com.batch.cordova.batch",
-            "pluginId": "com.batch.cordova",
-            "clobbers": [
-                "batch"
-            ]
-        },
         {
             "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
             "id": "cordova-plugin-statusbar.statusbar",
@@ -57,11 +49,19 @@
             "clobbers": [
                 "window.StatusBar"
             ]
+        },
+        {
+            "file": "plugins/com.batch.cordova/www/batch.js",
+            "id": "com.batch.cordova.batch",
+            "pluginId": "com.batch.cordova",
+            "clobbers": [
+                "batch"
+            ]
         }
     ],
     "plugin_metadata": {
-        "com.batch.cordova": "1.5",
         "cordova-plugin-statusbar": "1.0.1",
-        "cordova-plugin-whitelist": "1.2.2"
+        "cordova-plugin-whitelist": "1.2.2",
+        "com.batch.cordova": "1.5.3"
     }
 }

@@ -15,11 +15,11 @@
 		3047A5121AB8059700498E2A /* build-debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3047A50F1AB8059700498E2A /* build-debug.xcconfig */; };
 		3047A5131AB8059700498E2A /* build-release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3047A5101AB8059700498E2A /* build-release.xcconfig */; };
 		3047A5141AB8059700498E2A /* build.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 3047A5111AB8059700498E2A /* build.xcconfig */; };
-		B2EA71858D664B1E8B8E5B84 /* BatchCordovaPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = F3EA177DB1304DA4BC4A4E64 /* BatchCordovaPlugin.m */; };
-		FBDFAC53160644309390190D /* Batch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2FB8A3B3CE38460FB18B3A1E /* Batch.bundle */; };
 		7D58CF2EC6E14318B56E9DB6 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D0F78A8C79D41C2A74BA593 /* libsqlite3.dylib */; };
-		B4E70F221A15414F8A959FBF /* BatchBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BF61DE800034929A080A0EC /* BatchBridge.framework */; };
 		D7308E68D09E42EC82213CC9 /* CDVStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FB8C3A0E6284BA6AD6C5D2E /* CDVStatusBar.m */; };
+		5664A6BC45A44C6698CEE4AA /* BatchCordovaPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BAA908FDBF747C4BD32BF3B /* BatchCordovaPlugin.m */; };
+		81458935A3EC4658AE39F38C /* Batch.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DB7919180C7247A99E26F1D9 /* Batch.bundle */; };
+		04466D22F0384BA4A04DB660 /* BatchBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30391678922A49E985643DB0 /* BatchBridge.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,13 +59,13 @@
 		EB87FDF41871DAF40020F90C /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ../../config.xml; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = "BatchSample/config.xml"; sourceTree = "<group>"; };
 		ED33DF2A687741AEAF9F8254 /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Bridging-Header.h"; path = "Bridging-Header.h"; sourceTree = "<group>"; };
-		F3EA177DB1304DA4BC4A4E64 /* BatchCordovaPlugin.m */ = {isa = PBXFileReference; name = "BatchCordovaPlugin.m"; path = "com.batch.cordova/BatchCordovaPlugin.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
-		63F680F26847414793FC025C /* BatchCordovaPlugin.h */ = {isa = PBXFileReference; name = "BatchCordovaPlugin.h"; path = "com.batch.cordova/BatchCordovaPlugin.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
-		2FB8A3B3CE38460FB18B3A1E /* Batch.bundle */ = {isa = PBXFileReference; name = "Batch.bundle"; path = "Batch.bundle"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.plug-in; explicitFileType = undefined; includeInIndex = 0; };
 		3D0F78A8C79D41C2A74BA593 /* libsqlite3.dylib */ = {isa = PBXFileReference; name = "libsqlite3.dylib"; path = "usr/lib/libsqlite3.dylib"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = compiled.mach-o.dylib; explicitFileType = undefined; includeInIndex = 0; };
-		1BF61DE800034929A080A0EC /* BatchBridge.framework */ = {isa = PBXFileReference; name = "BatchBridge.framework"; path = "BatchSample/Plugins/com.batch.cordova/BatchBridge.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 		1FB8C3A0E6284BA6AD6C5D2E /* CDVStatusBar.m */ = {isa = PBXFileReference; name = "CDVStatusBar.m"; path = "cordova-plugin-statusbar/CDVStatusBar.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
 		088A376AE14C4B5784A1DE65 /* CDVStatusBar.h */ = {isa = PBXFileReference; name = "CDVStatusBar.h"; path = "cordova-plugin-statusbar/CDVStatusBar.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		2BAA908FDBF747C4BD32BF3B /* BatchCordovaPlugin.m */ = {isa = PBXFileReference; name = "BatchCordovaPlugin.m"; path = "com.batch.cordova/BatchCordovaPlugin.m"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; explicitFileType = undefined; includeInIndex = 0; };
+		CA5146165A9944AA93B0C4C4 /* BatchCordovaPlugin.h */ = {isa = PBXFileReference; name = "BatchCordovaPlugin.h"; path = "com.batch.cordova/BatchCordovaPlugin.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
+		DB7919180C7247A99E26F1D9 /* Batch.bundle */ = {isa = PBXFileReference; name = "Batch.bundle"; path = "Batch.bundle"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.plug-in; explicitFileType = undefined; includeInIndex = 0; };
+		30391678922A49E985643DB0 /* BatchBridge.framework */ = {isa = PBXFileReference; name = "BatchBridge.framework"; path = "BatchSample/Plugins/com.batch.cordova/BatchBridge.framework"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.framework; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,7 +75,7 @@
 			files = (
 				301BF552109A68D80062928A /* libCordova.a in Frameworks */,
 				7D58CF2EC6E14318B56E9DB6 /* libsqlite3.dylib in Frameworks */,
-				B4E70F221A15414F8A959FBF /* BatchBridge.framework in Frameworks */,
+				04466D22F0384BA4A04DB660 /* BatchBridge.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,7 +137,7 @@
 				0207DA571B56EA530066E2B4 /* Images.xcassets */,
 				3047A50E1AB8057F00498E2A /* config */,
 				8D1107310486CEB800E47090 /* BatchSample-Info.plist */,
-				2FB8A3B3CE38460FB18B3A1E /* Batch.bundle */,
+				DB7919180C7247A99E26F1D9 /* Batch.bundle */,
 			);
 			name = Resources;
 			path = "BatchSample/Resources";
@@ -147,7 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				3D0F78A8C79D41C2A74BA593 /* libsqlite3.dylib */,
-				1BF61DE800034929A080A0EC /* BatchBridge.framework */,
+				30391678922A49E985643DB0 /* BatchBridge.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -173,10 +173,10 @@
 		307C750510C5A3420062BCA9 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				F3EA177DB1304DA4BC4A4E64 /* BatchCordovaPlugin.m */,
-				63F680F26847414793FC025C /* BatchCordovaPlugin.h */,
 				1FB8C3A0E6284BA6AD6C5D2E /* CDVStatusBar.m */,
 				088A376AE14C4B5784A1DE65 /* CDVStatusBar.h */,
+				2BAA908FDBF747C4BD32BF3B /* BatchCordovaPlugin.m */,
+				CA5146165A9944AA93B0C4C4 /* BatchCordovaPlugin.h */,
 			);
 			name = Plugins;
 			path = "BatchSample/Plugins";
@@ -260,7 +260,7 @@
 				3047A5141AB8059700498E2A /* build.xcconfig in Resources */,
 				0207DA581B56EA530066E2B4 /* Images.xcassets in Resources */,
 				3047A5121AB8059700498E2A /* build-debug.xcconfig in Resources */,
-				FBDFAC53160644309390190D /* Batch.bundle in Resources */,
+				81458935A3EC4658AE39F38C /* Batch.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,8 +292,8 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
-				B2EA71858D664B1E8B8E5B84 /* BatchCordovaPlugin.m in Sources */,
 				D7308E68D09E42EC82213CC9 /* CDVStatusBar.m in Sources */,
+				5664A6BC45A44C6698CEE4AA /* BatchCordovaPlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,6 +330,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"BatchSample/Plugins/com.batch.cordova\"",
+					"\"BatchSample/Plugins/com.batch.cordova\"",
 				);
 			};
 			name = Debug;
@@ -352,6 +353,7 @@
 				PRODUCT_NAME = "BatchSample";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"BatchSample/Plugins/com.batch.cordova\"",
 					"\"BatchSample/Plugins/com.batch.cordova\"",
 				);
 			};

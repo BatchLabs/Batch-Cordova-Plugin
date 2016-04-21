@@ -7,13 +7,13 @@
         "files": {}
     },
     "installed_plugins": {
-        "com.batch.cordova": {
-            "PACKAGE_NAME": "com.batch.cordova.sample"
-        },
         "cordova-plugin-statusbar": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
         },
         "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.batch.cordova.sample"
+        },
+        "com.batch.cordova": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
         }
     },

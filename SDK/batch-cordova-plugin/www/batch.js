@@ -145,7 +145,7 @@ function fireBatchEvent(action, parameters) {
 
 /**
  * Batch Cordova Module
- * @version 1.5
+ * @version 1.5.3
  * @exports batch
  */
 var batch = {

@@ -5,12 +5,12 @@
         <param name="android-package" value="org.apache.cordova.statusbar.StatusBar" />
         <param name="onload" value="true" />
     </feature>
-    <feature name="Batch">
-        <param name="android-package" value="com.batch.cordova.android.BatchCordovaPlugin" />
-        <param name="onload" value="true" />
-    </feature>
     <feature name="Whitelist">
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="Batch">
+        <param name="android-package" value="com.batch.cordova.android.BatchCordovaPlugin" />
         <param name="onload" value="true" />
     </feature>
     <allow-intent href="market:*" />

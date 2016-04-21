@@ -43,6 +43,8 @@ var app = {
         app.setupBatchUnlockListeners();
 
         batch.start();
+
+        batch.push.registerForRemoteNotifications();
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {

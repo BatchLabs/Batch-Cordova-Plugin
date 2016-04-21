@@ -1,5 +1,17 @@
 Batch Cordova Plugin
 
+1.5.3
+----
+Update native SDKs to 1.5.3
+
+1.5
+----
+Update native SDKs to 1.5
+Custom user data (attributes, tags and events)
+Added an API to retrieve Batch's unique installation identifier
+Deprecated BatchUserProfile
+Added ability to start Batch in a service
+
 1.4
 ----
 Update native SDKs to 1.4

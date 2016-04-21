@@ -11,7 +11,6 @@ module.exports = [
     {
         "file": "plugins/com.batch.cordova/www/batch.js",
         "id": "com.batch.cordova.batch",
-        "pluginId": "com.batch.cordova",
         "clobbers": [
             "batch"
         ]
@@ -21,8 +20,8 @@ module.exports.metadata =
 // TOP OF METADATA
 {
     "cordova-plugin-statusbar": "1.0.1",
-    "com.batch.cordova": "1.5",
-    "cordova-plugin-whitelist": "1.2.2"
+    "cordova-plugin-whitelist": "1.2.2",
+    "com.batch.cordova": "1.5.3"
 };
 // BOTTOM OF METADATA
 });

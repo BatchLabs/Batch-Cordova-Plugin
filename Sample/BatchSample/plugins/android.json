@@ -79,10 +79,10 @@
         "cordova-plugin-statusbar": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
         },
-        "com.batch.cordova": {
+        "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
         },
-        "cordova-plugin-whitelist": {
+        "com.batch.cordova": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
         }
     },

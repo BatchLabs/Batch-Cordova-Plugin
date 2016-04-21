@@ -1,4 +1,5 @@
-cordova.define("com.batch.cordova.batch", function(require, exports, module) { var BATCH_PLUGIN_NAME = "Batch";
+cordova.define("com.batch.cordova.batch", function(require, exports, module) {
+var BATCH_PLUGIN_NAME = "Batch";
 
 var ACTION_SET_CONFIG                            = "setConfig";
 var ACTION_START                                 = "start";
@@ -145,7 +146,7 @@ function fireBatchEvent(action, parameters) {
 
 /**
  * Batch Cordova Module
- * @version 1.5
+ * @version 1.5.3
  * @exports batch
  */
 var batch = {

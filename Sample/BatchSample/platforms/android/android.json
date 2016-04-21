@@ -79,10 +79,10 @@
         "cordova-plugin-statusbar": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
         },
-        "com.batch.cordova": {
+        "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
         },
-        "cordova-plugin-whitelist": {
+        "com.batch.cordova": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
         }
     },
@@ -99,7 +99,6 @@
         {
             "file": "plugins/com.batch.cordova/www/batch.js",
             "id": "com.batch.cordova.batch",
-            "pluginId": "com.batch.cordova",
             "clobbers": [
                 "batch"
             ]
@@ -107,7 +106,7 @@
     ],
     "plugin_metadata": {
         "cordova-plugin-statusbar": "1.0.1",
-        "com.batch.cordova": "1.5",
-        "cordova-plugin-whitelist": "1.2.2"
+        "cordova-plugin-whitelist": "1.2.2",
+        "com.batch.cordova": "1.5.3"
     }
 }
