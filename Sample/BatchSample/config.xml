@@ -21,6 +21,9 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
+        <config-file parent="./application" target="AndroidManifest.xml">
+            <meta-data android:name="com.batch.android.push.foreground_push_handling" android:value="true" />
+        </config-file>
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
