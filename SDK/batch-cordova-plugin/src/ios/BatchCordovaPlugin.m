@@ -2,7 +2,7 @@
 //  BatchCordovaPlugin.m
 //  BatchCordovaPlugin
 //
-//  Copyright (c) 2015 Batch.com. All rights reserved.
+//  Copyright (c) 2016 Batch.com. All rights reserved.
 //
 
 #import "BatchCordovaPlugin.h"

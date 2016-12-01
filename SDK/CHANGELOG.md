@@ -1,5 +1,11 @@
 Batch Cordova Plugin
 
+1.7.2
+----
+Update native SDKs to 1.7  
+Added the ability to turn on foreground push delivery on Android (rather than delivering them in the notification center) to match iOS' behaviour.  
+The plugin now depends on the support-v4 library
+
 1.5.3
 ----
 Update native SDKs to 1.5.3
