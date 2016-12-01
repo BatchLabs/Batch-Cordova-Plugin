@@ -15,6 +15,9 @@
         },
         "com.batch.cordova": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
+        },
+        "cordova-custom-config": {
+            "PACKAGE_NAME": "com.batch.cordova.sample"
         }
     },
     "dependent_plugins": {}

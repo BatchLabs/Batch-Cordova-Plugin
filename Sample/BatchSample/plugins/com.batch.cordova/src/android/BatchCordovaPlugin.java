@@ -1,8 +1,12 @@
 package com.batch.cordova.android;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.batch.android.Batch;
 import com.batch.android.LoggerDelegate;
@@ -20,14 +24,17 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class BatchCordovaPlugin extends CordovaPlugin implements Callback, LoggerDelegate
 {
+    public static final String ACTION_FOREGROUND_PUSH = "com.batch.android.cordova.foreground_push_received";
+
     private static final String TAG = "BatchCordovaPlugin";
 
     private static final String PLUGIN_VERSION_ENVIRONEMENT_VAR = "batch.plugin.version";
 
-    private static final String PLUGIN_VERSION = "Cordova/1.5.3";
+    private static final String PLUGIN_VERSION = "Cordova/1.7.2";
 
     /**
      * Key used to add extra to an intent to prevent it to be used more than once to compute opens
@@ -39,6 +46,8 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
      * Used for automatic restarting of Batch
      */
     private static Boolean BATCH_STARTED = false;
+
+    private static AtomicInteger resumeCount = new AtomicInteger(0);
 
     static
     {
@@ -103,6 +112,9 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
 
                 if( Action.START.getName().equals(action) )
                 {
+                    // Enable manual push to handle foreground notifications
+                    Batch.Push.setManualDisplay(true);
+
                     // Deliver the push that started the activity, if applicable
                     Intent intent = null;
                     try
@@ -305,13 +317,29 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
         {
             Batch.onStart(cordova.getActivity());
         }
+        LocalBroadcastManager.getInstance(cordova.getActivity()).registerReceiver(foregroundPushReceiver, new IntentFilter(ACTION_FOREGROUND_PUSH));
     }
 
     @Override
     public void onStop()
     {
+        LocalBroadcastManager.getInstance(cordova.getActivity()).unregisterReceiver(foregroundPushReceiver);
         Batch.onStop(cordova.getActivity());
         super.onStop();
+    }
+
+    @Override
+    public void onPause(boolean multitasking)
+    {
+        super.onPause(multitasking);
+        resumeCount.decrementAndGet();
+    }
+
+    @Override
+    public void onResume(boolean multitasking)
+    {
+        super.onResume(multitasking);
+        resumeCount.incrementAndGet();
     }
 
     @Override
@@ -362,4 +390,50 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
     {
         log(tag, message, throwable);
     }
+
+    /****
+     * Foreground push
+     */
+    public static boolean isApplicationInForeground()
+    {
+        int count = resumeCount.get();
+
+        // Fix negative resume counts
+        if( count < 0 )
+        {
+            Log.e(TAG, "BatchCordovaPlugin's Activity resume counter is < 0. Something went wrong at some point.");
+
+            // Check that it is still in an invalid state, this may have changed while logging the issue.
+            // Just like AtomicInteger's incrementAndGet() works, try until we are satisfied.
+            for (;;)
+            {
+                int current = resumeCount.get();
+                if( count < 0 )
+                {
+                    if( resumeCount.compareAndSet(count, 0) )
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    // This was fixed by another thread, disregard and wish the developer well
+                    return current != 0;
+                }
+            }
+        }
+
+        return count != 0;
+    }
+
+    private void handleForegroundPush(Intent intent) {
+        sendPushFromIntent(intent, true);
+    }
+
+    private BroadcastReceiver foregroundPushReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            handleForegroundPush(intent);
+        }
+    };
 }

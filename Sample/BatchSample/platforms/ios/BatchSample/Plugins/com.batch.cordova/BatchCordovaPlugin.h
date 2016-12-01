@@ -12,7 +12,7 @@
 #import <BatchBridge/BatchLogger.h>
 #import <BatchBridge/BatchJSONHelper.h>
 
-#define PluginVersion "Cordova/1.5.3"
+#define PluginVersion "Cordova/1.7.2"
 
 @interface BatchCordovaPlugin : CDVPlugin <BatchCallback, BatchLoggerDelegate>
 

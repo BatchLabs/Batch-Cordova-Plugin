@@ -5,20 +5,6 @@
     },
     "config_munge": {
         "files": {
-            "res/xml/config.xml": {
-                "parents": {
-                    "/*": [
-                        {
-                            "xml": "<feature name=\"StatusBar\"><param name=\"android-package\" value=\"org.apache.cordova.statusbar.StatusBar\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        }
-                    ]
-                }
-            },
             "config.xml": {
                 "parents": {
                     "/*": [
@@ -69,6 +55,32 @@
                         {
                             "xml": "<receiver android:name=\"com.batch.android.BatchPushReceiver\" android:permission=\"com.google.android.c2dm.permission.SEND\"><intent-filter><action android:name=\"com.google.android.c2dm.intent.RECEIVE\" /><category android:name=\"com.batch.cordova.sample\" /></intent-filter></receiver>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<service android:exported=\"true\" android:name=\"com.batch.android.BatchPushInstanceIDService\"><intent-filter><action android:name=\"com.google.android.gms.iid.InstanceID\" /></intent-filter></service>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<service android:name=\"com.batch.cordova.android.BatchCordovaPushService\" />",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<receiver android:name=\"com.batch.cordova.android.BatchCordovaPushReceiver\" android:permission=\"com.google.android.c2dm.permission.SEND\"><intent-filter><action android:name=\"com.google.android.c2dm.intent.RECEIVE\" /><category android:name=\"com.batch.cordova.sample\" /></intent-filter></receiver>",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "res/xml/config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"StatusBar\"><param name=\"android-package\" value=\"org.apache.cordova.statusbar.StatusBar\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Whitelist\"><param name=\"android-package\" value=\"org.apache.cordova.whitelist.WhitelistPlugin\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -84,21 +96,25 @@
         },
         "com.batch.cordova": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
+        },
+        "cordova-custom-config": {
+            "PACKAGE_NAME": "com.batch.cordova.sample"
         }
     },
     "dependent_plugins": {},
     "modules": [
         {
-            "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
             "id": "cordova-plugin-statusbar.statusbar",
+            "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
             "pluginId": "cordova-plugin-statusbar",
             "clobbers": [
                 "window.StatusBar"
             ]
         },
         {
-            "file": "plugins/com.batch.cordova/www/batch.js",
             "id": "com.batch.cordova.batch",
+            "file": "plugins/com.batch.cordova/www/batch.js",
+            "pluginId": "com.batch.cordova",
             "clobbers": [
                 "batch"
             ]
@@ -107,6 +123,7 @@
     "plugin_metadata": {
         "cordova-plugin-statusbar": "1.0.1",
         "cordova-plugin-whitelist": "1.2.2",
-        "com.batch.cordova": "1.5.3"
+        "com.batch.cordova": "1.5.3",
+        "cordova-custom-config": "3.1.1"
     }
 }

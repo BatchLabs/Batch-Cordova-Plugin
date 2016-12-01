@@ -146,7 +146,7 @@ function fireBatchEvent(action, parameters) {
 
 /**
  * Batch Cordova Module
- * @version 1.5.3
+ * @version 1.7.2
  * @exports batch
  */
 var batch = {
@@ -655,18 +655,18 @@ BatchUserDataEditor = function() {
  * Add an operation to the queue.
  * Private method.
  * @param operation {BatchUserDataOperation} operation action to enqueue
- * @param arguments {object}
+ * @param args {object}
  * @private
  */
-BatchUserDataEditor.prototype._enqueueOperation = function(operation, arguments) {
+BatchUserDataEditor.prototype._enqueueOperation = function(operation, args) {
     var operationObject = {"operation": operation};
 
-    if (typeof arguments !== "undefined") {
-        for (var arg in arguments) {
-            if (!arguments.hasOwnProperty(arg)) {
+    if (typeof args !== "undefined") {
+        for (var arg in args) {
+            if (!args.hasOwnProperty(arg)) {
                 continue;
             }
-            operationObject[arg] = arguments[arg];
+            operationObject[arg] = args[arg];
         }
     }
 
@@ -857,7 +857,7 @@ BatchUserDataEditor.prototype.removeTag = function(collection, tag) {
 
     if (typeof tag === "undefined") {
         writeBatchLog(false, "BatchUserDataEditor - A tag is required");
-        return this;x
+        return this;
     }
 
     if (tag instanceof String || typeof tag === "string") {

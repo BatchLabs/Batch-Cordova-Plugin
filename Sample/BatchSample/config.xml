@@ -26,4 +26,5 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
+    <plugin name="cordova-custom-config" spec="~3.1.1" />
 </widget>
