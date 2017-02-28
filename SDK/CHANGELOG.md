@@ -1,5 +1,12 @@
 Batch Cordova Plugin
 
+1.7.4
+----
+Update native SDKs to the latest version
+The plugin now depends on the appcompat-v7 library on Android
+Added support for Mobile Landings
+Added a "hasMobileLanding" property in the push event, so you can avoid doing some actions on a push that already displayed a mobile landing
+
 1.7.2
 ----
 Update native SDKs to 1.7  

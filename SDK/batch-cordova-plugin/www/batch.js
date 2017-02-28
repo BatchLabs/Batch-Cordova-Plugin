@@ -94,7 +94,13 @@ function handleCallback(callbackData) {
                     }
                 }
             }
-            cordova.fireDocumentEvent('batchPushReceived', {"payload": pushPayload});
+
+            var hasLandingMessage = false;
+            if (callbackData.hasLandingMessage === true) {
+                hasLandingMessage = true;
+            }
+
+            cordova.fireDocumentEvent('batchPushReceived', {"payload": pushPayload, "hasLandingMessage": hasLandingMessage});
             break;
         case CALLBACK_LOG:
             // Don't use writeBatchLog on purpose
@@ -145,7 +151,7 @@ function fireBatchEvent(action, parameters) {
 
 /**
  * Batch Cordova Module
- * @version 1.7.2
+ * @version 1.7.4
  * @exports batch
  */
 var batch = {

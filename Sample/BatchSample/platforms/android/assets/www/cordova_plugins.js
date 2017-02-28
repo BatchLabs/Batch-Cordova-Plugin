@@ -22,8 +22,8 @@ module.exports.metadata =
 {
     "cordova-plugin-statusbar": "1.0.1",
     "cordova-plugin-whitelist": "1.2.2",
-    "com.batch.cordova": "1.5.3",
-    "cordova-custom-config": "3.1.1"
+    "cordova-custom-config": "3.1.1",
+    "com.batch.cordova": "1.7.4"
 };
 // BOTTOM OF METADATA
 });

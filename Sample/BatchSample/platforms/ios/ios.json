@@ -36,10 +36,10 @@
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
         },
-        "com.batch.cordova": {
+        "cordova-custom-config": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
         },
-        "cordova-custom-config": {
+        "com.batch.cordova": {
             "PACKAGE_NAME": "com.batch.cordova.sample"
         }
     },
@@ -65,7 +65,7 @@
     "plugin_metadata": {
         "cordova-plugin-statusbar": "1.0.1",
         "cordova-plugin-whitelist": "1.2.2",
-        "com.batch.cordova": "1.5.3",
-        "cordova-custom-config": "3.1.1"
+        "cordova-custom-config": "3.1.1",
+        "com.batch.cordova": "1.7.4"
     }
 }

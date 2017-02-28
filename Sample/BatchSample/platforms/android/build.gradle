@@ -251,6 +251,7 @@ dependencies {
     debugCompile(project(path: "CordovaLib", configuration: "debug"))
     releaseCompile(project(path: "CordovaLib", configuration: "release"))
     compile "com.android.support:support-v4:+"
+    compile "com.android.support:appcompat-v7:+"
     compile "com.google.android.gms:play-services-gcm:+"
     compile "com.google.android.gms:play-services-iid:+"
     compile "com.google.android.gms:play-services-ads:+"

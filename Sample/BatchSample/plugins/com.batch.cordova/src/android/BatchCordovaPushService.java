@@ -8,6 +8,8 @@ import android.util.Log;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.batch.android.Batch;
+import com.batch.android.BatchPushPayload;
+import com.batch.android.MessagingActivity;
 
 public class BatchCordovaPushService extends IntentService
 {
@@ -30,12 +32,29 @@ public class BatchCordovaPushService extends IntentService
     {
         try {
             if (Batch.Push.shouldDisplayPush(this, intent)) {
-                if (isForegroundPushHandlingEnabled() && isAppInForeground()) {
-                    forwardPushToForegroundActivity(intent);
-                    Batch.Push.onNotificationDisplayed(this, intent);
+                if (isAppInForeground()) {
+                    BatchPushPayload pushPayload = BatchPushPayload.payloadFromReceiverIntent(intent);
+                    boolean pushContainsLanding = pushPayload != null && pushPayload.hasLandingMessage();
+
+                    if (pushContainsLanding) {
+                        MessagingActivity.startActivityForMessage(this, pushPayload.getLandingMessage());
+                    }
+
+                    if (isForegroundPushHandlingEnabled()) {
+                        forwardPushToForegroundActivity(intent);
+                        Batch.Push.onNotificationDisplayed(this, intent);
+                    } else {
+                        // Show the landing even if Batch should do that in displayNotificaiton.
+                        // Thanks to cordova, the activity listener is set up way too late, and misses the first resume
+                        // making the native SDK incapable of knowing that the cordova app is in the foreground
+                        if (!pushContainsLanding) {
+                            Batch.Push.displayNotification(this, intent);
+                        }
+                    }
                 } else {
                     Batch.Push.displayNotification(this, intent);
                 }
+
             }
         } catch (Exception e) {
             Log.e(TAG, "An error occurred while handling push", e);

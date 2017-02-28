@@ -9,6 +9,7 @@ import android.util.Log;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.batch.android.Batch;
+import com.batch.android.BatchPushPayload;
 import com.batch.android.LoggerDelegate;
 import com.batch.android.interop.Action;
 import com.batch.android.interop.Bridge;
@@ -289,11 +290,26 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
 
                 intent.putExtra(INTENT_EXTRA_CONSUMED_PUSH, true);
 
+                boolean hasLandingMessage = false;
+                try
+                {
+                    BatchPushPayload parsedPayload = BatchPushPayload.payloadFromBundle(extras);
+                    if (parsedPayload != null && parsedPayload.hasLandingMessage())
+                    {
+                        hasLandingMessage = true;
+                    }
+                }
+                catch (BatchPushPayload.ParsingException e)
+                {
+                    Log.e(TAG, "Error while checking if the push contains a landing.", e);
+                }
+
                 try
                 {
                     final JSONObject jsonResult = new JSONObject();
                     jsonResult.put("action", "_dispatchPush");
                     jsonResult.put("payload", jsonPayload);
+                    jsonResult.put("hasLandingMessage", hasLandingMessage);
 
                     final PluginResult result = new PluginResult(PluginResult.Status.OK, jsonResult);
                     result.setKeepCallback(true);
