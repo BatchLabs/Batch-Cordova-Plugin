@@ -1,0 +1,44 @@
+{
+  "name": "batchsdk-cordova-builder",
+  "version": "1.0.0",
+  "description": "Builder for the Batch SDK Cordova plugin",
+  "scripts": {
+    "build": "./node_modules/.bin/webpack --mode production",
+    "lint": "./node_modules/.bin/tslint --project .",
+    "test": "./node_modules/.bin/jest",
+    "emu-android": "cd testapp && ../node_modules/.bin/cordova emulate android",
+    "emu-ios": "cd testapp && ../node_modules/.bin/cordova emulate ios",
+    "update-testapp-plugin":
+      "cd testapp && ../node_modules/.bin/cordova plugin rm com.batch.cordova && rm -rf platforms/android/app/src/main/java/com/batch/cordova/android && ../node_modules/.bin/cordova plugin add ../dist --nofetch && rm -f ../dist/package-lock.json"
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "__tests__/tsconfig.json"
+      }
+    },
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+    "setupFiles": ["./__mocks__/setup.ts"]
+  },
+  "author": "Batch.com",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/cordova": "^0.0.34",
+    "@types/jest": "^22.1.4",
+    "@types/node": "^9.4.6",
+    "cordova": "^8.0.0",
+    "jest": "^22.4.2",
+    "plugman": "^2.0.0",
+    "ts-jest": "^22.4.0",
+    "ts-loader": "^4.0.0",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.9.0",
+    "typescript": "^2.7.2",
+    "webpack": "^4.0.1",
+    "webpack-cli": "^2.0.9"
+  }
+}

@@ -1,62 +1,126 @@
-![Dashboard Items](https://raw.github.com/BatchLabs/cordova-plugin/master/readme_logo.png)
+![Batch Logo](https://raw.github.com/BatchLabs/cordova-plugin/master/readme/readme_logo.png)
 
-# Batch Sample Apps
-These samples are minimal examples demonstrating a proper integration of the Batch SDK and implementation of Batch Unlock and Batch Push functionality.
+# Batch Cordova Plugin Builder
 
-## App
+[![npm version](https://badge.fury.io/js/com.batch.cordova.svg)](https://badge.fury.io/js/com.batch.cordova)
 
-1. Clone or download the repository, which contains the SDK and the sample app
+Welcome to Batch's Cordova Plugin!
 
-2. Go into the BatchSample folder and use standard cordova commands to run the app (ex: "cordova emu ios" or "cordova run android")
+This repository contains the plugin's source code (native code + cordova) and buildscripts.
 
-## Dashboard
+A test application project is _not_ provided.
 
-### 1. Login to your [Batch.com](https://batch.com/) account or create a new one.
+## Compatibility
 
-### 2. Add your new sample app
-Add a new app on the [dashboard](https://dashboard.batch.com/app/new) using the manual option, as your sample app doesn't have an App Store or Play Store URL to autopopulate.
+This plugin is compatible with:
 
-### 3. Retrieve the dev API key
-Within your newly-created app, find the dev API key either here on step 1 of the wizard screen under `API KEY`, or in the settings menu under *API Keys*. 
+* cordova 8.0.+
+* cordova-android 7.0.0+
+* cordova-ios 4.5.0+
 
-Place the dev API key in your sample app's AppDelegate didFinishStartingWithOptions function, in the startWithAPIKey method call.
+Subsequent major Cordova and Cordova platform versions are _not_ supported until told otherwise.
 
-At this point, feel free to launch your app. If you select `Unlock`, you should see that you haven't yet redeemed any *features* or *items*.
+If you use an earlier version of Cordova, please use the 1.7.4 version of this plugin.
 
-> Note: The app starts with 10 `Lives`, as shown below.
+> Note: Batch isn't supported in the browser. It will only work correctly when running on Android or iOS.
 
-![No Redeeemed Items](https://raw.github.com/BatchLabs/cordova-plugin/master/readme_noredeem.png)
+## How do I install the plugin?
 
-If you are using the wizard, you can now click `Test` and should receive a confirmation of your integration if you launched the app with your API key.
+Simply add our plugin from npm:
 
-### 4. Add items for Batch Unlock
-The samples are configured with three static items: `No Ads`, `Pro Trial`, and `Lives`.
+```
+cordova plugin add com.batch.cordova
+```
 
-![Dashboard Items](https://raw.github.com/BatchLabs/cordova-plugin/master/readme_items.png)
+A `batch` object will be present on the window. Its methods and modules are documented in `types/index.d.ts`
 
-While the names can vary in the *NAME* field, the *REFERENCE* is the case-sensitive value used in the sample code.
+Our [official documentation](https://batch.com/doc/cordova/sdk-integration/initial-setup.html) will walk you through the integration process, describing how to perform a successful integration of both required and optional plugin features.
 
-*No Ads* is used to demonstrate restorability. It is recommended to set this to *Always restore*.
+# Development
 
-*Pro Trial* demonstrates a time-to-live (TTL) for expiring offers. Set the option to *trial (days)* and choose a valid amount of days for the feature to be active.
+If you're reading this, you're probably interested in how to cha
+This section will cover the location of the various files and how to build/test your changes.
 
-*Lives* is an example of a resource, or consumable item. You can define the given quantity in the campaign.  
+## Folder architecture
 
-### 5. Create campaign
-In the campaign screen of your dashboard, create a new *Unlock* campaign. You can use any of the wizard options, or choose a *Custom Offer* for manual setup. 
+This folder is actually the plugin's source and builder, but not the plugin itself.  
+Here is a quick overview of the different folders:
 
-As long as the conditions (time, user targeting, URL scheme, capping) match when you launch the app, you will recieve whatever configuration of features and resources you specify. You will also recieve the `reward_message` custom parameter, sent as alert, to give feedback to the user about the offer redeemed.
+* `__mocks__`: jest global mocks
+* `__tests__`: jest unit tests
+* `dist`: Plugin's actual directory. This is the one published to npm, and the one you will want to add to your project once modified.
+  * `dist/scripts`: After-prepare script that pulls Firebase keys from `google-services.json` on Android
+  * `dist/src/android`: Android native component
+  * `dist/src/ios`: iOS native component
+  * `dist/www`: Built plugin javascript. Do not edit this directly.
+* `src`: Plugin's source.
+* `types`: Plugin's type definition. This is where the plugin's public API is defined. Plugin's implementations (mobile and stub) both implement the interfaces defined in this folder.
 
-In this example, `No Ads` is given in the offer with *restore* enabled, `Pro Trial` is given with a 9 day trial set, and 5 `Lives` are given, adding to the previously-mentioned default of 10.
+## How it works
 
-![Redeemed Items](https://raw.github.com/BatchLabs/cordova-plugin/master/readme_redeem.png)
+The plugin's public API is defined by Typescript type definitions in `types`.  
+It is then implemented, in Typescript of course, in the src folder.  
+Currently, two implementations of the SDK exist:
 
-> Note: If you set a campaign targeting only new users, ensure that you're running the app for the first time on the device, otherwise it will be considered an existing user. Delete and reinstall to be considered new.
+* Native, used on Android/iOS: this one is the real deal.
+* Stub, used on unsupported platforms: as the name implies, it does absolutely nothing but prevents your code from throwing errors.
 
-### 6. Testing Restore
+The plugin converts Javascript API calls to a JSON-based message format unifying both platforms, and then forwards it to the native part using cordova APIs.
 
-To test the restore functionality, delete the app from your testing device and then reinstall it. Upon relaunch you see that your inventories have been reset to defaults. Within *Unlock*, select *Restore* and you will see a confirmation of the restore. Your inventory will now reflect any content you have enabled for restoration.
- 
-## Resources
-* [Full Batch documentation](https://dashboard.batch.com/doc)
-* [support@batch.com](support@batch.com)
+Messages are interpreted by BatchCordovaPlugin and processed using what is called the "Bridge": the native implementation of the standardized JSON-based message format.
+
+Once the Javascript side of the plugin called the native once, a two way communication bridge is established which allows the native code to tell the Javascript plugin about various SDK events, such as received push messages or in-app messaging events.
+
+## Working on the plugin
+
+Before changing anything, you will have to install the required modules by running:
+
+```
+yarn
+```
+
+> Note: `npm install` could also be used, but not advised as this plugin uses yarn.
+
+Files are formatted using Prettier, and linted with TSLint.  
+While you should install these plugins for your favorite code editor, you can manually lint the plugin:
+
+```
+yarn lint
+```
+
+You can then test your changes using:
+
+```
+yarn test
+```
+
+Finally, once you're done and want to test in your application, you will need to build `dist/www/batch.js`:
+
+```
+yarn build
+```
+
+That's it! Happy hacking!
+
+## Updating the native SDKs
+
+Updating the native SDKs can be done by simply using the officially release native ones:
+
+* Android: The plugin uses gradle. Simply open `dist/src/android/batch.gradle` and tweak the `'com.batch.android:batch-sdk` version line.
+* iOS: The plugin ships the iOS framework. Open `dist/src/ios/` and replace `Batch.framework` with [the one you've downloaded](https://batch.com/download).
+
+## Applying the changes to a local project
+
+Since you've locally modified this project, you won't be able to publish it on npm.
+Thus, you'll have to manually add it to your project, using the cordova CLI:
+
+```
+cordova plugin rm com.batch.cordova
+cordova plugin add <path to where you checked out cordova-plugin>/dist --nofetch
+```
+
+If you altered anything in `src/`, make sure you build the plugin beforehand.
+
+# License
+
+See `LICENSE` file. (Spoiler: it's MIT)

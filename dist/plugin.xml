@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        id="com.batch.cordova"
+        version="1.11.0">
+    <engines>
+        <engine name="cordova" version=">=8.0.0" />
+        <engine name="cordova-android" version=">=7.0.0" />
+        <engine name="cordova-ios" version=">=4.5.0" />
+    </engines>
+    <name>Batch</name>
+    <description>Plugin for the Batch SDK</description>
+    <author>Batch.com</author>
+    <keywords>batch</keywords>
+    <license>Custom</license>
+    <js-module src="www/batch.js" name="batch">
+        <clobbers target="batch" />
+    </js-module>
+
+    <platform name="android">
+        <config-file target="config.xml" parent="/*">
+            <feature name="Batch">
+                <param name="android-package" value="com.batch.cordova.android.BatchCordovaPlugin" />
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/BatchCordovaPlugin.java" target-dir="app/src/main/java/com/batch/cordova/android" />
+        <source-file src="src/android/BatchCordovaPushReceiver.java" target-dir="app/src/main/java/com/batch/cordova/android" />
+        <source-file src="src/android/BatchCordovaPushService.java" target-dir="app/src/main/java/com/batch/cordova/android" />
+
+        <source-file src="src/android/interop/Action.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
+        <source-file src="src/android/interop/Bridge.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
+        <source-file src="src/android/interop/BridgeException.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
+        <source-file src="src/android/interop/Callback.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
+        <source-file src="src/android/interop/InboxBridge.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
+        <source-file src="src/android/interop/Result.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
+        <source-file src="src/android/interop/JSONHelper.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
+        <source-file src="src/android/interop/SimplePromise.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
+
+        <config-file target="app/src/main/AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+        </config-file>
+
+        <config-file target="app/src/main/AndroidManifest.xml" parent="/manifest/application">
+
+            <!-- Cordova specific receivers -->
+            <service android:name="com.batch.cordova.android.BatchCordovaPushService"
+                android:permission="android.permission.BIND_JOB_SERVICE" />
+
+            <receiver
+                    android:name="com.batch.cordova.android.BatchCordovaPushReceiver"
+                    android:permission="com.google.android.c2dm.permission.SEND" >
+                <intent-filter>
+                    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                    <category android:name="$PACKAGE_NAME" />
+                </intent-filter>
+            </receiver>
+
+        </config-file>
+
+        <framework src="com.google.android.gms:play-services-ads:+" />
+        <framework src="com.google.firebase:firebase-core:+" />
+        <framework src="com.google.firebase:firebase-messaging:+" />
+        <framework src="src/android/batch.gradle" custom="true" type="gradleReference" />
+
+        <hook src="scripts/after_prepare.js" type="after_prepare" />
+    </platform>
+
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="Batch">
+                <param name="ios-package" value="BatchCordovaPlugin" />
+                <param name="onload" value="true" />
+            </feature>
+        </config-file>
+        <header-file src="src/ios/BatchCordovaPlugin.h" />
+        <source-file src="src/ios/BatchCordovaPlugin.m" />
+
+        <header-file src="src/ios/interop/BACSimplePromise.h" />
+        <source-file src="src/ios/interop/BACSimplePromise.m" />
+        <header-file src="src/ios/interop/BatchBridgeCallback.h" />
+        <header-file src="src/ios/interop/BatchBridge.h" />
+        <source-file src="src/ios/interop/BatchBridge.m" />
+        <header-file src="src/ios/interop/BatchJSONHelper.h" />
+        <source-file src="src/ios/interop/BatchJSONHelper.m" />
+
+        <framework src="libsqlite3.dylib" />
+        <framework src="src/ios/Batch.framework" custom="true" />
+
+    </platform>
+
+</plugin>

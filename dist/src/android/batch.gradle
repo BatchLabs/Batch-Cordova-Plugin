@@ -1,0 +1,16 @@
+repositories {
+    google()
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.batch.android:batch-sdk:1.+'
+    implementation "com.google.android.gms:play-services-ads:+"
+    implementation "com.google.firebase:firebase-core:+"
+    implementation "com.google.firebase:firebase-messaging:+"
+    implementation "com.android.support:support-v4:$project.defaultTargetSdkVersion.+"
+    implementation "com.android.support:support-compat:$project.defaultTargetSdkVersion.+"
+    implementation "com.android.support:appcompat-v7:$project.defaultTargetSdkVersion.+"
+    implementation "com.android.support:design:$project.defaultTargetSdkVersion.+"
+}
