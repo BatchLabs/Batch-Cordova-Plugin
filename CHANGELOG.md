@@ -13,6 +13,8 @@ Cordova 8 compatibility. **Note: Users of earlier versions of cordova will have 
 
 Updated native SDKs to 1.12.0
 
+Android now uses FCM to register for notifications: setGCMSenderId has been removed, and you will need to generate a `google-services.json` file to keep push notifications.
+
 ## 1.7.4
 
 Update native SDKs to the latest version
