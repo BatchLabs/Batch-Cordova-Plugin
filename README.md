@@ -14,7 +14,7 @@ A test application project is _not_ provided.
 
 This plugin is compatible with:
 
-* cordova 8.0.+
+* cordova 8.0.0+
 * cordova-android 7.0.0+
 * cordova-ios 4.5.0+
 
