@@ -1,6 +1,6 @@
 module.exports = {
   mode: "development",
-  devtool: "inline-source-map",
+  devtool: "none",
   entry: "./src/index.ts",
   output: {
     path: __dirname + "/dist/www/",
