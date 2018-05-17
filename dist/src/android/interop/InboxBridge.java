@@ -116,7 +116,7 @@ public class InboxBridge
             return json.toString();
         } catch (JSONException e) {
             Log.d(TAG, "Could not convert error", e);
-            return ( "{'error':'Internal native error (-200)'" );
+            return ( "{'error':'Internal native error (-200)'}" );
         }
     }
 
