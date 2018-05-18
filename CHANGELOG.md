@@ -1,5 +1,10 @@
 Batch Cordova Plugin
 
+## 2.0.1
+
+* Fixed an issue where iOS might not return the expected value in async calls
+* Implemented Inbox on iOS
+
 ## 2.0.0
 
 Rewrote the plugin:
