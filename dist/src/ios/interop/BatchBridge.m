@@ -15,6 +15,8 @@
 #import <Batch/BatchUserProfile.h>
 #import <Batch/BatchPush.h>
 
+#import "BatchInboxBridge.h"
+
 #define INVALID_PARAMETER   @"Invalid parameter."
 
 #define BridgeVersion               @"2.0"
@@ -313,12 +315,7 @@ static dispatch_once_t onceToken;
 
     else if ([action caseInsensitiveCompare:INBOX_FETCH] == NSOrderedSame)
     {
-        if (!parameters || [parameters count]==0)
-        {
-            [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action %@.", action];
-        }
-
-        [NSException raise:@"Not implemented" format:@"Not implemented yet"];
+        return [BatchInboxBridge fetchNotifications];
     }
     else if ([action caseInsensitiveCompare:INBOX_FETCH_FOR_USER_ID] == NSOrderedSame)
     {
@@ -327,7 +324,19 @@ static dispatch_once_t onceToken;
             [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action %@.", action];
         }
 
-        [NSException raise:@"Not implemented" format:@"Not implemented yet"];
+        NSString *userID = [parameters objectForKey:@"id"];
+        if (![userID isKindOfClass:[NSString class]])
+        {
+            [NSException raise:INVALID_PARAMETER format:@"Missing parameter 'id' for action %@.", action];
+        }
+
+        NSString *authKey = [parameters objectForKey:@"auth"];
+        if (![authKey isKindOfClass:[NSString class]])
+        {
+            [NSException raise:INVALID_PARAMETER format:@"Missing parameter 'auth' for action %@.", action];
+        }
+
+        return [BatchInboxBridge fetchNotificationsForUser:userID authKey:authKey];
     }
     
     // Unknown method.
