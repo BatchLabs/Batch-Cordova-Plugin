@@ -1,5 +1,9 @@
 Batch Cordova Plugin
 
+## 2.0.2
+
+* The plugin's Android hook now checks for `cordova-plugin-firebase` and tweaks its behaviour accordingly to prevent conflicts
+
 ## 2.0.1
 
 * Fixed an issue where iOS might not return the expected value in async calls
