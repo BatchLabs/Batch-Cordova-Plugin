@@ -47,6 +47,12 @@ function extractGoogleServicesConfig(cordovaContext) {
       fs.readFileSync(path.join(projectRoot, "google-services.json")).toString()
     );
 
+    // arnesson/cordova-plugin-firebase compatibility
+    const compatMode = hasPlugin(cordovaContext, "cordova-plugin-firebase");
+    if (compatMode) {
+      log("cordova-plugin-firebase detected: using compatibility mode");
+    }
+
     // For simplicity (and also because we don't have the Android package in the cordova context), use the first client
     const apiKey = googleServicesConfig.client[0].api_key[0].current_key;
     const appId = googleServicesConfig.client[0].client_info.mobilesdk_app_id;
@@ -54,8 +60,13 @@ function extractGoogleServicesConfig(cordovaContext) {
     const projectId = googleServicesConfig.project_info.project_id;
 
     var stringsXML = "<?xml version='1.0' encoding='utf-8'?>\n<resources>";
-    stringsXML = stringsXML + makeAndroidStringEntry("google_api_key", apiKey);
-    stringsXML = stringsXML + makeAndroidStringEntry("google_app_id", appId);
+
+    if (!compatMode) {
+      stringsXML =
+        stringsXML + makeAndroidStringEntry("google_api_key", apiKey);
+      stringsXML = stringsXML + makeAndroidStringEntry("google_app_id", appId);
+    }
+
     stringsXML =
       stringsXML + makeAndroidStringEntry("gcm_defaultSenderId", senderId);
     stringsXML = stringsXML + makeAndroidStringEntry("project_id", projectId);
@@ -65,6 +76,10 @@ function extractGoogleServicesConfig(cordovaContext) {
   } catch (e) {
     logE(e);
   }
+}
+
+function hasPlugin(cordovaContext, pluginName) {
+  return cordovaContext.opts.cordova.plugins.indexOf(pluginName) != -1;
 }
 
 module.exports = function(cordovaContext) {
