@@ -481,4 +481,4 @@ interface CordovaPlugins {
   batch: BatchSDK.Batch;
 }
 
-declare var sqlitePlugin: BatchSDK.Batch;
+declare var batch: BatchSDK.Batch;
