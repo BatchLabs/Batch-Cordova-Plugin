@@ -1,22 +1,26 @@
 Batch Cordova Plugin
 
+## 2.0.3
+
+- Fix an issue where Batch User editor's `setIdentifier`, `setLanguage` and `setRegion` did not accept null values
+
 ## 2.0.2
 
-* The plugin's Android hook now checks for `cordova-plugin-firebase` and tweaks its behaviour accordingly to prevent conflicts
+- The plugin's Android hook now checks for `cordova-plugin-firebase` and tweaks its behaviour accordingly to prevent conflicts
 
 ## 2.0.1
 
-* Fixed an issue where iOS might not return the expected value in async calls
-* Implemented Inbox on iOS
+- Fixed an issue where iOS might not return the expected value in async calls
+- Implemented Inbox on iOS
 
 ## 2.0.0
 
 Rewrote the plugin:
 
-* Native code is now included in the open-source repository, meaning that 3rd party developers can update the underlying native SDKs directly.
-* Plugin is fully definied in a typescript definition, improving documentation readability and Ionic support
-* Plugin is now testable
-* Cordova-plugin's versioning system will now differ from the native SDK versioning
+- Native code is now included in the open-source repository, meaning that 3rd party developers can update the underlying native SDKs directly.
+- Plugin is fully definied in a typescript definition, improving documentation readability and Ionic support
+- Plugin is now testable
+- Cordova-plugin's versioning system will now differ from the native SDK versioning
 
 Cordova 8 compatibility. **Note: Users of earlier versions of cordova will have to downgrade to 1.7.4**
 
@@ -64,8 +68,8 @@ Updated native sdks to 1.3.3 (prerelease)
 
 Batch Push is now fully available:
 
-* It is now possible to read the notification payload in your JS code
-* Setting the wanted notification types is supported
+- It is now possible to read the notification payload in your JS code
+- Setting the wanted notification types is supported
 
 Added Batch Unlock
 

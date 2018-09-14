@@ -1,14 +1,22 @@
 {
   "name": "com.batch.cordova",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Plugin for the Batch.com SDK",
   "cordova": {
     "id": "com.batch.cordova",
-    "platforms": ["android", "ios"]
+    "platforms": [
+      "android",
+      "ios"
+    ]
   },
-  "keywords": ["batch", "ecosystem:cordova", "cordova-android", "cordova-ios"],
+  "keywords": [
+    "batch",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
   "cordovaDependencies": {
-    "2.0.1": {
+    "2.0.3": {
       "cordova": ">=8.0.0",
       "cordova-android": ">=7.0.0",
       "cordova-ios": ">=4.5.0"
