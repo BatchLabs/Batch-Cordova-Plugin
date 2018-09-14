@@ -46,7 +46,11 @@ public class JSONHelper
 	 */
 	private static Object jsonObjectToObject(Object object) throws JSONException
 	{
-		if (object instanceof JSONObject)
+		if (object == JSONObject.NULL)
+		{
+			return null;
+		}
+		else if (object instanceof JSONObject)
 		{
 			return jsonObjectToMap((JSONObject) object);
 		}
