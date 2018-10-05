@@ -2,6 +2,7 @@
   "name": "batchsdk-cordova-builder",
   "version": "1.0.0",
   "description": "Builder for the Batch SDK Cordova plugin",
+  "private": true,
   "scripts": {
     "build": "./node_modules/.bin/webpack --mode production",
     "lint": "./node_modules/.bin/tslint --project .",
