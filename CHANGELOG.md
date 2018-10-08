@@ -1,5 +1,14 @@
 Batch Cordova Plugin
 
+## 2.0.4
+
+_Android_
+
+Remove explicit dependency on "play-services-ads".  
+This may cause your application to stop giving Batch your users' Advertising ID.  
+To restore this functionality, please use a 3rd party plugin (or a gradle file) to add firebase-analytics to your app.  
+Doing so may require you to add a privacy policy to your app to stay in compliance with Play Store rules.
+
 ## 2.0.3
 
 - Fix an issue where Batch User editor's `setIdentifier`, `setLanguage` and `setRegion` did not accept null values
