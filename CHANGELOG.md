@@ -1,5 +1,9 @@
 Batch Cordova Plugin
 
+## 2.0.5
+
+Re-release 2.0.4 with the right version number in plugin.xml
+
 ## 2.0.4
 
 _Android_
