@@ -1,5 +1,11 @@
 Batch Cordova Plugin
 
+## 2.0.6
+
+_Android_
+
+Remove duplicated dependencies in plugin.xml: this completes the fix introduced in 2.0.4
+
 ## 2.0.5
 
 Re-release 2.0.4 with the right version number in plugin.xml
