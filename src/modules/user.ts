@@ -59,9 +59,15 @@ export class UserModule implements BatchSDK.UserModule {
       return;
     }
 
+    // Legacy codepath
+    // TODO, the === "object" check might not work for the new object
     if (typeof data === "object") {
       parameters.data = data;
+      sendToBridge(null, UserAction.TrackLegacyEvent, [parameters]);
+      return;
     }
+
+    // TODO: implement new event data class
 
     sendToBridge(null, UserAction.TrackEvent, [parameters]);
 

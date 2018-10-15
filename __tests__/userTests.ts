@@ -2,6 +2,7 @@ import { User as UserAction } from "../src/actions";
 import { isNumber, isString } from "../src/helpers";
 
 const mockedTrackEvent = jest.fn();
+const mockedTrackLegacyEvent = jest.fn();
 const mockedTrackTransaction = jest.fn();
 const mockedTrackLocation = jest.fn();
 
@@ -29,10 +30,22 @@ function mockedSendToBridge(
     if (arg.label && !isString(arg.label)) {
       throw new Error("TrackEvent: Invalid label argument");
     }
+    // TODO: uncomment this when BatchEventData has been implemented
+    /*if (arg.data && !(typeof arg.data instanceof BatchEventData)) {
+      throw new Error("TrackEvent: Invalid data argument");
+    }*/
+    mockedTrackEvent(arg.name, arg.label, arg.data);
+  } else if (method === UserAction.TrackLegacyEvent) {
+    if (!isString(arg.name)) {
+      throw new Error("TrackEvent: Invalid name argument");
+    }
+    if (arg.label && !isString(arg.label)) {
+      throw new Error("TrackEvent: Invalid label argument");
+    }
     if (arg.data && !(typeof arg.data === "object")) {
       throw new Error("TrackEvent: Invalid data argument");
     }
-    mockedTrackEvent(arg.name, arg.label, arg.data);
+    mockedTrackLegacyEvent(arg.name, arg.label, arg.data);
   } else if (method === UserAction.TrackLocation) {
     if (typeof arg !== "object") {
       throw new Error("TrackLocation: Invalid location argument");
@@ -58,24 +71,28 @@ jest.doMock("../src/helpers", () => {
   };
 });
 
-import { UserModule } from "../src/modules/user";
+import { UserModule, BatchUserDataEditor } from "../src/modules/user";
 
 afterEach(() => {
   mockedTrackEvent.mockClear();
+  mockedTrackLegacyEvent.mockClear();
   mockedTrackTransaction.mockClear();
   mockedTrackLocation.mockClear();
 });
 
-test("it tracks events", () => {
+test("it tracks legacy events", () => {
   const userModule = new UserModule();
   userModule.trackEvent("foo");
   userModule.trackEvent("foo_2", "fooBAR");
   userModule.trackEvent("foo_3", "foobar2", { foo: "bar" });
 
-  expect(mockedTrackEvent.mock.calls.length).toBe(3);
+  expect(mockedTrackEvent.mock.calls.length).toBe(2);
+  expect(mockedTrackLegacyEvent.mock.calls.length).toBe(1);
   expect(mockedTrackEvent).toBeCalledWith("foo", undefined, undefined);
   expect(mockedTrackEvent).toBeCalledWith("foo_2", "fooBAR", undefined);
-  expect(mockedTrackEvent).toBeCalledWith("foo_3", "foobar2", { foo: "bar" });
+  expect(mockedTrackLegacyEvent).toBeCalledWith("foo_3", "foobar2", {
+    foo: "bar"
+  });
 });
 
 test("it ignores invalid events", () => {
@@ -93,7 +110,7 @@ test("it ignores invalid events", () => {
 
   console.log = oldConsoleLog;
 
-  expect(mockedTrackEvent.mock.calls.length).toBe(0);
+  expect(mockedTrackLegacyEvent.mock.calls.length).toBe(0);
 });
 
 test("it tracks transactions", () => {
