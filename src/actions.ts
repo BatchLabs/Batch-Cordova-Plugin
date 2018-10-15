@@ -28,6 +28,7 @@ export enum Inbox {
 export enum User {
   Edit = "user.edit",
   TrackEvent = "user.track.event",
+  TrackLegacyEvent = "user.track.legacy_event",
   TrackTransaction = "user.track.transaction",
   TrackLocation = "user.track.location",
   DataDebug = "user.data.debug",
