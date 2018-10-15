@@ -85,7 +85,7 @@ declare namespace BatchSDK {
 
     /**
      * Opt In to Batch SDK Usage.
-     * 
+     *
      * This method will be taken into account on next full application start (full process restart)
      *
      * Only useful if you called batch.optOut() or batch.optOutAndWipeData() or opted out by default in the manifest
@@ -151,6 +151,15 @@ declare namespace BatchSDK {
   }
 
   /**
+   * Deprecated Batch Event Data type (plain javascript object)
+   *
+   * Please use BatchEventData
+   *
+   * @deprecated
+   */
+  type LegacyBatchEventData = { [key: string]: any };
+
+  /**
    * Batch's user module
    */
   interface UserModule {
@@ -178,11 +187,16 @@ declare namespace BatchSDK {
      * @param label The event label (optional). Must be a string.
      * @param data The event data (optional). Must be an object.
      */
-    trackEvent(
-      name: string,
-      label?: string,
-      data?: { [key: string]: any }
-    ): void;
+    trackEvent(name: string, label?: string, data?: BatchEventData): void;
+
+    /**
+     * Track an event. Batch must be started at some point, or events won't be sent to the server.
+     * @param name The event name. Must be a string.
+     * @param label The event label (optional). Must be a string.
+     * @param data The event data (optional). Must be an object.
+     * @deprecated Use trackEvent(name: String, label: String, data: BatchEventData)
+     */
+    trackEvent(name: string, label?: string, data?: LegacyBatchEventData): void;
 
     /**
      * Track a transaction. Batch must be started at some point, or events won't be sent to the server.
@@ -435,6 +449,12 @@ declare namespace BatchSDK {
      */
     source: InboxModule["NotificationSource"];
   }
+
+  /**
+   * Object holding data to be associated to an event
+   * Keys should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
+   */
+  interface BatchEventData {}
 
   /**
    * Android Notification Types enum.
