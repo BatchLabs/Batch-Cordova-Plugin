@@ -9,8 +9,7 @@
     "test": "./node_modules/.bin/jest",
     "emu-android": "cd testapp && ../node_modules/.bin/cordova emulate android",
     "emu-ios": "cd testapp && ../node_modules/.bin/cordova emulate ios",
-    "update-testapp-plugin":
-      "cd testapp && ../node_modules/.bin/cordova plugin rm com.batch.cordova && rm -rf platforms/android/app/src/main/java/com/batch/cordova/android && ../node_modules/.bin/cordova plugin add ../dist --nofetch && rm -f ../dist/package-lock.json"
+    "update-testapp-plugin": "cd testapp && ../node_modules/.bin/cordova plugin rm com.batch.cordova && rm -rf platforms/android/app/src/main/java/com/batch/cordova/android && ../node_modules/.bin/cordova plugin add ../dist --nofetch && rm -f ../dist/package-lock.json"
   },
   "jest": {
     "globals": {
@@ -21,9 +20,24 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
-    "setupFiles": ["./__mocks__/setup.ts"]
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?|jsx?)$",
+    "collectCoverage": false,
+    "coverageDirectory": ".coverage",
+    "collectCoverageFrom": [
+      "src/**/*.{ts,js}",
+      "!src/**/*.d.ts"
+    ],
+    "setupFiles": [
+      "./__mocks__/setup.ts"
+    ]
   },
   "author": "Batch.com",
   "license": "MIT",

@@ -1,6 +1,7 @@
 .DS_Store
 node_modules/
 testapp/
+.coverage/
 
 ### JetBrains template
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion
