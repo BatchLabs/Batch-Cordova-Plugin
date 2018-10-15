@@ -13,7 +13,7 @@ export enum InboxNotificationSource {
   TRANSACTIONAL = 2
 }
 
-export class InboxModule implements InboxModule {
+export class InboxModule implements BatchSDK.InboxModule {
   public NotificationSource: typeof InboxNotificationSource;
 
   constructor() {

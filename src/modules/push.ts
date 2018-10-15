@@ -24,7 +24,7 @@ export enum iOSNotificationTypes {
   ALERT = 1 << 2
 }
 
-export class PushModule implements PushModule {
+export class PushModule implements BatchSDK.PushModule {
   public AndroidNotificationTypes: typeof AndroidNotificationTypes;
   public iOSNotificationTypes: typeof iOSNotificationTypes;
 

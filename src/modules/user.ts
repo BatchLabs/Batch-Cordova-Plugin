@@ -3,7 +3,7 @@ import { isNumber, isString, sendToBridge, writeBatchLog } from "../helpers";
 
 import Consts from "../consts";
 
-export class UserModule implements UserModule {
+export class UserModule implements BatchSDK.UserModule {
   public getInstallationID(resultCallback: (installationID: string) => void) {
     sendToBridge(resultCallback, UserAction.GetInstallationID, null);
   }

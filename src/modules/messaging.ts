@@ -1,7 +1,7 @@
 import { Messaging as MessagingActions } from "../actions";
 import { sendToBridge, writeBatchLog } from "../helpers";
 
-export class MessagingModule implements MessagingModule {
+export class MessagingModule implements BatchSDK.MessagingModule {
   public setDoNotDisturbEnabled(enabled: boolean): void {
     if (typeof enabled !== "boolean") {
       writeBatchLog(
