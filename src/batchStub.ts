@@ -31,11 +31,7 @@ class UserStub implements BatchSDK.UserModule {
     return new BatchUserDataEditorStub();
   }
   public printDebugInformation() {}
-  public trackEvent(
-    name: string,
-    label?: string,
-    data?: { [key: string]: any }
-  ) {}
+  public trackEvent(name: string, label?: string, data?: any) {}
   public trackTransaction(amount: number, data?: { [key: string]: any }) {}
   public trackLocation(location: BatchSDK.Location): void {}
 }
