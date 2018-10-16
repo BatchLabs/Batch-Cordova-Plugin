@@ -33,6 +33,7 @@
 
 #define USER_EDIT                       @"user.edit"
 #define USER_TRACK_EVENT                @"user.track.event"
+#define USER_TRACK_LEGACY_EVENT         @"user.track.legacy_event"
 #define USER_TRACK_TRANSACTION          @"user.track.transaction"
 #define USER_TRACK_LOCATION             @"user.track.location"
 #define USER_DATA_DEBUG                 @"user.data.debug"

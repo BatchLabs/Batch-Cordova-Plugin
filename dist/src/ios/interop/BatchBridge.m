@@ -286,6 +286,11 @@ static dispatch_once_t onceToken;
     {
         [BatchBridge trackEvent:parameters];
     }
+    else if ([action caseInsensitiveCompare:USER_TRACK_LEGACY_EVENT] == NSOrderedSame)
+    {
+        [BatchBridge trackLegacyEvent:parameters];
+    }
+    
     
     else if ([action caseInsensitiveCompare:USER_TRACK_TRANSACTION] == NSOrderedSame)
     {
@@ -577,6 +582,40 @@ static dispatch_once_t onceToken;
     if (!params || [params count]==0)
     {
         [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for user.track.event"];
+    }
+    
+    NSString *name = params[@"name"];
+    NSString *label = params[@"label"];
+    NSDictionary *data = params[@"event_data"];
+    
+    if (![name isKindOfClass:[NSString class]])
+    {
+        [NSException raise:INVALID_PARAMETER format:@"name should be a string"];
+    }
+    
+    if (label && ![label isKindOfClass:[NSString class]])
+    {
+        [NSException raise:INVALID_PARAMETER format:@"label should be a string or null"];
+    }
+    
+    if (data)
+    {
+        if (![data isKindOfClass:[NSDictionary class]])
+        {
+            [NSException raise:INVALID_PARAMETER format:@"event_data should be an object or null"];
+        }
+
+        //todo: add support for BatchEventData
+    }
+    
+    [BatchUser trackEvent:name withLabel:label data:data];
+}
+
++ (void)trackLegacyEvent:(NSDictionary*)params
+{
+    if (!params || [params count]==0)
+    {
+        [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for user.track.legacy_event"];
     }
     
     NSString *name = params[@"name"];
