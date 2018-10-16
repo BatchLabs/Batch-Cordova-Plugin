@@ -34,6 +34,7 @@ public enum Action
     PUSH_SET_ANDROIDNOTIF_TYPES("push.setAndroidNotifTypes"),
 	USER_EDIT("user.edit"),
 	USER_TRACK_EVENT("user.track.event"),
+    USER_TRACK_LEGACY_EVENT("user.track.legacy_event"),
 	USER_TRACK_TRANSACTION("user.track.transaction"),
     USER_TRACK_LOCATION("user.track.location"),
 	USER_DATA_DEBUG("user.data.debug"),

@@ -165,6 +165,9 @@ public class Bridge
 			case USER_TRACK_EVENT:
 				trackEvent(parameters);
 				break;
+			case USER_TRACK_LEGACY_EVENT:
+				trackLegacyEvent(parameters);
+				break;
 			case USER_TRACK_TRANSACTION:
 				trackTransaction(parameters);
 				break;
@@ -549,6 +552,35 @@ public class Bridge
 	}
 
 	private static void trackEvent(Map<String, Object> parameters) throws BridgeException
+	{
+		String name = getTypedParameter(parameters, "name", String.class);
+
+		String label = null;
+		try
+		{
+			label = getTypedParameter(parameters, "label", String.class);
+		}
+		catch (BridgeException e)
+		{
+			// The parameter is optional, disregard the exception
+		}
+
+		Map data = null;
+		try
+		{
+			data = getTypedParameter(parameters, "event_data", Map.class);
+		}
+		catch (BridgeException e)
+		{
+			// The parameter is optional, disregard the exception
+		}
+
+		// TODO implement new batch event data
+		
+		Batch.User.trackEvent(name, label, jsonData);
+	}
+
+	private static void trackLegacyEvent(Map<String, Object> parameters) throws BridgeException
 	{
 		String name = getTypedParameter(parameters, "name", String.class);
 
