@@ -30,10 +30,10 @@ function mockedSendToBridge(
     if (arg.label && !isString(arg.label)) {
       throw new Error("TrackEvent: Invalid label argument");
     }
-    if (arg.event_data && !(arg.event_data instanceof BatchEventData)) {
+    if (arg.event_data && typeof arg.event_data !== "object") {
       throw new Error("TrackEvent: Invalid event_data argument");
     }
-    mockedTrackEvent(arg.name, arg.label, arg.data);
+    mockedTrackEvent(arg.name, arg.label, arg.event_data);
   } else if (method === UserAction.TrackLegacyEvent) {
     if (!isString(arg.name)) {
       throw new Error("TrackLegacyEvent: Invalid name argument");
@@ -78,6 +78,47 @@ afterEach(() => {
   mockedTrackLegacyEvent.mockClear();
   mockedTrackTransaction.mockClear();
   mockedTrackLocation.mockClear();
+});
+
+test("it tracks events", () => {
+  const userModule = new UserModule();
+  userModule.trackEvent("foo");
+  userModule.trackEvent("foo_2", "fooBAR");
+
+  const eventData = new userModule.EventData();
+  eventData
+    .addTag("foo")
+    .addTag("BAR")
+    .put("foo", "bar")
+    .put("bool", true)
+    .put("float", 2.1)
+    .put("int", 2);
+  userModule.trackEvent("foo_3", "foobar2", eventData);
+
+  expect(mockedTrackEvent.mock.calls.length).toBe(3);
+  expect(mockedTrackEvent).toBeCalledWith("foo", undefined, undefined);
+  expect(mockedTrackEvent).toBeCalledWith("foo_2", "fooBAR", undefined);
+  expect(mockedTrackEvent).toBeCalledWith("foo_3", "foobar2", {
+    attributes: {
+      bool: {
+        type: "b",
+        value: true
+      },
+      float: {
+        type: "f",
+        value: 2.1
+      },
+      foo: {
+        type: "s",
+        value: "bar"
+      },
+      int: {
+        type: "i",
+        value: 2
+      }
+    },
+    tags: ["foo", "bar"]
+  });
 });
 
 test("it tracks legacy events", () => {
