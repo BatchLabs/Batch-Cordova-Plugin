@@ -37,13 +37,13 @@ function mockedSendToBridge(
     mockedTrackEvent(arg.name, arg.label, arg.data);
   } else if (method === UserAction.TrackLegacyEvent) {
     if (!isString(arg.name)) {
-      throw new Error("TrackEvent: Invalid name argument");
+      throw new Error("TrackLegacyEvent: Invalid name argument");
     }
     if (arg.label && !isString(arg.label)) {
-      throw new Error("TrackEvent: Invalid label argument");
+      throw new Error("TrackLegacyEvent: Invalid label argument");
     }
     if (arg.data && !(typeof arg.data === "object")) {
-      throw new Error("TrackEvent: Invalid data argument");
+      throw new Error("TrackLegacyEvent: Invalid data argument");
     }
     mockedTrackLegacyEvent(arg.name, arg.label, arg.data);
   } else if (method === UserAction.TrackLocation) {
