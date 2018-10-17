@@ -11,7 +11,7 @@ jest.doMock("../src/helpers", () => {
   };
 });
 
-import { BatchUserDataEditor } from "../src/modules/user";
+import { BatchUserDataEditor } from "../src/modules/user/userDataEditor";
 
 beforeAll(() => {
   mockSendToBridge.mockClear();
