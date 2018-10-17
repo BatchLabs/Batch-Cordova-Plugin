@@ -30,10 +30,9 @@ function mockedSendToBridge(
     if (arg.label && !isString(arg.label)) {
       throw new Error("TrackEvent: Invalid label argument");
     }
-    // TODO: uncomment this when BatchEventData has been implemented
-    /*if (arg.data && !(typeof arg.data instanceof BatchEventData)) {
-      throw new Error("TrackEvent: Invalid data argument");
-    }*/
+    if (arg.event_data && !(arg.event_data instanceof BatchEventData)) {
+      throw new Error("TrackEvent: Invalid event_data argument");
+    }
     mockedTrackEvent(arg.name, arg.label, arg.data);
   } else if (method === UserAction.TrackLegacyEvent) {
     if (!isString(arg.name)) {
@@ -71,7 +70,8 @@ jest.doMock("../src/helpers", () => {
   };
 });
 
-import { UserModule, BatchUserDataEditor } from "../src/modules/user";
+import { UserModule } from "../src/modules/user";
+import { BatchEventData } from "../src/modules/user/eventData";
 
 afterEach(() => {
   mockedTrackEvent.mockClear();
