@@ -98,11 +98,10 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
       // It's a date, yay
       operationData.value = value.getTime();
       operationData.type = "date";
+    } else if (typeof value === "number" && isNaN(value)) {
+      writeBatchLog(false, "BatchUserDataEditor - Value cannot be NaN");
+      return this;
     } else if (isNumber(value)) {
-      if (isNaN(value)) {
-        writeBatchLog(false, "BatchUserDataEditor - Value cannot be NaN");
-        return this;
-      }
       operationData.type = (value as number) % 1 === 0 ? "integer" : "float";
     } else if (isString(value)) {
       if (
