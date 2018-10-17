@@ -7,7 +7,7 @@ interface IOperation {
   [key: string]: any;
 }
 
-export class BatchUserDataEditor implements BatchUserDataEditor {
+export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
   private _operationQueue: IOperation[]; // tslint:disable-line
 
   constructor(fromSdk: boolean) {
