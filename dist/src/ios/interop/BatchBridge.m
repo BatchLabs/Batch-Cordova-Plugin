@@ -598,17 +598,80 @@ static dispatch_once_t onceToken;
         [NSException raise:INVALID_PARAMETER format:@"label should be a string or null"];
     }
     
+    BatchEventData *batchEventData = null;
+
     if (data)
     {
+        batchEventData = [BatchEventData new];
+        
         if (![data isKindOfClass:[NSDictionary class]])
         {
             [NSException raise:INVALID_PARAMETER format:@"event_data should be an object or null"];
         }
 
-        //todo: add support for BatchEventData
+        NSArray<NSString*>* tags = data[@"tags"];
+        NSDictionary<NSString*, NSDictionary*>* attributes = data[@"attributes"];
+
+        if (![tags isKindOfClass:[NSArray class]])
+        {
+            [NSException raise:INVALID_PARAMETER format:@"event_data.tags should be an array"];
+        }
+        if (![attributes isKindOfClass:[NSDictionary class]])
+        {
+            [NSException raise:INVALID_PARAMETER format:@"event_data.attributes should be a dictionnary"];
+        }
+
+        for (NSString *tag in tags)
+        {
+            if (![tag isKindOfClass:[NSString class]])
+            {
+                [NSException raise:INVALID_PARAMETER format:@"event_data.tag childrens should all be strings"];
+            }
+            [batchEventData addTag:tag];
+        }
+
+        for (NSString *key in attributes.allKeys)
+        {
+            NSDictionary *typedAttribute = attributes[key]:
+            if (![typedAttribute isKindOfClass:[NSDictionary class]])
+            {
+                [NSException raise:INVALID_PARAMETER format:@"event_data.attributes childrens should all be String/Dictionary tuples"];
+            }
+
+            NSString *type = typedAttribute[@"type"];
+            NSObject *value = typedAttribute[@"value"];
+            
+            if ([@"s" isEqualToString:type]) {
+                if (![value isKindOfClass:[NSString class]])
+                {
+                    [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: expected string value, got something else"];
+                }
+                [batchEventData putString:(NSString*)value forKey:key];
+            } else if ([@"b" isEqualToString:type]) {
+                if (![value isKindOfClass:[NSNumber class]])
+                {
+                    [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: expected number (boolean) value, got something else"];
+                }
+                [batchEventData putBool:[(NSNumber*)value boolValue] forKey:key];
+            } else if ([@"i" isEqualToString:type]) {
+                if (![value isKindOfClass:[NSNumber class]])
+                {
+                    [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: expected number (integer) value, got something else"];
+                }
+                [batchEventData putInteger:[(NSNumber*)value integerValue] forKey:key];
+            } else if ([@"f" isEqualToString:type]) {
+                if (![value isKindOfClass:[NSNumber class]])
+                {
+                    [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: expected number (float) value, got something else"];
+                }
+                [batchEventData putDouble:[(NSNumber*)value doubleValue] forKey:key];
+            } else {
+                [NSException raise:INVALID_PARAMETER format:@"Unknown event_data.attributes type"];
+            }
+        }
     }
     
-    [BatchUser trackEvent:name withLabel:label data:data];
+    [BatchUser trackEvent:name withLabel:label associatedData:batchEventData];
 }
 
 + (void)trackLegacyEvent:(NSDictionary*)params
