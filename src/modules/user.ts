@@ -2,6 +2,7 @@ import { User as UserAction, UserDataOperation } from "../actions";
 import { isNumber, isString, sendToBridge, writeBatchLog } from "../helpers";
 
 import Consts from "../consts";
+import { BatchEventData } from "./user/eventData";
 import { BatchUserDataEditor } from "./user/userDataEditor";
 
 export class UserModule implements BatchSDK.UserModule {
@@ -60,15 +61,15 @@ export class UserModule implements BatchSDK.UserModule {
       return;
     }
 
-    // Legacy codepath
-    // TODO, the === "object" check might not work for the new object
-    if (typeof data === "object") {
+    if (data instanceof BatchEventData) {
+      parameters.event_data = data._toInternalRepresentation();
+    } else if (typeof data === "object") {
+      // Legacy codepath
+      // TODO, the === "object" check might not work for the new object
       parameters.data = data;
       sendToBridge(null, UserAction.TrackLegacyEvent, [parameters]);
       return;
     }
-
-    // TODO: implement new event data class
 
     sendToBridge(null, UserAction.TrackEvent, [parameters]);
 
