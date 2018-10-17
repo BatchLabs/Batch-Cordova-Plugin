@@ -6,6 +6,12 @@ import { BatchEventData } from "./user/eventData";
 import { BatchUserDataEditor } from "./user/userDataEditor";
 
 export class UserModule implements BatchSDK.UserModule {
+  public EventData: typeof BatchSDK.BatchEventData;
+
+  constructor() {
+    this.EventData = BatchEventData;
+  }
+
   public getInstallationID(resultCallback: (installationID: string) => void) {
     sendToBridge(resultCallback, UserAction.GetInstallationID, null);
   }
