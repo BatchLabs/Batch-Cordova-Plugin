@@ -454,7 +454,44 @@ declare namespace BatchSDK {
    * Object holding data to be associated to an event
    * Keys should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
    */
-  interface BatchEventData {}
+  interface BatchEventData {
+    /**
+     * Add a tag
+     *
+     * @param tag Tag to add. Can't be longer than 64 characters, and can't be empty or null. For better results, you should trim/lowercase your strings, and use slugs when possible.
+     * @return Same BatchEventData instance, for chaining
+     */
+    addTag(tag: string): BatchEventData;
+
+    /**
+     * Add a string attribute for the specified key
+     *
+     * @param key   Attribute key. Should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
+     * @param value String value to add. Can't be longer than 64 characters, and can't be empty or null. For better results, you should trim/lowercase your strings, and use slugs when possible.
+     * @return Same BatchEventData instance, for chaining
+     */
+    put(key: string, value: string): BatchEventData;
+
+    /**
+     * Add a number attribute for the specified key.
+     *
+     * Note that numbers with a decimal part might be handled differently. You might want to round the value before sending it to the SDK.
+     *
+     * @param key   Attribute key. Should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
+     * @param value Number value to add.
+     * @return Same BatchEventData instance, for chaining
+     */
+    put(key: string, value: number): BatchEventData;
+
+    /**
+     * Add a boolean attribute for the specified key
+     *
+     * @param key   Attribute key. Should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
+     * @param value Boolean value to add.
+     * @return Same BatchEventData instance, for chaining
+     */
+    put(key: string, value: boolean): BatchEventData;
+  }
 
   /**
    * Android Notification Types enum.
