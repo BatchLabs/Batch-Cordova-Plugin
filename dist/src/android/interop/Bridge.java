@@ -6,6 +6,7 @@ import android.location.Location;
 import android.util.Log;
 
 import com.batch.android.Batch;
+import com.batch.android.BatchEventData;
 import com.batch.android.BatchMessage;
 import com.batch.android.BatchUserDataEditor;
 import com.batch.android.BatchUserProfile;
@@ -575,9 +576,47 @@ public class Bridge
 			// The parameter is optional, disregard the exception
 		}
 
-		// TODO implement new batch event data
+		BatchEventData batchEventData = null;
+
+		if (data != null)
+		{
+			batchEventData = new BatchEventData();
+			List tags = getTypedParameter(data, "tags", List.class);
+			Map<String, Object> attributes = getTypedParameter(data, "attributes", Map.class);
+
+			for (Object tag : tags) {
+				if (tag instanceof String) {
+					batchEventData.addTag(tag);
+				}
+			}
+
+			for (Map.Entry<String, Object> attributeEntry : attributes.entrySet()) {
+				Object entryKey = entry.getKey();
+				Object entryValue = entry.getValue();
+				if (!(entryKey instanceof String)) {
+					continue;
+				}
+				if (!(entryValue instanceof Map)) {
+					continue;
+				}
+				Map<String, Object> entryMapValue = (Map<String, Object>)entryValue;
+				String type = getTypedParameter(entryMapValue, "type", String.class);
+				
+				if ("s".equals(type)) {
+					batchEventData.put(getTypedParameter(entryMapValue, "value", String.class));
+				} else if ("b".equals(type)) {
+					batchEventData.put(getTypedParameter(entryMapValue, "value", Number.class).doubleValue());
+				} else if ("i".equals(type)) {
+					batchEventData.put(getTypedParameter(entryMapValue, "value", Number.class).longValue());
+				} else if ("f".equals(type)) {
+					batchEventData.put(getTypedParameter(entryMapValue, "value", Number.class).doubleValue());
+				} else {
+					throw new BridgeException(INVALID_PARAMETER + " : Unknown event_data.attributes type");
+				}
+			}
+		}
 		
-		Batch.User.trackEvent(name, label, jsonData);
+		Batch.User.trackEvent(name, label, batchEventData);
 	}
 
 	private static void trackLegacyEvent(Map<String, Object> parameters) throws BridgeException
