@@ -26,6 +26,12 @@ class PushStub implements BatchSDK.PushModule {
 }
 
 class UserStub implements BatchSDK.UserModule {
+  public eventData: typeof BatchSDK.BatchEventData;
+
+  constructor() {
+    this.eventData = BatchEventDataStub;
+  }
+
   public getInstallationID(resultCallback: (installationID: string) => void) {}
   public getEditor(): BatchSDK.BatchUserDataEditor {
     return new BatchUserDataEditorStub();
@@ -57,6 +63,16 @@ class InboxStub implements BatchSDK.InboxModule {
       notifications?: BatchSDK.InboxNotification[]
     ) => void
   ) {}
+}
+
+class BatchEventDataStub implements BatchSDK.BatchEventData {
+  public addTag(tag: string): BatchSDK.BatchEventData {
+    return this;
+  }
+
+  public put(key: any, value: string | number | boolean) {
+    return this;
+  }
 }
 
 class BatchUserDataEditorStub implements BatchSDK.BatchUserDataEditor {
