@@ -599,7 +599,7 @@ static dispatch_once_t onceToken;
         [NSException raise:INVALID_PARAMETER format:@"label should be a string or null"];
     }
     
-    BatchEventData *batchEventData = null;
+    BatchEventData *batchEventData = nil;
 
     if (data)
     {
