@@ -85,7 +85,7 @@ test("it tracks events", () => {
   userModule.trackEvent("foo");
   userModule.trackEvent("foo_2", "fooBAR");
 
-  const eventData = new userModule.EventData();
+  const eventData = new userModule.eventData();
   eventData
     .addTag("foo")
     .addTag("BAR")

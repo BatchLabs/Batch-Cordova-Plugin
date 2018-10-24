@@ -6,10 +6,10 @@ import { BatchEventData } from "./user/eventData";
 import { BatchUserDataEditor } from "./user/userDataEditor";
 
 export class UserModule implements BatchSDK.UserModule {
-  public EventData: typeof BatchSDK.BatchEventData;
+  public eventData: typeof BatchSDK.BatchEventData;
 
   constructor() {
-    this.EventData = BatchEventData;
+    this.eventData = BatchEventData;
   }
 
   public getInstallationID(resultCallback: (installationID: string) => void) {
