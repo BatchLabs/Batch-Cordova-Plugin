@@ -586,30 +586,31 @@ public class Bridge
 
 			for (Object tag : tags) {
 				if (tag instanceof String) {
-					batchEventData.addTag(tag);
+					batchEventData.addTag((String)tag);
 				}
 			}
 
 			for (Map.Entry<String, Object> attributeEntry : attributes.entrySet()) {
-				Object entryKey = entry.getKey();
-				Object entryValue = entry.getValue();
+				Object entryKey = attributeEntry.getKey();
+				Object entryValue = attributeEntry.getValue();
 				if (!(entryKey instanceof String)) {
 					continue;
 				}
 				if (!(entryValue instanceof Map)) {
 					continue;
 				}
+				String entryStringKey = (String)entryKey;
 				Map<String, Object> entryMapValue = (Map<String, Object>)entryValue;
 				String type = getTypedParameter(entryMapValue, "type", String.class);
 				
 				if ("s".equals(type)) {
-					batchEventData.put(getTypedParameter(entryMapValue, "value", String.class));
+					batchEventData.put(entryStringKey, getTypedParameter(entryMapValue, "value", String.class));
 				} else if ("b".equals(type)) {
-					batchEventData.put(getTypedParameter(entryMapValue, "value", Number.class).doubleValue());
+					batchEventData.put(entryStringKey, getTypedParameter(entryMapValue, "value", Number.class).doubleValue());
 				} else if ("i".equals(type)) {
-					batchEventData.put(getTypedParameter(entryMapValue, "value", Number.class).longValue());
+					batchEventData.put(entryStringKey, getTypedParameter(entryMapValue, "value", Number.class).longValue());
 				} else if ("f".equals(type)) {
-					batchEventData.put(getTypedParameter(entryMapValue, "value", Number.class).doubleValue());
+					batchEventData.put(entryStringKey, getTypedParameter(entryMapValue, "value", Number.class).doubleValue());
 				} else {
 					throw new BridgeException(INVALID_PARAMETER + " : Unknown event_data.attributes type");
 				}
