@@ -12,6 +12,7 @@
 #import <CoreLocation/CoreLocation.h>
 
 #import <Batch/Batch.h>
+#import <Batch/BatchUser.h>
 #import <Batch/BatchUserProfile.h>
 #import <Batch/BatchPush.h>
 
@@ -632,7 +633,7 @@ static dispatch_once_t onceToken;
 
         for (NSString *key in attributes.allKeys)
         {
-            NSDictionary *typedAttribute = attributes[key]:
+            NSDictionary *typedAttribute = attributes[key];
             if (![typedAttribute isKindOfClass:[NSDictionary class]])
             {
                 [NSException raise:INVALID_PARAMETER format:@"event_data.attributes childrens should all be String/Dictionary tuples"];
