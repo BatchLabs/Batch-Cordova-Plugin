@@ -606,7 +606,7 @@ public class Bridge
 				if ("s".equals(type)) {
 					batchEventData.put(entryStringKey, getTypedParameter(entryMapValue, "value", String.class));
 				} else if ("b".equals(type)) {
-					batchEventData.put(entryStringKey, getTypedParameter(entryMapValue, "value", Number.class).doubleValue());
+					batchEventData.put(entryStringKey, getTypedParameter(entryMapValue, "value", Boolean.class));
 				} else if ("i".equals(type)) {
 					batchEventData.put(entryStringKey, getTypedParameter(entryMapValue, "value", Number.class).longValue());
 				} else if ("f".equals(type)) {
