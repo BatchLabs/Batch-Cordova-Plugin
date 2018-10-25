@@ -1,5 +1,21 @@
 Batch Cordova Plugin
 
+## 2.1.0
+
+**Events**
+
+Event data support has been overhauled. As a result:
+
+- Introduced `BatchEventData`. Use this class to attach attributes and tags to an event. See this class' documentation (available in index.d.ts) for more information about limits.
+- `batch.user.trackEvent(name: string, label: string, data: {})` has been deprecated
+
+* Calls to this method will log deprecation warnings in the console
+* Legacy data (plain JS object) will be converted to `BatchEventData`. Same data format restrictions apply: Any key/value entry that can't be converted will be ignored, and logged. Tags are not supported.
+
+- Introduced `Batch.User.trackEvent(name: string, label: string, data: BatchEventData)`, replacing the deprecated method.
+
+More info in the [event documentation](/doc/cordova/custom-data/custom-events.html#_event-data).
+
 ## 2.0.6
 
 _Android_
