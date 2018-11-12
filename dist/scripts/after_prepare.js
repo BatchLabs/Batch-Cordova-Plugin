@@ -65,11 +65,11 @@ function extractGoogleServicesConfig(cordovaContext) {
       stringsXML =
         stringsXML + makeAndroidStringEntry("google_api_key", apiKey);
       stringsXML = stringsXML + makeAndroidStringEntry("google_app_id", appId);
+      stringsXML =
+        stringsXML + makeAndroidStringEntry("gcm_defaultSenderId", senderId);
+      stringsXML = stringsXML + makeAndroidStringEntry("project_id", projectId);
     }
 
-    stringsXML =
-      stringsXML + makeAndroidStringEntry("gcm_defaultSenderId", senderId);
-    stringsXML = stringsXML + makeAndroidStringEntry("project_id", projectId);
     stringsXML = stringsXML + "\n</resources>";
 
     fs.writeFileSync(stringsPath, stringsXML);
