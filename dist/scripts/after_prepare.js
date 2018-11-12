@@ -62,12 +62,11 @@ function extractGoogleServicesConfig(cordovaContext) {
     var stringsXML = "<?xml version='1.0' encoding='utf-8'?>\n<resources>";
 
     if (!compatMode) {
-      stringsXML =
-        stringsXML + makeAndroidStringEntry("google_api_key", apiKey);
-      stringsXML = stringsXML + makeAndroidStringEntry("google_app_id", appId);
-      stringsXML =
-        stringsXML + makeAndroidStringEntry("gcm_defaultSenderId", senderId);
-      stringsXML = stringsXML + makeAndroidStringEntry("project_id", projectId);
+      stringsXML +=
+        makeAndroidStringEntry("google_api_key", apiKey) +
+        makeAndroidStringEntry("google_app_id", appId) +
+        makeAndroidStringEntry("gcm_defaultSenderId", senderId) +
+        makeAndroidStringEntry("project_id", projectId);
     }
 
     stringsXML = stringsXML + "\n</resources>";
