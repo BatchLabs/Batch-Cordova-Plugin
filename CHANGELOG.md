@@ -1,5 +1,11 @@
 Batch Cordova Plugin
 
+## 2.2.0
+
+This update adresses a compatibility issue with `cordova-plugin-firebase`, that added conflicting ressources to the APK.
+
+**Important note:** This brings the minimul `cordova-plugin-firebase` version Batch is compatible with to 2.0.4. This _can_ be a breaking change.
+
 ## 2.1.0
 
 **Events**

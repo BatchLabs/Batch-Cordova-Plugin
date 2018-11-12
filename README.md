@@ -14,15 +14,17 @@ A test application project is _not_ provided.
 
 This plugin is compatible with:
 
-* cordova 8.0.0+
-* cordova-android 7.0.0+
-* cordova-ios 4.5.0+
+- cordova 8.0.0+
+- cordova-android 7.0.0+
+- cordova-ios 4.5.0+
 
 Subsequent major Cordova and Cordova platform versions are _not_ supported until told otherwise.
 
 If you use an earlier version of Cordova, please use the 1.7.4 version of this plugin.
 
 > Note: Batch isn't supported in the browser. It will only work correctly when running on Android or iOS.
+
+Projects that include `cordova-plugin-firebase` are compatible with this plugin, provided that they use `cordova-plugin-firebase` v2.0.4 or higher.
 
 ## How do I install the plugin?
 
@@ -46,15 +48,15 @@ This section will cover the location of the various files and how to build/test 
 This folder is actually the plugin's source and builder, but not the plugin itself.  
 Here is a quick overview of the different folders:
 
-* `__mocks__`: jest global mocks
-* `__tests__`: jest unit tests
-* `dist`: Plugin's actual directory. This is the one published to npm, and the one you will want to add to your project once modified.
-  * `dist/scripts`: After-prepare script that pulls Firebase keys from `google-services.json` on Android
-  * `dist/src/android`: Android native component
-  * `dist/src/ios`: iOS native component
-  * `dist/www`: Built plugin javascript. Do not edit this directly.
-* `src`: Plugin's source.
-* `types`: Plugin's type definition. This is where the plugin's public API is defined. Plugin's implementations (mobile and stub) both implement the interfaces defined in this folder.
+- `__mocks__`: jest global mocks
+- `__tests__`: jest unit tests
+- `dist`: Plugin's actual directory. This is the one published to npm, and the one you will want to add to your project once modified.
+  - `dist/scripts`: After-prepare script that pulls Firebase keys from `google-services.json` on Android
+  - `dist/src/android`: Android native component
+  - `dist/src/ios`: iOS native component
+  - `dist/www`: Built plugin javascript. Do not edit this directly.
+- `src`: Plugin's source.
+- `types`: Plugin's type definition. This is where the plugin's public API is defined. Plugin's implementations (mobile and stub) both implement the interfaces defined in this folder.
 
 ## How it works
 
@@ -62,8 +64,8 @@ The plugin's public API is defined by Typescript type definitions in `types`.
 It is then implemented, in Typescript of course, in the src folder.  
 Currently, two implementations of the SDK exist:
 
-* Native, used on Android/iOS: this one is the real deal.
-* Stub, used on unsupported platforms: as the name implies, it does absolutely nothing but prevents your code from throwing errors.
+- Native, used on Android/iOS: this one is the real deal.
+- Stub, used on unsupported platforms: as the name implies, it does absolutely nothing but prevents your code from throwing errors.
 
 The plugin converts Javascript API calls to a JSON-based message format unifying both platforms, and then forwards it to the native part using cordova APIs.
 
@@ -106,8 +108,8 @@ That's it! Happy hacking!
 
 Updating the native SDKs can be done by simply using the officially release native ones:
 
-* Android: The plugin uses gradle. Simply open `dist/src/android/batch.gradle` and tweak the `'com.batch.android:batch-sdk` version line.
-* iOS: The plugin ships the iOS framework. Open `dist/src/ios/` and replace `Batch.framework` with [the one you've downloaded](https://batch.com/download).
+- Android: The plugin uses gradle. Simply open `dist/src/android/batch.gradle` and tweak the `'com.batch.android:batch-sdk` version line.
+- iOS: The plugin ships the iOS framework. Open `dist/src/ios/` and replace `Batch.framework` with [the one you've downloaded](https://batch.com/download).
 
 ## Applying the changes to a local project
 
