@@ -129,7 +129,9 @@ class BatchStub implements BatchSDK.Batch {
   public off(event?: string) {}
   public setConfig(config: BatchSDK.Config) {}
   public start() {
-    console.log("Batch is not supported in this environement");
+    if (console && console.log) {
+      console.log("Batch is not supported in this environement");
+    }
   }
   public optIn() {}
   public optOut() {}

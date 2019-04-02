@@ -4,9 +4,13 @@ import { Consts } from "./consts";
 export function writeBatchLog(debug: boolean, ...message: any[]) {
   const args = ["[Batch]"].concat(Array.prototype.slice.call(arguments, 1));
   if (Consts.DevelopmentMode === true && debug === true) {
-    console.debug.apply(console, args);
+    if (console && console.debug) {
+      console.debug.apply(console, args);
+    }
   } else if (debug === false) {
-    console.log.apply(console, args);
+    if (console && console.log) {
+      console.log.apply(console, args);
+    }
   }
 }
 

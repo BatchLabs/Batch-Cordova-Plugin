@@ -126,7 +126,9 @@ export class CallbackHandler {
         break;
       case CallbackAction.Log:
         // Don't use writeBatchLog on purpose
-        console.log(callbackData.message); // tslint:disable-line
+        if (console && console.log) {
+          console.log(callbackData.message); // tslint:disable-line
+        }
         break;
       case CallbackAction.Eval:
         // This case is because Cordova Android's evaljs is deprecated.
