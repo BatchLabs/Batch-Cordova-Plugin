@@ -4,6 +4,8 @@ Batch Cordova Plugin
 
 - Added a way to disable Firebase configuration extraction, using a variable:  
   Use `cordova plugin add com.batch.cordova --variable BATCHSDK_ENABLE_ANDROID_BUILTIN_FIREBASE_CONFIG=false` if you run into issues when using this plugin.
+- Fix an issue where trackTransaction did not work with integers on Android
+- Fix an issue where the SDK would fail if a developer removed console.log or console.debug
 
 ## 2.2.0
 
