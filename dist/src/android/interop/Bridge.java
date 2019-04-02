@@ -656,7 +656,7 @@ public class Bridge
 
 	private static void trackTransaction(Map<String, Object> parameters) throws BridgeException
 	{
-		Double amount = getTypedParameter(parameters, "amount", Double.class);
+		double amount = getTypedParameter(parameters, "amount", Number.class).doubleValue();
 
 		Map data = null;
 		try
