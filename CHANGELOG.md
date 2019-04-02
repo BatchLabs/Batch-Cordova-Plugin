@@ -1,5 +1,10 @@
 Batch Cordova Plugin
 
+## 2.3.0
+
+- Added a way to disable Firebase configuration extraction, using a variable:  
+  Use `cordova plugin add com.batch.cordova --variable BATCHSDK_ENABLE_ANDROID_BUILTIN_FIREBASE_CONFIG=false` if you run into issues when using this plugin.
+
 ## 2.2.0
 
 This update adresses a compatibility issue with `cordova-plugin-firebase`, that added conflicting ressources to the APK.
