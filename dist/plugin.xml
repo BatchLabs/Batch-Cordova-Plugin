@@ -17,6 +17,8 @@
         <clobbers target="batch" />
     </js-module>
 
+    <preference name="BATCHSDK_ENABLE_ANDROID_BUILTIN_FIREBASE_CONFIG" default="true"/>
+    
     <platform name="android">
         <config-file target="config.xml" parent="/*">
             <feature name="Batch">

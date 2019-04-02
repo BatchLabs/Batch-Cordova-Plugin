@@ -38,6 +38,15 @@ A `batch` object will be present on the window. Its methods and modules are docu
 
 Our [official documentation](https://batch.com/doc/cordova/sdk-integration/initial-setup.html) will walk you through the integration process, describing how to perform a successful integration of both required and optional plugin features.
 
+### I'm having build errors due to duplicate strings
+
+It might be that another Firebase plugin is already extracting the keys from the google-services.json file, which Batch already does.  
+To disable this, set the `BATCHSDK_ENABLE_ANDROID_BUILTIN_FIREBASE_CONFIG` variable to `false` (case sensitive: `FALSE` will not work):
+
+```
+cordova plugin add com.batch.cordova --variable BATCHSDK_ENABLE_ANDROID_BUILTIN_FIREBASE_CONFIG=false
+```
+
 # Development
 
 If you're reading this, you're probably interested in how to cha
