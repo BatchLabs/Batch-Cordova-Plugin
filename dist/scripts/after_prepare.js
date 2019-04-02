@@ -27,8 +27,8 @@ function makeAndroidStringEntry(key, value) {
 }
 
 function extractGoogleServicesConfig(cordovaContext) {
-  const fs = cordovaContext.requireCordovaModule("fs");
-  const path = cordovaContext.requireCordovaModule("path");
+  const fs = require("fs");
+  const path = require("path");
 
   const projectRoot = cordovaContext.opts.projectRoot;
   const baseFolder = path.join(projectRoot, "platforms/android");
