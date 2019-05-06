@@ -1,5 +1,9 @@
 Batch Cordova Plugin
 
+## 2.3.1
+
+- Lock the native SDK version to 1.13 due to complications regarding Cordova and the Java 8 sourcelevel
+
 ## 2.3.0
 
 - Added a way to disable Firebase configuration extraction, using a variable:  
