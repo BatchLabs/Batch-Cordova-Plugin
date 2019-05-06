@@ -5,7 +5,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.batch.android:batch-sdk:1.+'
+    implementation 'com.batch.android:batch-sdk:1.13.0'
     implementation "com.google.android.gms:play-services-ads-identifier:+"
     implementation "com.google.firebase:firebase-core:+"
     implementation "com.google.firebase:firebase-messaging:+"
