@@ -1,6 +1,6 @@
 Batch Cordova Plugin
 
-## 2.3.2
+## 2.3.2/2.3.3
 
 - Hotfix: Lock the firebase versions to ones that work without androidx or compileSdkVersion 28  
   If your app requires newer firebase dependencies, please stick to 2.3.1 in the meantime  

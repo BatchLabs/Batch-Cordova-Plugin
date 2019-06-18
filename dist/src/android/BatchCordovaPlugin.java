@@ -39,7 +39,7 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
 
     private static final String PLUGIN_VERSION_ENVIRONEMENT_VAR = "batch.plugin.version";
 
-    private static final String PLUGIN_VERSION = "Cordova/2.3.2";
+    private static final String PLUGIN_VERSION = "Cordova/2.3.3";
 
     /**
      * Key used to add extra to an intent to prevent it to be used more than once to compute opens
