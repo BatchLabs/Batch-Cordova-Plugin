@@ -6,9 +6,9 @@ repositories {
 
 dependencies {
     implementation 'com.batch.android:batch-sdk:1.13.0'
-    implementation "com.google.android.gms:play-services-ads-identifier:+"
-    implementation "com.google.firebase:firebase-core:+"
-    implementation "com.google.firebase:firebase-messaging:+"
+    implementation "com.google.android.gms:play-services-ads-identifier:16.0.0"
+    implementation "com.google.firebase:firebase-core:16.0.7"
+    implementation "com.google.firebase:firebase-messaging:17.0.4"
     implementation "com.android.support:support-v4:$project.defaultTargetSdkVersion.+"
     implementation "com.android.support:support-compat:$project.defaultTargetSdkVersion.+"
     implementation "com.android.support:appcompat-v7:$project.defaultTargetSdkVersion.+"
