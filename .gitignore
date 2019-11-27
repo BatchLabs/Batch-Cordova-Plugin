@@ -2,7 +2,7 @@
 node_modules/
 testapp/
 .coverage/
-
+.idea
 ### JetBrains template
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion
 
