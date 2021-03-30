@@ -10,7 +10,7 @@ import { isNumber, isString, sendToBridge } from "../helpers";
 export enum InboxNotificationSource {
   UNKNOWN = 0,
   CAMPAIGN = 1,
-  TRANSACTIONAL = 2
+  TRANSACTIONAL = 2,
 }
 
 export class InboxModule implements BatchSDK.InboxModule {
@@ -27,7 +27,7 @@ export class InboxModule implements BatchSDK.InboxModule {
     ) => void
   ): void {
     sendToBridge(
-      res => {
+      (res) => {
         this.handleFetchCallback(res, callback);
       },
       InboxActions.Fetch,
@@ -44,7 +44,7 @@ export class InboxModule implements BatchSDK.InboxModule {
     ) => void
   ): void {
     sendToBridge(
-      res => {
+      (res) => {
         this.handleFetchCallback(res, callback);
       },
       InboxActions.FetchForUserID,
@@ -85,7 +85,7 @@ export class InboxModule implements BatchSDK.InboxModule {
     }
 
     const notifications: BatchSDK.InboxNotification[] = [];
-    rawNotifications.forEach(rawNotif => {
+    rawNotifications.forEach((rawNotif) => {
       try {
         notifications.push(this.parseBridgeNotification(rawNotif));
       } catch (e) {
@@ -139,7 +139,7 @@ export class InboxModule implements BatchSDK.InboxModule {
       identifier,
       isUnread,
       payload: {},
-      source
+      source,
     };
 
     if (isString(notif.ios_attachment_url)) {

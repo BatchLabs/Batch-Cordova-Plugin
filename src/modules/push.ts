@@ -11,7 +11,7 @@ export enum AndroidNotificationTypes {
   SOUND = 1 << 0,
   VIBRATE = 1 << 1,
   LIGHTS = 1 << 2,
-  ALERT = 1 << 3
+  ALERT = 1 << 3,
 }
 
 /**
@@ -21,7 +21,7 @@ export enum iOSNotificationTypes {
   NONE = 0,
   BADGE = 1 << 0,
   SOUND = 1 << 1,
-  ALERT = 1 << 2
+  ALERT = 1 << 2,
 }
 
 export class PushModule implements BatchSDK.PushModule {

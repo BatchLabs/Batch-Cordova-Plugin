@@ -147,8 +147,8 @@ export class UserModule implements BatchSDK.UserModule {
         date: location.date ? location.date.getTime() : undefined,
         latitude: location.latitude,
         longitude: location.longitude,
-        precision: location.precision
-      }
+        precision: location.precision,
+      },
     ]);
   }
 }
