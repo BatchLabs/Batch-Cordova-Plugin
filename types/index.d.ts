@@ -233,18 +233,14 @@ declare namespace BatchSDK {
      * Example : setAndroidNotificationTypes(batch.push.AndroidNotificationTypes.ALERT | batch.push.AndroidNotificationTypes.SOUND)
      * @param notifTypes Any combined value of the AndroidNotificationTypes enum.
      */
-    setAndroidNotificationTypes(
-      notifTypes: PushModule["AndroidNotificationTypes"]
-    ): void;
+    setAndroidNotificationTypes(notifTypes: AndroidNotificationTypes): void;
 
     /**
      * Change the used remote notification types on iOS. (Ex: sound, vibrate, alert)
      * Example : setiOSNotificationTypes(batch.push.iOSNotificationTypes.ALERT | batch.push.iOSNotificationTypes.SOUND)
      * @param notifTypes Any combined value of the AndroidNotificationTypes enum.
      */
-    setiOSNotificationTypes(
-      notifTypes: PushModule["iOSNotificationTypes"]
-    ): void;
+    setiOSNotificationTypes(notifTypes: iOSNotificationTypes): void;
 
     /**
      * Clear the app badge on iOS. No effect on Android.

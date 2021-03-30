@@ -37,7 +37,9 @@ export class PushModule implements BatchSDK.PushModule {
     sendToBridge(null, PushActions.Register, null);
   }
 
-  public setAndroidNotificationTypes(notifTypes: any): void {
+  public setAndroidNotificationTypes(
+    notifTypes: AndroidNotificationTypes
+  ): void {
     if (typeof notifTypes !== "number") {
       writeBatchLog(
         false,
@@ -48,7 +50,7 @@ export class PushModule implements BatchSDK.PushModule {
     }
   }
 
-  public setiOSNotificationTypes(notifTypes: any): void {
+  public setiOSNotificationTypes(notifTypes: iOSNotificationTypes): void {
     if (typeof notifTypes !== "number") {
       writeBatchLog(
         false,

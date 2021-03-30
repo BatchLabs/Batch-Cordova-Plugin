@@ -1,4 +1,4 @@
-import { User as UserAction, UserDataOperation } from "../actions";
+import { User as UserAction } from "../actions";
 import { isNumber, isString, sendToBridge, writeBatchLog } from "../helpers";
 
 import Consts from "../consts";
@@ -12,7 +12,9 @@ export class UserModule implements BatchSDK.UserModule {
     this.eventData = BatchEventData;
   }
 
-  public getInstallationID(resultCallback: (installationID: string) => void) {
+  public getInstallationID(
+    resultCallback: (installationID: string) => void
+  ): void {
     sendToBridge(resultCallback, UserAction.GetInstallationID, null);
   }
 
@@ -20,7 +22,7 @@ export class UserModule implements BatchSDK.UserModule {
     return new BatchUserDataEditor(true);
   }
 
-  public printDebugInformation() {
+  public printDebugInformation(): void {
     sendToBridge(null, UserAction.DataDebug, null);
   }
 
@@ -28,7 +30,7 @@ export class UserModule implements BatchSDK.UserModule {
     name: string,
     label?: string,
     data?: { [key: string]: any }
-  ) {
+  ): void {
     if (!isString(name) || !Consts.AttributeKeyRegexp.test(name || "")) {
       writeBatchLog(
         false,
@@ -82,7 +84,7 @@ export class UserModule implements BatchSDK.UserModule {
     return;
   }
 
-  public trackTransaction(amount: number, data?: { [key: string]: any }) {
+  public trackTransaction(amount: number, data?: { [key: string]: any }): void {
     if (typeof amount === "undefined") {
       writeBatchLog(
         false,
@@ -110,7 +112,7 @@ export class UserModule implements BatchSDK.UserModule {
     return;
   }
 
-  public trackLocation(location: BatchSDK.Location) {
+  public trackLocation(location: BatchSDK.Location): void {
     if (typeof location !== "object") {
       writeBatchLog(
         false,
