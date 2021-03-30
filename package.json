@@ -14,19 +14,16 @@
   "jest": {
     "globals": {
       "ts-jest": {
-        "tsConfigFile": "__tests__/tsconfig.json"
+        "tsconfig": "__tests__/tsconfig.json"
       }
     },
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
     "moduleFileExtensions": [
-      "ts",
-      "tsx",
       "js",
-      "jsx",
       "json",
-      "node"
+      "jsx",
+      "node",
+      "ts",
+      "tsx"
     ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(tsx?|jsx?)$",
     "collectCoverage": false,
@@ -37,7 +34,9 @@
     ],
     "setupFiles": [
       "./__mocks__/setup.ts"
-    ]
+    ],
+    "testMatch": null,
+    "preset": "ts-jest"
   },
   "author": "Batch.com",
   "license": "MIT",
@@ -47,6 +46,7 @@
     "@types/node": "^14.14.37",
     "cordova": "^10.0.0",
     "plugman": "^3.0.1",
+    "prettier": "^2.2.1",
     "ts-jest": "^26.5.4",
     "ts-loader": "^4.0.0",
     "tslint": "^5.9.1",
