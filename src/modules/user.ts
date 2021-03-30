@@ -29,7 +29,7 @@ export class UserModule implements BatchSDK.UserModule {
   public trackEvent(
     name: string,
     label?: string,
-    data?: { [key: string]: any }
+    data?: { [key: string]: unknown } | BatchSDK.BatchEventData
   ): void {
     if (!isString(name) || !Consts.AttributeKeyRegexp.test(name || "")) {
       writeBatchLog(
@@ -41,7 +41,12 @@ export class UserModule implements BatchSDK.UserModule {
       return;
     }
 
-    const parameters: any = { name };
+    const parameters: {
+      name: string;
+      label?: string;
+      event_data?: unknown;
+      data?: BatchSDK.LegacyBatchEventData;
+    } = { name };
 
     if (isString(label)) {
       if (
@@ -74,7 +79,7 @@ export class UserModule implements BatchSDK.UserModule {
     } else if (typeof data === "object") {
       // Legacy codepath
       // TODO, the === "object" check might not work for the new object
-      parameters.data = data;
+      parameters.data = data as BatchSDK.LegacyBatchEventData;
       sendToBridge(null, UserAction.TrackLegacyEvent, [parameters]);
       return;
     }
@@ -84,7 +89,10 @@ export class UserModule implements BatchSDK.UserModule {
     return;
   }
 
-  public trackTransaction(amount: number, data?: { [key: string]: any }): void {
+  public trackTransaction(
+    amount: number,
+    data?: { [key: string]: unknown }
+  ): void {
     if (typeof amount === "undefined") {
       writeBatchLog(
         false,
@@ -101,7 +109,10 @@ export class UserModule implements BatchSDK.UserModule {
       return;
     }
 
-    const parameters: any = { amount };
+    const parameters: {
+      amount: number;
+      data?: unknown;
+    } = { amount };
 
     if (typeof data === "object") {
       parameters.data = data;

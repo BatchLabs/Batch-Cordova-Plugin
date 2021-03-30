@@ -21,7 +21,10 @@ declare namespace BatchSDK {
     canUseAdvertisingIdentifier?: boolean;
   }
 
-  type BatchEventCallback = (eventName: string, parameters: any) => void;
+  type BatchEventCallback = (
+    eventName: string,
+    parameters: { [key: string]: unknown }
+  ) => void;
 
   /**
    * Represents a locations, using lat/lng coordinates
@@ -157,7 +160,7 @@ declare namespace BatchSDK {
    *
    * @deprecated
    */
-  type LegacyBatchEventData = { [key: string]: any };
+  type LegacyBatchEventData = { [key: string]: unknown };
 
   /**
    * Batch's user module
@@ -205,7 +208,7 @@ declare namespace BatchSDK {
      * @param amount Transaction's amount.
      * @param data The transaction data (optional). Must be an object.
      */
-    trackTransaction(amount: number, data?: { [key: string]: any }): void;
+    trackTransaction(amount: number, data?: { [key: string]: unknown }): void;
 
     /**
      * Track a geolocation update
@@ -430,7 +433,7 @@ declare namespace BatchSDK {
     /**
      * Raw notification user data (also called payload)
      */
-    payload: any;
+    payload: { [key: string]: unknown };
 
     /**
      * Date at which the push notification has been sent to the device

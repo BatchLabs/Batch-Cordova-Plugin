@@ -149,8 +149,8 @@ export class InboxModule implements BatchSDK.InboxModule {
     }
 
     // TODO: make sure it's uniform with batchPushReceived
-    if (typeof notif.payload === "object") {
-      parsedNotif.payload = notif.payload;
+    if (typeof notif.payload === "object" && notif.payload !== null) {
+      parsedNotif.payload = notif.payload as { [key: string]: unknown };
     }
 
     if (isString(notif.title)) {
