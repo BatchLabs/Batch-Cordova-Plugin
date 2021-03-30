@@ -1,4 +1,4 @@
-(window.cordova as any) = {
+(global as any).cordova = {
   exec: jest.fn(),
   fireDocumentEvent: jest.fn(),
   platformId: "jest"

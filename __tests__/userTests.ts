@@ -62,7 +62,7 @@ function mockedSendToBridge(
 }
 
 jest.doMock("../src/helpers", () => {
-  const helpers = require.requireActual("../src/helpers");
+  const helpers = jest.requireActual("../src/helpers");
   // tslint:disable-next-line:only-arrow-functions
   return {
     ...helpers,
