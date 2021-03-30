@@ -88,7 +88,7 @@ npm i
 
 > Note: `npm install` could also be used, but not advised as this plugin uses yarn.
 
-Files are formatted using Prettier, and linted with TSLint.  
+Files are formatted using Prettier, and linted with ESLint.  
 While you should install these plugins for your favorite code editor, you can manually lint the plugin:
 
 ```
