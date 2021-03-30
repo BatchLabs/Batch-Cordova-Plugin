@@ -8,8 +8,6 @@ Welcome to Batch's Cordova Plugin!
 
 This repository contains the plugin's source code (native code + cordova) and buildscripts.
 
-A test application project is _not_ provided.
-
 ## Compatibility
 
 This plugin is compatible with:
@@ -20,11 +18,9 @@ This plugin is compatible with:
 
 Subsequent major Cordova and Cordova platform versions are _not_ supported until told otherwise.
 
-If you use an earlier version of Cordova, please use the 1.7.4 version of this plugin.
+If you use an earlier version of Cordova, please use the 1.7.4 or 2.X version of this plugin.
 
 > Note: Batch isn't supported in the browser. It will only work correctly when running on Android or iOS.
-
-Projects that include `cordova-plugin-firebase` are compatible with this plugin, provided that they use `cordova-plugin-firebase` v2.0.4 or higher.
 
 ## How do I install the plugin?
 
@@ -87,7 +83,7 @@ Once the Javascript side of the plugin called the native once, a two way communi
 Before changing anything, you will have to install the required modules by running:
 
 ```
-yarn
+npm i
 ```
 
 > Note: `npm install` could also be used, but not advised as this plugin uses yarn.
@@ -96,19 +92,19 @@ Files are formatted using Prettier, and linted with TSLint.
 While you should install these plugins for your favorite code editor, you can manually lint the plugin:
 
 ```
-yarn lint
+npm run lint
 ```
 
 You can then test your changes using:
 
 ```
-yarn test
+npm run test
 ```
 
 Finally, once you're done and want to test in your application, you will need to build `dist/www/batch.js`:
 
 ```
-yarn build
+npm run build
 ```
 
 That's it! Happy hacking!
