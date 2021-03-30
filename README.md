@@ -1,6 +1,6 @@
-![Batch Logo](https://raw.github.com/BatchLabs/cordova-plugin/master/readme/readme_logo.png)
+<img src="https://static.batch.com/documentation/Readmes/logo_batch_full_178@2x.png" srcset="https://static.batch.com/documentation/Readmes/logo_batch_full_178.png 1x" width="178" height="68" alt="Batch Logo" />
 
-# Batch Cordova Plugin Builder
+# Batch Cordova Plugin
 
 [![npm version](https://badge.fury.io/js/com.batch.cordova.svg)](https://badge.fury.io/js/com.batch.cordova)
 
@@ -12,9 +12,9 @@ This repository contains the plugin's source code (native code + cordova) and bu
 
 This plugin is compatible with:
 
-- cordova 8.0.0+
-- cordova-android 7.0.0+
-- cordova-ios 4.5.0+
+- cordova 10.0.0+
+- cordova-android 0.0.0+
+- cordova-ios 6.0.0+
 
 Subsequent major Cordova and Cordova platform versions are _not_ supported until told otherwise.
 
