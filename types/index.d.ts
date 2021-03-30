@@ -230,7 +230,7 @@ declare namespace BatchSDK {
 
     /**
      * Change the used remote notification types on Android. (Ex: sound, vibrate, alert)
-     * Example : setAndroidNotificationTypes(batch.push.AndroidNotificationTypes.ALERT | batch.push.AndroidNotificationTypes.SOUND)
+     * Example : setAndroidNotificationTypes(batch.push.AndroidNotificationTypes.ALERT | batch.push.AndroidNotificationTypes.SOUND)
      * @param notifTypes Any combined value of the AndroidNotificationTypes enum.
      */
     setAndroidNotificationTypes(
@@ -239,7 +239,7 @@ declare namespace BatchSDK {
 
     /**
      * Change the used remote notification types on iOS. (Ex: sound, vibrate, alert)
-     * Example : setiOSNotificationTypes(batch.push.iOSNotificationTypes.ALERT | batch.push.iOSNotificationTypes.SOUND)
+     * Example : setiOSNotificationTypes(batch.push.iOSNotificationTypes.ALERT | batch.push.iOSNotificationTypes.SOUND)
      * @param notifTypes Any combined value of the AndroidNotificationTypes enum.
      */
     setiOSNotificationTypes(
@@ -504,7 +504,7 @@ declare namespace BatchSDK {
     SOUND = 1 << 0,
     VIBRATE = 1 << 1,
     LIGHTS = 1 << 2,
-    ALERT = 1 << 3
+    ALERT = 1 << 3,
   }
 
   /**
@@ -515,7 +515,7 @@ declare namespace BatchSDK {
     NONE = 0,
     BADGE = 1 << 0,
     SOUND = 1 << 1,
-    ALERT = 1 << 2
+    ALERT = 1 << 2,
   }
 
   /**
@@ -527,7 +527,7 @@ declare namespace BatchSDK {
   enum InboxNotificationSource {
     UNKNOWN = 0,
     CAMPAIGN = 1,
-    TRANSACTIONAL = 2
+    TRANSACTIONAL = 2,
   }
 }
 
@@ -540,4 +540,4 @@ interface CordovaPlugins {
   batch: BatchSDK.Batch;
 }
 
-declare var batch: BatchSDK.Batch;
+declare let batch: BatchSDK.Batch;

@@ -65,7 +65,7 @@ export class InboxModule implements BatchSDK.InboxModule {
       );
     }
 
-    let response: any;
+    let response: { [key: string]: unknown };
     try {
       response = JSON.parse(rawResponse);
     } catch (e) {
@@ -96,18 +96,20 @@ export class InboxModule implements BatchSDK.InboxModule {
     userCallback(undefined, notifications);
   }
 
-  private parseBridgeNotification(notif: any): BatchSDK.InboxNotification {
-    if (typeof notif !== "object") {
+  private parseBridgeNotification(notif: {
+    [key: string]: unknown;
+  }): BatchSDK.InboxNotification {
+    if (typeof notif !== "object" || notif === null) {
       throw new Error("Raw notification is not an object");
     }
 
     const body = notif.body;
-    if (!isString(notif.body)) {
+    if (!isString(body)) {
       throw new Error("An Inbox Notification must at least have a body");
     }
 
     const identifier = notif.identifier;
-    if (!isString(notif.identifier)) {
+    if (!isString(identifier)) {
       throw new Error("An Inbox Notification must at least have an identifier");
     }
 
@@ -139,7 +141,7 @@ export class InboxModule implements BatchSDK.InboxModule {
       identifier,
       isUnread,
       payload: {},
-      source,
+      source: source as InboxModule["NotificationSource"],
     };
 
     if (isString(notif.ios_attachment_url)) {
