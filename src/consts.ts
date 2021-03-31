@@ -5,7 +5,7 @@ export const Consts = {
   DevelopmentMode: true,
   EventDataMaxTags: 10,
   EventDataMaxValues: 10,
-  EventDataStringMaxLength: 64
+  EventDataStringMaxLength: 64,
 };
 
 export default Consts;

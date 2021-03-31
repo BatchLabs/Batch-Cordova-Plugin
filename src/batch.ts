@@ -44,7 +44,7 @@ export default class Batch implements BatchSDK.Batch {
     const baseConfig: BatchSDK.Config = {
       androidAPIKey: null,
       canUseAdvertisingIdentifier: true,
-      iOSAPIKey: null
+      iOSAPIKey: null,
     };
 
     for (const key in config) {
@@ -80,8 +80,8 @@ export default class Batch implements BatchSDK.Batch {
       {
         APIKey: apiKey,
         useAndroidID: false,
-        useIDFA: this._config.canUseAdvertisingIdentifier === true
-      }
+        useIDFA: this._config.canUseAdvertisingIdentifier === true,
+      },
     ]);
 
     sendToBridge(null, CoreActions.Start, null);

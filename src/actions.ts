@@ -3,7 +3,7 @@ export enum Core {
   Start = "start",
   OptIn = "optIn",
   OptOut = "optOut",
-  OptOutWipeData = "optOutAndWipeData"
+  OptOutWipeData = "optOutAndWipeData",
 }
 
 export enum Push {
@@ -12,17 +12,17 @@ export enum Push {
   SetAndroidNotifTypes = "push.setAndroidNotifTypes",
   Register = "push.register",
   DismissNotifications = "push.dismissNotifications",
-  ClearBadge = "push.clearBadge"
+  ClearBadge = "push.clearBadge",
 }
 
 export enum Messaging {
   SetDoNotDisturbEnabled = "messaging.setDoNotDisturbEnabled",
-  ShowPendingMessage = "messaging.showPendingMessage"
+  ShowPendingMessage = "messaging.showPendingMessage",
 }
 
 export enum Inbox {
   Fetch = "inbox.fetch",
-  FetchForUserID = "inbox.fetchForUserIdentifier"
+  FetchForUserID = "inbox.fetchForUserIdentifier",
 }
 
 export enum User {
@@ -32,7 +32,7 @@ export enum User {
   TrackTransaction = "user.track.transaction",
   TrackLocation = "user.track.location",
   DataDebug = "user.data.debug",
-  GetInstallationID = "user.getInstallationID"
+  GetInstallationID = "user.getInstallationID",
 }
 
 export enum UserDataOperation {
@@ -45,9 +45,9 @@ export enum UserDataOperation {
   AddTag = "ADD_TAG",
   RemoveTag = "REMOVE_TAG",
   ClearTags = "CLEAR_TAGS",
-  ClearTagCollection = "CLEAR_TAG_COLLECTION"
+  ClearTagCollection = "CLEAR_TAG_COLLECTION",
 }
 
 export enum Internal {
-  SetupCallback = "_setupCallback"
+  SetupCallback = "_setupCallback",
 }

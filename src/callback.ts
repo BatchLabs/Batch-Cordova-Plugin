@@ -7,7 +7,7 @@ export enum CallbackAction {
   Eval = "_eval",
   DispatchPush = "_dispatchPush",
   DispatchMessagingEvent = "_dispatchMessagingEvent",
-  OnBridgeFailure = "onBridgeFailure"
+  OnBridgeFailure = "onBridgeFailure",
 }
 
 interface ICallbackDispatchPushData {
@@ -94,7 +94,7 @@ export class CallbackHandler {
 
         (cordova as any).fireDocumentEvent("batchPushReceived", {
           hasLandingMessage,
-          payload: pushPayload
+          payload: pushPayload,
         });
         break;
       case CallbackAction.DispatchMessagingEvent:

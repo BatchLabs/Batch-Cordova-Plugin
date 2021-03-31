@@ -58,7 +58,7 @@ export class EventEmitter {
       parameters
     );
     const listeners = this._eventListeners[event] || [];
-    listeners.forEach(listener => {
+    listeners.forEach((listener) => {
       listener(event, parameters);
     });
   }
