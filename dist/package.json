@@ -1,9 +1,9 @@
 {
-  "name": "com.batch.cordova",
-  "version": "2.3.3",
-  "description": "Plugin for the Batch.com SDK",
+  "name": "@batch/cordova-plugin",
+  "version": "3.0.0",
+  "description": "Batch.com SDK Cordova/Ionic plugin for Android and iOS",
   "cordova": {
-    "id": "com.batch.cordova",
+    "id": "@batch/cordova-plugin",
     "platforms": [
       "android",
       "ios"
@@ -16,10 +16,10 @@
     "cordova-ios"
   ],
   "cordovaDependencies": {
-    "2.3.3": {
-      "cordova": ">=8.0.0",
-      "cordova-android": ">=7.0.0",
-      "cordova-ios": ">=4.5.0"
+    "3.0.0": {
+      "cordova": ">=10.0.0",
+      "cordova-android": ">=9.0.0",
+      "cordova-ios": ">=6.0.0"
     }
   },
   "author": "Batch.com",
