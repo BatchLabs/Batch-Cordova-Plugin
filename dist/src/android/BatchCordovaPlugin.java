@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.batch.android.Batch;
 import com.batch.android.BatchMessage;
@@ -39,7 +39,7 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
 
     private static final String PLUGIN_VERSION_ENVIRONEMENT_VAR = "batch.plugin.version";
 
-    private static final String PLUGIN_VERSION = "Cordova/2.3.3";
+    private static final String PLUGIN_VERSION = "Cordova/3.0.0";
 
     /**
      * Key used to add extra to an intent to prevent it to be used more than once to compute opens
