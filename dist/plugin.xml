@@ -46,6 +46,8 @@
 
         </config-file>
 
+<!--
+
         <config-file target="app/src/main/AndroidManifest.xml" parent="/manifest/application">
 
             <!-- Cordova specific receivers -->
@@ -62,6 +64,8 @@
             </receiver>
 
         </config-file>
+
+        -->
 
         <framework src="src/android/batch.gradle" custom="true" type="gradleReference" />
 
