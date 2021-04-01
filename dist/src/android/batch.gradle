@@ -1,9 +1,0 @@
-repositories {
-    google()
-    mavenCentral()
-}
-
-dependencies {
-    implementation 'com.batch.android:batch-sdk:1.17.0'
-    implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.0.0"
-}

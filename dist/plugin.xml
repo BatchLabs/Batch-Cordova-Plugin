@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        id="@batch.com/cordova-plugin"
+        id="com.batch.cordova"
         version="3.0.0">
     <engines>
         <engine name="cordova" version=">=9.0.0" />
@@ -18,6 +18,12 @@
     </js-module>
     
     <platform name="android">
+
+        <preference name="BATCHSDK_ANDROID_VERSION" default="1.17.+"/>
+
+        <!-- This should be 1.0.0 forever, we leave it configurable just in case another version needs to be used in an app -->
+        <preference name="BATCHSDK_ANDROID_LOCALBROADCAST_VERSION" default="1.0.0"/>
+
         <config-file target="config.xml" parent="/*">
             <feature name="Batch">
                 <param name="android-package" value="com.batch.cordova.android.BatchCordovaPlugin" />
@@ -44,12 +50,12 @@
 
         </config-file>
 
+        <framework src="com.batch.android:batch-sdk:$BATCHSDK_ANDROID_VERSION" />
+        <framework src="androidx.localbroadcastmanager:localbroadcastmanager:$BATCHSDK_ANDROID_LOCALBROADCAST_VERSION" />
+
 <!--
 
-        <config-file target="app/src/main/AndroidManifest.xml" parent="/manifest/application">
--->
-            <!-- Cordova specific receivers -->
-<!--            
+        <config-file target="app/src/main/AndroidManifest.xml" parent="/manifest/application">        
             <service android:name="com.batch.cordova.android.BatchCordovaPushService"
                 android:permission="android.permission.BIND_JOB_SERVICE" />
 
@@ -63,14 +69,15 @@
             </receiver>
 
         </config-file>
-        -->
+-->
 
-        <framework src="src/android/batch.gradle" custom="true" type="gradleReference" />
 
-        <hook src="scripts/after_prepare.js" type="after_prepare" />
     </platform>
 
     <platform name="ios">
+
+        <preference name="BATCHSDK_IOS_VERSION" default="~> 1.17"/>
+
         <config-file target="config.xml" parent="/*">
             <feature name="Batch">
                 <param name="ios-package" value="BatchCordovaPlugin" />
@@ -91,7 +98,15 @@
         <source-file src="src/ios/interop/BatchJSONHelper.m" />
 
         <framework src="libsqlite3.dylib" />
-        <framework src="src/ios/Batch.framework" custom="true" />
+        
+        <podspec>
+            <config>
+                <source url="https://cdn.cocoapods.org/"/>
+            </config>
+            <pods>
+                <pod name="Batch" spec="$BATCHSDK_IOS_VERSION" />
+            </pods>
+        </podspec>
 
     </platform>
 
