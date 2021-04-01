@@ -126,8 +126,8 @@ cordova plugin rm com.batch.cordova
 cordova plugin add <path to where you checked out cordova-plugin>/dist --nofetch
 ```
 
-If you altered anything in `src/`, make sure you build the plugin beforehand.
+Make sure you build the plugin beforehand, no prebuilt is commited to git.
 
 # License
 
-See `LICENSE` file. (Spoiler: it's MIT)
+MIT. See `LICENSE` file.
