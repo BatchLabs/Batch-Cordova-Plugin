@@ -26,15 +26,15 @@ export default class Batch implements BatchSDK.Batch {
     this._eventEmitter = new EventEmitter();
   }
 
-  public on(event: string, listener: BatchSDK.BatchEventCallback) {
+  public on(event: string, listener: BatchSDK.BatchEventCallback): void {
     this._eventEmitter.on(event, listener);
   }
 
-  public off(event?: string) {
+  public off(event?: string): void {
     this._eventEmitter.off(event);
   }
 
-  public setConfig(config: BatchSDK.Config) {
+  public setConfig(config: BatchSDK.Config): void {
     if (typeof config !== "object") {
       writeBatchLog(false, "Config must be an object.");
       return;
@@ -48,7 +48,8 @@ export default class Batch implements BatchSDK.Batch {
     };
 
     for (const key in config) {
-      if (baseConfig.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(baseConfig, key)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (baseConfig as any)[key] = (config as any)[key];
       } else {
         this.log(false, "Unknown key found in the config object : " + key);
@@ -58,10 +59,10 @@ export default class Batch implements BatchSDK.Batch {
     this._config = baseConfig;
   }
 
-  public start() {
+  public start(): void {
     if (this._config === null) {
       writeBatchLog(false, "You must call setConfig before calling start.");
-      return this;
+      return;
     }
 
     const apiKey = Platform.isCurrent(Platform.Android)
@@ -88,19 +89,19 @@ export default class Batch implements BatchSDK.Batch {
     return;
   }
 
-  public optIn() {
+  public optIn(): void {
     sendToBridge(null, CoreActions.OptIn, null);
   }
 
-  public optOut() {
+  public optOut(): void {
     sendToBridge(null, CoreActions.OptOut, null);
   }
 
-  public optOutAndWipeData() {
+  public optOutAndWipeData(): void {
     sendToBridge(null, CoreActions.OptOutWipeData, null);
   }
 
-  private log(debug: boolean, ...args: any[]) {
+  private log(debug: boolean, ...args: unknown[]) {
     writeBatchLog(debug, ...args);
   }
 }

@@ -1,15 +1,15 @@
 import * as Actions from "./actions";
 import { Consts } from "./consts";
 
-export function writeBatchLog(debug: boolean, ...message: any[]) {
-  const args = ["[Batch]"].concat(Array.prototype.slice.call(arguments, 1));
+export function writeBatchLog(debug: boolean, ...message: string[]): void {
+  const args = ["[Batch]"].concat(message);
   if (Consts.DevelopmentMode === true && debug === true) {
     if (console && console.debug) {
-      console.debug.apply(console, args);
+      console.debug(console, ...args);
     }
   } else if (debug === false) {
     if (console && console.log) {
-      console.log.apply(console, args);
+      console.log(console, ...args);
     }
   }
 }
@@ -25,7 +25,7 @@ export function sendToBridge(
     | Actions.UserDataOperation
     | Actions.Internal,
   args: any[] | null
-) {
+): void {
   // The Bridge never fails as far as Cordova is concerned, but the callback can have a negative response
   // It will need to be handled on a per-case basis
   cordova.exec(
@@ -37,16 +37,19 @@ export function sendToBridge(
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 export function isString(value: any): value is string {
   return value instanceof String || typeof value === "string";
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 export function isNumber(value: any): value is number {
   return (
     value instanceof Number || (typeof value === "number" && !isNaN(value))
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 export function isBoolean(value: any): value is boolean {
   return value instanceof Boolean || typeof value === "boolean";
 }

@@ -38,7 +38,7 @@ interface ICallbackOnBridgeFailureData {
 }
 
 export class CallbackHandler {
-  public setup() {
+  public setup(): void {
     // Don't call sendToBridge because we don't want to have the BA_ prefix
     cordova.exec(
       this.handleCallback,
@@ -62,10 +62,10 @@ export class CallbackHandler {
     }
 
     switch (callbackData.action) {
-      case CallbackAction.DispatchPush:
+      case CallbackAction.DispatchPush: {
         const pushPayload = callbackData.payload;
         for (const key in pushPayload) {
-          if (pushPayload.hasOwnProperty(key)) {
+          if (Object.prototype.hasOwnProperty.call(pushPayload, key)) {
             const value = pushPayload[key];
             if (typeof value === "string") {
               try {
@@ -97,7 +97,8 @@ export class CallbackHandler {
           payload: pushPayload,
         });
         break;
-      case CallbackAction.DispatchMessagingEvent:
+      }
+      case CallbackAction.DispatchMessagingEvent: {
         const lifecycleEventName = callbackData.lifecycleEvent;
         let publicEventName: string;
 
@@ -124,6 +125,7 @@ export class CallbackHandler {
 
         (cordova as any).fireDocumentEvent(publicEventName, payload);
         break;
+      }
       case CallbackAction.Log:
         // Don't use writeBatchLog on purpose
         if (console && console.log) {

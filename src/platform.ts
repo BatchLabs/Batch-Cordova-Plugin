@@ -1,7 +1,7 @@
 const Platform = {
   Android: "android",
   iOS: "ios",
-  isCurrent: (platform: string) => {
+  isCurrent: (platform: string): boolean => {
     return cordova.platformId.toLowerCase() === platform;
   },
 };

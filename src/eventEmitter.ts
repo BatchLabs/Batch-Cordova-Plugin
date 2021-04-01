@@ -16,7 +16,7 @@ export class EventEmitter {
    * @param event The event name to listen to.
    * @param listener Function with two arguments : event name and parameters.
    */
-  public on(event: string, listener: BatchSDK.BatchEventCallback) {
+  public on(event: string, listener: BatchSDK.BatchEventCallback): this {
     if (typeof event !== "string") {
       writeBatchLog(false, "Event name must be a string if supplied");
       return this;
@@ -35,7 +35,7 @@ export class EventEmitter {
    *
    * @param event The event name you wish to remove the listener for. If nothing is provided, all events are removed.
    */
-  public off(event?: string) {
+  public off(event?: string): this {
     if (typeof event === "undefined") {
       this._eventListeners = {};
       return this;
@@ -51,7 +51,7 @@ export class EventEmitter {
   /**
    * Emit an event
    */
-  public emit(event: string, parameters: any) {
+  public emit(event: string, parameters: { [key: string]: unknown }): void {
     writeBatchLog(
       true,
       "Calling back developer implementation - " + event,
