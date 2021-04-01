@@ -107,6 +107,11 @@ Finally, once you're done and want to test in your application, you will need to
 npm run build
 ```
 
+Then, link the plugin to your test application. This only needs to be done once.  
+```
+cordova plugin add ../<relative path to where you cloned this repository>/Batch-Cordova-Plugin/dist/ --link
+```
+
 That's it! Happy hacking!
 
 ## Updating the native SDKs
