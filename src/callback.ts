@@ -12,7 +12,7 @@ export enum CallbackAction {
 
 interface ICallbackDispatchPushData {
   action: CallbackAction.DispatchPush;
-  payload: { [key: string]: any };
+  payload: { [key: string]: unknown };
   hasLandingMessage?: boolean;
 }
 
@@ -92,7 +92,7 @@ export class CallbackHandler {
           hasLandingMessage = true;
         }
 
-        (cordova as any).fireDocumentEvent("batchPushReceived", {
+        cordova.fireDocumentEvent("batchPushReceived", {
           hasLandingMessage,
           payload: pushPayload,
         });
@@ -117,13 +117,15 @@ export class CallbackHandler {
         }
         // tslint:enable:triple-equals
 
-        const payload: any = {};
+        const payload: {
+          messageIdentifier?: string;
+        } = {};
 
         if (isString(callbackData.messageIdentifier)) {
           payload.messageIdentifier = callbackData.messageIdentifier;
         }
 
-        (cordova as any).fireDocumentEvent(publicEventName, payload);
+        cordova.fireDocumentEvent(publicEventName, payload);
         break;
       }
       case CallbackAction.Log:

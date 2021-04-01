@@ -4,7 +4,7 @@ import { AndroidNotificationTypes, iOSNotificationTypes } from "./modules/push";
 /* tslint:disable:no-console */
 
 class MessagingStub implements BatchSDK.MessagingModule {
-  public setDoNotDisturbEnabled(enabled: boolean) {}
+  public setDoNotDisturbEnabled(_enabled: boolean) {}
   public showPendingMessage() {}
 }
 
@@ -18,11 +18,11 @@ class PushStub implements BatchSDK.PushModule {
   }
 
   public registerForRemoteNotifications() {}
-  public setAndroidNotificationTypes(notifTypes: any) {}
-  public setiOSNotificationTypes(notifTypes: any) {}
+  public setAndroidNotificationTypes(_notifTypes: unknown) {}
+  public setiOSNotificationTypes(_notifTypes: unknown) {}
   public clearBadge() {}
   public dismissNotifications() {}
-  public getLastKnownPushToken(resultCallback: (token: string) => void) {}
+  public getLastKnownPushToken(_resultCallback: (token: string) => void) {}
 }
 
 class UserStub implements BatchSDK.UserModule {
@@ -32,14 +32,17 @@ class UserStub implements BatchSDK.UserModule {
     this.eventData = BatchEventDataStub;
   }
 
-  public getInstallationID(resultCallback: (installationID: string) => void) {}
+  public getInstallationID(_resultCallback: (installationID: string) => void) {}
   public getEditor(): BatchSDK.BatchUserDataEditor {
     return new BatchUserDataEditorStub();
   }
   public printDebugInformation() {}
-  public trackEvent(name: string, label?: string, data?: any) {}
-  public trackTransaction(amount: number, data?: { [key: string]: any }) {}
-  public trackLocation(location: BatchSDK.Location): void {}
+  public trackEvent(_name: string, _label?: string, _data?: unknown) {}
+  public trackTransaction(
+    _amount: number,
+    _data?: { [key: string]: unknown }
+  ) {}
+  public trackLocation(_location: BatchSDK.Location): void {}
 }
 
 class InboxStub implements BatchSDK.InboxModule {
@@ -50,15 +53,15 @@ class InboxStub implements BatchSDK.InboxModule {
   }
 
   public fetchNotifications(
-    callback: (
+    _callback: (
       error?: Error,
       notifications?: BatchSDK.InboxNotification[]
     ) => void
   ) {}
   public fetchNotificationsForUserIdentifier(
-    userIdentifier: string,
-    authenticationKey: string,
-    callback: (
+    _userIdentifier: string,
+    _authenticationKey: string,
+    _callback: (
       error?: Error,
       notifications?: BatchSDK.InboxNotification[]
     ) => void
@@ -66,44 +69,44 @@ class InboxStub implements BatchSDK.InboxModule {
 }
 
 class BatchEventDataStub implements BatchSDK.BatchEventData {
-  public addTag(tag: string): BatchSDK.BatchEventData {
+  public addTag(_tag: string): BatchSDK.BatchEventData {
     return this;
   }
 
-  public put(key: any, value: string | number | boolean) {
+  public put(_key: unknown, _value: string | number | boolean) {
     return this;
   }
 }
 
 class BatchUserDataEditorStub implements BatchSDK.BatchUserDataEditor {
-  public setLanguage(language: string | null) {
+  public setLanguage(_language: string | null) {
     return this;
   }
-  public setRegion(region: string | null) {
+  public setRegion(_region: string | null) {
     return this;
   }
-  public setIdentifier(identifier: string | null) {
+  public setIdentifier(_identifier: string | null) {
     return this;
   }
-  public setAttribute(key: string, value: string | number | boolean | Date) {
+  public setAttribute(_key: string, _value: string | number | boolean | Date) {
     return this;
   }
-  public removeAttribute(key: string) {
+  public removeAttribute(_key: string) {
     return this;
   }
   public clearAttributes() {
     return this;
   }
-  public addTag(collection: string, tag: string) {
+  public addTag(_collection: string, _tag: string) {
     return this;
   }
-  public removeTag(collection: string, tag: string) {
+  public removeTag(_collection: string, _tag: string) {
     return this;
   }
   public clearTags() {
     return this;
   }
-  public clearTagCollection(collection: string) {
+  public clearTagCollection(_collection: string) {
     return this;
   }
   public save() {
@@ -123,19 +126,22 @@ class BatchStub implements BatchSDK.Batch {
     this.inbox = new InboxStub();
   }
   public on(
-    event: string,
-    listener: (eventName: string, parameters: any) => void
-  ) {}
-  public off(event?: string) {}
-  public setConfig(config: BatchSDK.Config) {}
-  public start() {
+    _event: string,
+    _listener: (
+      eventName: string,
+      parameters: { [key: string]: unknown }
+    ) => void
+  ): void {}
+  public off(_event?: string): void {}
+  public setConfig(_config: BatchSDK.Config): void {}
+  public start(): void {
     if (console && console.log) {
       console.log("Batch is not supported in this environement");
     }
   }
-  public optIn() {}
-  public optOut() {}
-  public optOutAndWipeData() {}
+  public optIn(): void {}
+  public optOut(): void {}
+  public optOutAndWipeData(): void {}
 }
 
 export default BatchStub;

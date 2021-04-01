@@ -1,8 +1,8 @@
 import * as Actions from "./actions";
 import { Consts } from "./consts";
 
-export function writeBatchLog(debug: boolean, ...message: string[]): void {
-  const args = ["[Batch]"].concat(message);
+export function writeBatchLog(debug: boolean, ...message: unknown[]): void {
+  const args = (["[Batch]"] as unknown[]).concat(message);
   if (Consts.DevelopmentMode === true && debug === true) {
     if (console && console.debug) {
       console.debug(console, ...args);
@@ -24,7 +24,7 @@ export function sendToBridge(
     | Actions.User
     | Actions.UserDataOperation
     | Actions.Internal,
-  args: any[] | null
+  args: unknown[] | null
 ): void {
   // The Bridge never fails as far as Cordova is concerned, but the callback can have a negative response
   // It will need to be handled on a per-case basis
