@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        id="com.batch.cordova"
-        version="2.3.3">
+        id="@batch.com/cordova-plugin"
+        version="3.0.0">
     <engines>
-        <engine name="cordova" version=">=8.0.0" />
-        <engine name="cordova-android" version=">=7.0.0" />
-        <engine name="cordova-ios" version=">=4.5.0" />
+        <engine name="cordova" version=">=9.0.0" />
+        <engine name="cordova-android" version=">=9.0.0" />
+        <engine name="cordova-ios" version=">=6.0.0" />
     </engines>
     <name>Batch</name>
     <description>Plugin for the Batch SDK</description>
@@ -16,8 +16,6 @@
     <js-module src="www/batch.js" name="batch">
         <clobbers target="batch" />
     </js-module>
-
-    <preference name="BATCHSDK_ENABLE_ANDROID_BUILTIN_FIREBASE_CONFIG" default="true"/>
     
     <platform name="android">
         <config-file target="config.xml" parent="/*">
@@ -49,8 +47,9 @@
 <!--
 
         <config-file target="app/src/main/AndroidManifest.xml" parent="/manifest/application">
-
+-->
             <!-- Cordova specific receivers -->
+<!--            
             <service android:name="com.batch.cordova.android.BatchCordovaPushService"
                 android:permission="android.permission.BIND_JOB_SERVICE" />
 
@@ -64,7 +63,6 @@
             </receiver>
 
         </config-file>
-
         -->
 
         <framework src="src/android/batch.gradle" custom="true" type="gradleReference" />
