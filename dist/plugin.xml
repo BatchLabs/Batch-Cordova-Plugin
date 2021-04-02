@@ -53,8 +53,10 @@
         <framework src="com.batch.android:batch-sdk:$BATCHSDK_ANDROID_VERSION" />
         <framework src="androidx.localbroadcastmanager:localbroadcastmanager:$BATCHSDK_ANDROID_LOCALBROADCAST_VERSION" />
 
+        <framework src="src/android/batch-capacitor.gradle" custom="true" type="gradleReference" />
 
-        <config-file target="AndroidManifest.xml" parent="/manifest/application">        
+
+        <config-file target="app/src/main/AndroidManifest.xml" parent="/manifest/application">        
             <service android:name="com.batch.cordova.android.BatchCordovaPushService"
                 android:permission="android.permission.BIND_JOB_SERVICE" />
 

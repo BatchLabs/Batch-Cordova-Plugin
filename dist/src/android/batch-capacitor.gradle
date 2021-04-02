@@ -1,0 +1,19 @@
+repositories {
+    mavenCentral()
+    maven {
+        url "https://maven.google.com"
+    }
+}
+
+dependencies {
+    // This is for capacitor, but cordova projects might trigger it (as capacitor has no easy
+    // way to be detected in a gradle script)
+    // It should be fine as we're using the variable as a version, and will simply
+    // add the same dependency again
+    if (project.hasProperty('androidxAppCompatVersion')) {
+        implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    }
+    if (project.hasProperty('firebaseMessagingVersion')) {
+        implementation "com.google.firebase:firebase-messaging:$firebaseMessagingVersion"
+    }
+}
