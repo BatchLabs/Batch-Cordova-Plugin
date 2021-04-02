@@ -1,5 +1,46 @@
 Batch Cordova Plugin
 
+## Upcoming
+
+This is a major release with breaking changes. Please see the migration guide for more info.
+
+**Plugin**
+
+- Renamed the plugin to `@batch.com/cordova-plugin`. It's cordova internal name is still `com.batch.cordova` due to cordova limitations.  
+  The plugin cordova name is used when managing plugins after installation. 
+- Updated plugin for recent Cordova/Ionic versions.  
+  Batch Cordova's new version requirements are:
+  - iOS >= 10.0
+  - Android >= 5.0 (API 21)
+  - Cordova CLI >= 9.0.0
+  - Ionic CLI (if used) >= 6.0.0
+  - cordova-android >= 9.0.0
+  - cordova-iOS >= 6.0.0
+- Updated native Batch SDK to 1.17.0.  
+  Native SDK version can be configured using the `BATCHSDK_ANDROID_VERSION` and `BATCHSDK_IOS_VERSION` preferences.  
+  Please note that this version of the plugin will not work with earlier native Batch SDK versions.
+- Added Ionic Capacitor support. Requires Capacitor 2.4 or higher.
+
+**Android**
+
+- The plugin requires AndroidX to be enabled in your `config.xml` using `<preference name="AndroidXEnabled" value="true" />` (Cordova only).  
+  Ionic users will need to add `cordova-plugin-androidx-adapter`.
+- The plugin doesn't depend on Firebase and appcompat anymore. Batch expects androidx.appcompat and Firebase Cloud Messaging to be in your application.  
+  This can be setup using the firebase plugin of your choice:  
+   - We recommend `cordova-plugin-firebase-messaging` for Cordova
+   - Capacitor comes with appcompat and FCM support out of the box, no extra plugin is needed.
+
+  You will also be required to configure your `google-services.json` manually: this is described in the integration documentation.
+
+**iOS**
+
+- The native SDK isn't bundled anymore: Cocoapods is now used to integrate Batch's native component.
+- The plugin now automatically sets a UNUserNotificationCenterDelegate to handle new iOS features.  
+  This enables configuration of foreground push behaviour: they can now be displayed in an alert just like if the user was outside of the application.
+- Fixed a bug where notification opens on cold start would not work.
+- Fixed multiple mobile landings related bugs.
+- Fixed multiple `batchPushReceived` related bugs.
+
 ## 2.3.2/2.3.3
 
 - Hotfix: Lock the firebase versions to ones that work without androidx or compileSdkVersion 28  
