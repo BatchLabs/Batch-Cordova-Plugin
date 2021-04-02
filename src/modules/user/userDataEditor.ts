@@ -4,7 +4,7 @@ import { isNumber, isString, sendToBridge, writeBatchLog } from "../../helpers";
 
 interface IOperation {
   operation: UserDataOperation;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
@@ -19,7 +19,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
     this._operationQueue = [];
   }
 
-  public setLanguage(language: string | null) {
+  public setLanguage(language: string | null): this {
     if (typeof language !== "string" && language !== null) {
       writeBatchLog(
         false,
@@ -29,13 +29,13 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
     }
 
     this._enqueueOperation(UserDataOperation.SetLanguage, {
-      value: language
+      value: language,
     });
 
     return this;
   }
 
-  public setRegion(region: string | null) {
+  public setRegion(region: string | null): this {
     if (typeof region !== "string" && region !== null) {
       writeBatchLog(
         false,
@@ -45,13 +45,13 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
     }
 
     this._enqueueOperation(UserDataOperation.SetRegion, {
-      value: region
+      value: region,
     });
 
     return this;
   }
 
-  public setIdentifier(identifier: string | null) {
+  public setIdentifier(identifier: string | null): this {
     if (typeof identifier !== "string" && identifier !== null) {
       writeBatchLog(
         false,
@@ -61,13 +61,16 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
     }
 
     this._enqueueOperation(UserDataOperation.SetIdentifier, {
-      value: identifier
+      value: identifier,
     });
 
     return this;
   }
 
-  public setAttribute(key: string, value: string | number | boolean | Date) {
+  public setAttribute(
+    key: string,
+    value: string | number | boolean | Date
+  ): this {
     if (!Consts.AttributeKeyRegexp.test(key || "")) {
       writeBatchLog(
         false,
@@ -120,7 +123,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
       }
       operationData.type = "string";
     } else if (
-      (value as any) instanceof Boolean ||
+      (value as unknown) instanceof Boolean ||
       typeof value === "boolean"
     ) {
       operationData.type = "boolean";
@@ -137,7 +140,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
     return this;
   }
 
-  public removeAttribute(key: string) {
+  public removeAttribute(key: string): this {
     if (!Consts.AttributeKeyRegexp.test(key || "")) {
       writeBatchLog(
         false,
@@ -149,19 +152,19 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
     }
 
     this._enqueueOperation(UserDataOperation.RemoveAttribute, {
-      key
+      key,
     });
 
     return this;
   }
 
-  public clearAttributes() {
+  public clearAttributes(): this {
     this._enqueueOperation(UserDataOperation.ClearAttribute, {});
 
     return this;
   }
 
-  public addTag(collection: string, tag: string) {
+  public addTag(collection: string, tag: string): this {
     if (!isString(collection)) {
       writeBatchLog(
         false,
@@ -207,16 +210,16 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
 
     this._enqueueOperation(UserDataOperation.AddTag, {
       collection,
-      tag
+      tag,
     });
 
     return this;
   }
 
-  public removeTag(collection: string, tag: string) {
+  public removeTag(collection: string, tag: string): this {
     if (
       typeof collection !== "string" &&
-      !((collection as any) instanceof String)
+      !((collection as unknown) instanceof String)
     ) {
       writeBatchLog(
         false,
@@ -261,19 +264,19 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
 
     this._enqueueOperation(UserDataOperation.RemoveTag, {
       collection,
-      tag
+      tag,
     });
 
     return this;
   }
 
-  public clearTags() {
+  public clearTags(): this {
     this._enqueueOperation(UserDataOperation.ClearTags, {});
 
     return this;
   }
 
-  public clearTagCollection(collection: string) {
+  public clearTagCollection(collection: string): this {
     if (typeof collection !== "string") {
       writeBatchLog(
         false,
@@ -293,17 +296,17 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
     }
 
     this._enqueueOperation(UserDataOperation.ClearTagCollection, {
-      collection
+      collection,
     });
 
     return this;
   }
 
-  public save() {
+  public save(): this {
     sendToBridge(null, UserAction.Edit, [
       {
-        operations: this._operationQueue
-      }
+        operations: this._operationQueue,
+      },
     ]);
 
     this._operationQueue = [];
@@ -319,11 +322,11 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
    */
   private _enqueueOperation(
     operation: UserDataOperation,
-    args: { [key: string]: any }
+    args: { [key: string]: unknown }
   ) {
     const operationObject = {
       operation,
-      ...args
+      ...args,
     };
 
     this._operationQueue.push(operationObject);

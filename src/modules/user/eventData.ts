@@ -1,18 +1,11 @@
-import { User as UserAction, UserDataOperation } from "../../actions";
 import Consts from "../../consts";
-import {
-  isBoolean,
-  isNumber,
-  isString,
-  sendToBridge,
-  writeBatchLog
-} from "../../helpers";
+import { isBoolean, isNumber, isString, writeBatchLog } from "../../helpers";
 
 export enum TypedEventAttributeType {
   String = "s",
   Boolean = "b",
   Integer = "i",
-  Float = "f"
+  Float = "f",
 }
 
 export interface ITypedEventAttribute {
@@ -20,10 +13,15 @@ export interface ITypedEventAttribute {
   value: string | boolean | number;
 }
 
+export interface IEventDataInternalRepresentation {
+  tags: string[];
+  attributes: { [key: string]: ITypedEventAttribute };
+}
+
 export class BatchEventData implements BatchSDK.BatchEventData {
   // Store the tags in a map, since Set isn't supported on Android 4.4
-  private _tags: { [key: string]: true }; // tslint:disable-line
-  private _attributes: { [key: string]: ITypedEventAttribute }; // tslint:disable-line
+  private _tags: { [key: string]: true };
+  private _attributes: { [key: string]: ITypedEventAttribute };
 
   constructor() {
     this._tags = {};
@@ -98,7 +96,7 @@ export class BatchEventData implements BatchSDK.BatchEventData {
 
     if (
       Object.keys(this._tags).length >= Consts.EventDataMaxValues &&
-      !this._attributes.hasOwnProperty(key)
+      !Object.prototype.hasOwnProperty.call(this._attributes, key)
     ) {
       writeBatchLog(
         false,
@@ -116,7 +114,7 @@ export class BatchEventData implements BatchSDK.BatchEventData {
     if (isString(value)) {
       typedAttrValue = {
         type: TypedEventAttributeType.String,
-        value
+        value,
       };
     } else if (isNumber(value)) {
       typedAttrValue = {
@@ -124,12 +122,12 @@ export class BatchEventData implements BatchSDK.BatchEventData {
           value % 1 === 0
             ? TypedEventAttributeType.Integer
             : TypedEventAttributeType.Float,
-        value
+        value,
       };
     } else if (isBoolean(value)) {
       typedAttrValue = {
         type: TypedEventAttributeType.Boolean,
-        value
+        value,
       };
     } else {
       writeBatchLog(
@@ -146,10 +144,10 @@ export class BatchEventData implements BatchSDK.BatchEventData {
     return this;
   }
 
-  public _toInternalRepresentation() {
+  public _toInternalRepresentation(): IEventDataInternalRepresentation {
     return {
       attributes: this._attributes,
-      tags: Object.keys(this._tags)
+      tags: Object.keys(this._tags),
     };
   }
 }
