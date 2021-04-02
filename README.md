@@ -10,6 +10,8 @@ This repository contains the plugin's source code (native code + cordova) and bu
 
 ## Compatibility
 
+### Cordova
+
 This plugin is compatible with:
 
 - cordova 9.0.0+
