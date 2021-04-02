@@ -44,7 +44,7 @@
         <source-file src="src/android/interop/JSONHelper.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
         <source-file src="src/android/interop/SimplePromise.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
 
-        <config-file target="app/src/main/AndroidManifest.xml" parent="/manifest">
+        <config-file target="AndroidManifest.xml" parent="/manifest">
             <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
             <uses-permission android:name="android.permission.WAKE_LOCK" />
 
@@ -53,9 +53,8 @@
         <framework src="com.batch.android:batch-sdk:$BATCHSDK_ANDROID_VERSION" />
         <framework src="androidx.localbroadcastmanager:localbroadcastmanager:$BATCHSDK_ANDROID_LOCALBROADCAST_VERSION" />
 
-<!--
 
-        <config-file target="app/src/main/AndroidManifest.xml" parent="/manifest/application">        
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">        
             <service android:name="com.batch.cordova.android.BatchCordovaPushService"
                 android:permission="android.permission.BIND_JOB_SERVICE" />
 
@@ -69,7 +68,6 @@
             </receiver>
 
         </config-file>
--->
 
 
     </platform>
