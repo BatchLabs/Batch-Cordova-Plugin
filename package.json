@@ -5,8 +5,8 @@
   "private": true,
   "scripts": {
     "build": "webpack --mode production",
-    "lint": "eslint src/**.ts types/**.ts",
-    "lint-fix": "eslint --fix src/**.ts types/**.ts",
+    "lint": "eslint src/* types/* --ext .ts",
+    "lint-fix": "eslint --fix src/* types/* --ext .ts",
     "test": "jest",
     "emu-android": "cd testapp && ../node_modules/.bin/cordova emulate android",
     "emu-ios": "cd testapp && ../node_modules/.bin/cordova emulate ios",
