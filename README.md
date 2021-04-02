@@ -22,26 +22,29 @@ If you use an earlier version of Cordova, please use the 1.7.4 or 2.X version of
 
 > Note: Batch isn't supported in the browser. It will only work correctly when running on Android or iOS.
 
+### Ionic
+
+Batch requires Ionic CLI 6.0 and Capacitor 2.4 or newer.
+
+If you're using Ionic with Cordova, cordova version requirements apply.
+
 ## How do I install the plugin?
 
 Simply add our plugin from npm:
 
 ```
-cordova plugin add com.batch.cordova
+cordova plugin add @batch.com/cordova-plugin
+```
+
+Ionic Capacitor:
+```
+npm i @batch.com/cordova-plugin
+npx cap sync
 ```
 
 A `batch` object will be present on the window. Its methods and modules are documented in `types/index.d.ts`
 
 Our [official documentation](https://batch.com/doc/cordova/sdk-integration/initial-setup.html) will walk you through the integration process, describing how to perform a successful integration of both required and optional plugin features.
-
-### I'm having build errors due to duplicate strings
-
-It might be that another Firebase plugin is already extracting the keys from the google-services.json file, which Batch already does.  
-To disable this, set the `BATCHSDK_ENABLE_ANDROID_BUILTIN_FIREBASE_CONFIG` variable to `false` (case sensitive: `FALSE` will not work):
-
-```
-cordova plugin add com.batch.cordova --variable BATCHSDK_ENABLE_ANDROID_BUILTIN_FIREBASE_CONFIG=false
-```
 
 # Development
 
@@ -108,18 +111,14 @@ npm run build
 ```
 
 Then, link the plugin to your test application. This only needs to be done once.  
-```
+```bash
 cordova plugin add ../<relative path to where you cloned this repository>/Batch-Cordova-Plugin/dist/ --link
+
+# Ionic users:
+npm link ../<path to where you checked out the plugin>/dist
 ```
 
 That's it! Happy hacking!
-
-## Updating the native SDKs
-
-Updating the native SDKs can be done by simply using the officially release native ones:
-
-- Android: The plugin uses gradle. Simply open `dist/src/android/batch.gradle` and tweak the `'com.batch.android:batch-sdk` version line.
-- iOS: The plugin ships the iOS framework. Open `dist/src/ios/` and replace `Batch.framework` with [the one you've downloaded](https://batch.com/download).
 
 ## Applying the changes to a local project
 
