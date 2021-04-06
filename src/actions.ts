@@ -8,6 +8,7 @@ export enum Core {
 
 export enum Push {
   GetLastKnownPushToken = "push.getLastKnownPushToken",
+  SetIOSShowForegroundNotifications = "push.setIOSShowForegroundNotifications",
   SetIOSNotifTypes = "push.setIOSNotifTypes",
   SetAndroidNotifTypes = "push.setAndroidNotifTypes",
   Register = "push.register",

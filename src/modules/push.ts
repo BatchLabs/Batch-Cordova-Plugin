@@ -62,6 +62,20 @@ export class PushModule implements BatchSDK.PushModule {
     }
   }
 
+  public setiOSShowForegroundNotifications(showForeground: boolean): void {
+    if (typeof showForeground !== "boolean") {
+      writeBatchLog(
+        false,
+        "setiOSShowForegroundNotifications expects a boolean argument"
+      );
+      return;
+    } else {
+      sendToBridge(null, PushActions.SetIOSShowForegroundNotifications, [
+        { showForeground },
+      ]);
+    }
+  }
+
   public clearBadge(): void {
     sendToBridge(null, PushActions.ClearBadge, null);
   }

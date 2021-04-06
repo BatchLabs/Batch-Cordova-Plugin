@@ -246,6 +246,14 @@ declare namespace BatchSDK {
     setiOSNotificationTypes(notifTypes: iOSNotificationTypes): void;
 
     /**
+     * Set whether notifications should be show in the foreground on iOS.
+     * If true, notifications will be shown like if the user was outside of your application and
+     * `batchPushReceived` will only be triggered when the notification is tapped.
+     * @param showForegroundNotifications Show foreground notifications?
+     */
+    setiOSShowForegroundNotifications(showForegroundNotifications: boolean): void;
+
+    /**
      * Clear the app badge on iOS. No effect on Android.
      */
     clearBadge(): void;
