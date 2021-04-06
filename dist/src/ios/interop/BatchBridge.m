@@ -529,14 +529,20 @@ static dispatch_once_t onceToken;
                 
                 if ([numberValue isKindOfClass:[NSNumber class]] || [numberValue isKindOfClass:[NSString class]])
                 {
+                    NSNumber *sdkValue;
                     if ([@"float" isEqualToString:type])
                     {
-                        [editor setAttribute:@([numberValue doubleValue]) forKey:operationDescription[@"key"]];
+                        sdkValue = @([numberValue doubleValue]);
+                    }
+                    else if ([@"boolean" isEqualToString:type])
+                    {
+                        sdkValue = @([numberValue boolValue]);
                     }
                     else
                     {
-                        [editor setAttribute:@([numberValue longLongValue]) forKey:operationDescription[@"key"]];
+                        sdkValue = @([numberValue longLongValue]);
                     }
+                    [editor setAttribute:sdkValue forKey:operationDescription[@"key"]];
                 }
                 else
                 {
