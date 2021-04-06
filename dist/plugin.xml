@@ -12,7 +12,7 @@
     <description>Plugin for the Batch SDK</description>
     <author>Batch.com</author>
     <keywords>batch</keywords>
-    <license>Custom</license>
+    <license>MIT</license>
     <js-module src="www/batch.js" name="batch">
         <clobbers target="batch" />
     </js-module>
