@@ -40,6 +40,7 @@ This is a major release with breaking changes. Please see the migration guide fo
 - Fixed a bug where notification opens on cold start would not work.
 - Fixed multiple mobile landings related bugs.
 - Fixed multiple `batchPushReceived` related bugs.
+- Fixed an issue where boolean custom data was saved as integers.
 
 ## 2.3.2/2.3.3
 
