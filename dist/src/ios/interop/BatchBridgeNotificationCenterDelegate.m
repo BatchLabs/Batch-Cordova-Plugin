@@ -1,36 +1,36 @@
 //
-//  Batch-Cordova-Plugin
-//
 //  Copyright © Batch.com. All rights reserved.
 //
 
-#import "BatchCordovaNotificationCenterDelegate.h"
+#import "BatchBridgeNotificationCenterDelegate.h"
 
 #import <Batch/BatchPush.h>
 
-@implementation BatchCordovaNotificationCenterDelegate
+@implementation BatchBridgeNotificationCenterDelegate
 {
     BOOL _isBatchReady;
     NSMutableArray<UNNotificationResponse*>* _enqueuedNotificationResponses;
 }
 
+static BOOL _batBridgeNotifDelegateShouldAutomaticallyRegister = true;
+
 + (void)load
 {
-    [[NSNotificationCenter defaultCenter] addObserver:[BatchCordovaNotificationCenterDelegate class]
+    [[NSNotificationCenter defaultCenter] addObserver:[BatchBridgeNotificationCenterDelegate class]
                                              selector:@selector(applicationFinishedLaunching:) name:UIApplicationDidFinishLaunchingNotification
                                                object:nil];
 }
 
 + (void)applicationFinishedLaunching:(NSNotification*)notification {
-    [BatchCordovaNotificationCenterDelegate registerAsDelegate];
+    [BatchBridgeNotificationCenterDelegate registerAsDelegate];
 }
 
-+ (BatchCordovaNotificationCenterDelegate *)sharedInstance
++ (BatchBridgeNotificationCenterDelegate *)sharedInstance
 {
-    static BatchCordovaNotificationCenterDelegate *sharedInstance = nil;
+    static BatchBridgeNotificationCenterDelegate *sharedInstance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedInstance = [[BatchCordovaNotificationCenterDelegate alloc] init];
+        sharedInstance = [[BatchBridgeNotificationCenterDelegate alloc] init];
     });
     
     return sharedInstance;
@@ -39,9 +39,19 @@
 + (void)registerAsDelegate
 {
     UNUserNotificationCenter *notifCenter = [UNUserNotificationCenter currentNotificationCenter];
-    BatchCordovaNotificationCenterDelegate *instance = [self sharedInstance];
+    BatchBridgeNotificationCenterDelegate *instance = [self sharedInstance];
     instance.previousDelegate = notifCenter.delegate;
     notifCenter.delegate = instance;
+}
+
++ (BOOL)automaticallyRegister
+{
+    return _batBridgeNotifDelegateShouldAutomaticallyRegister;
+}
+
++ (void)setAutomaticallyRegister:(BOOL)automaticallyRegister
+{
+    _batBridgeNotifDelegateShouldAutomaticallyRegister = automaticallyRegister;
 }
 
 - (instancetype)init

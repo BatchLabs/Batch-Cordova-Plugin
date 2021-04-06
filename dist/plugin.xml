@@ -85,9 +85,9 @@
         </config-file>
         <header-file src="src/ios/BatchCordovaPlugin.h" />
         <source-file src="src/ios/BatchCordovaPlugin.m" />
-        <header-file src="src/ios/BatchCordovaNotificationCenterDelegate.h" />
-        <source-file src="src/ios/BatchCordovaNotificationCenterDelegate.m" />
-
+        
+        <header-file src="src/ios/interop/BatchBridgeNotificationCenterDelegate.h" />
+        <source-file src="src/ios/interop/BatchBridgeNotificationCenterDelegate.m" />
         <header-file src="src/ios/interop/BACSimplePromise.h" />
         <source-file src="src/ios/interop/BACSimplePromise.m" />
         <header-file src="src/ios/interop/BatchBridgeCallback.h" />

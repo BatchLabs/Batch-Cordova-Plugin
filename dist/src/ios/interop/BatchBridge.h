@@ -25,6 +25,7 @@
 #define SET_APP_REGION              	@"setAppRegion"
 #define PUSH_GET_LAST_KNOWN_TOKEN      	@"push.getLastKnownPushToken"
 #define SET_GCM_SENDER_ID           	@"push.setGCMSenderID"
+#define SET_IOS_SHOW_FOREGROUND_NOTIFS  @"push.setIOSShowForegroundNotifications"
 #define SET_IOSNOTIF_TYPES          	@"push.setIOSNotifTypes"
 #define SET_ANDROIDNOTIF_TYPES      	@"push.setAndroidNotifTypes"
 #define REGISTER_NOTIFS             	@"push.register"

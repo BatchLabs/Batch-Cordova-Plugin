@@ -17,6 +17,7 @@
 #import <Batch/BatchPush.h>
 
 #import "BatchInboxBridge.h"
+#import "BatchBridgeNotificationCenterDelegate.h"
 
 #define INVALID_PARAMETER   @"Invalid parameter."
 
@@ -236,6 +237,22 @@ static dispatch_once_t onceToken;
         // Do nothing
     }
     
+    else if ([action caseInsensitiveCompare:SET_IOS_SHOW_FOREGROUND_NOTIFS] == NSOrderedSame)
+    {
+        if (!parameters || [parameters count]==0)
+        {
+            [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action %@.", action];
+        }
+        
+        NSNumber *showForeground = [parameters objectForKey:@"showForeground"];
+        if (!showForeground)
+        {
+            [NSException raise:INVALID_PARAMETER format:@"Missing parameter 'showForeground' for action %@.", action];
+        }
+
+        [BatchBridge setiOSShowForegroundNotifications:[notifshowForegroundTypes boolValue]];
+    }
+
     else if ([action caseInsensitiveCompare:SET_IOSNOTIF_TYPES] == NSOrderedSame)
     {
         if (!parameters || [parameters count]==0)
@@ -361,6 +378,7 @@ static dispatch_once_t onceToken;
 + (void)startWithCallback:(id<BatchBridgeCallback>)callback
 {
     [Batch startWithAPIKey:currentAPIKey];
+    [BatchBridgeNotificationCenterDelegate sharedInstance].isBatchReady = true;
 }
 
 + (void)handleURL:(NSString *)urlString
@@ -437,6 +455,11 @@ static dispatch_once_t onceToken;
         return token;
     }
     return @"";
+}
+
++ (void)setiOSShowForegroundNotifications:(BOOL)showForegroundNotifications
+{
+    [BatchBridgeNotificationCenterDelegate sharedInstance].showForegroundNotifications = showForegroundNotifications;
 }
 
 + (void)setNotificationTypes:(BatchNotificationType)type

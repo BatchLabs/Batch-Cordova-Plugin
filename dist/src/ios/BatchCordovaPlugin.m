@@ -163,6 +163,10 @@
     {
         bridgeResult = [BatchBridge call:cleanAction withParameters:[cdvCommand.arguments objectAtIndex:0] callback:self];
     }
+    else
+    {
+        bridgeResult = BACSimplePromise resolved:@""];
+    }
     
     [bridgeResult then:^(NSObject * _Nullable value) {
         // Thought using NO_RESULT was a good idea? Think again https://github.com/don/cordova-plugin-ble-central/issues/32
