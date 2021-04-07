@@ -251,7 +251,9 @@ declare namespace BatchSDK {
      * `batchPushReceived` will only be triggered when the notification is tapped.
      * @param showForegroundNotifications Show foreground notifications?
      */
-    setiOSShowForegroundNotifications(showForegroundNotifications: boolean): void;
+    setiOSShowForegroundNotifications(
+      showForegroundNotifications: boolean
+    ): void;
 
     /**
      * Clear the app badge on iOS. No effect on Android.
