@@ -18,6 +18,7 @@ class PushStub implements BatchSDK.PushModule {
   }
 
   public registerForRemoteNotifications() {}
+  public setiOSShowForegroundNotifications(_showForeground: boolean) {}
   public setAndroidNotificationTypes(_notifTypes: unknown) {}
   public setiOSNotificationTypes(_notifTypes: unknown) {}
   public clearBadge() {}
