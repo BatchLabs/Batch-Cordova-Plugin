@@ -2,7 +2,7 @@ Batch Cordova Plugin
 
 ## Upcoming
 
-This is a major release with breaking changes. Please see the migration guide for more info.
+This is a major release with breaking changes. Please see the [migration guide](https://doc.batch.com/cordova/advanced/2x-migration) for more info.
 
 **Plugin**
 
@@ -37,6 +37,7 @@ This is a major release with breaking changes. Please see the migration guide fo
 - The native SDK isn't bundled anymore: Cocoapods is now used to integrate Batch's native component.
 - The plugin now automatically sets a UNUserNotificationCenterDelegate to handle new iOS features.  
   This enables configuration of foreground push behaviour: they can now be displayed in an alert just like if the user was outside of the application.
+  It can be disabled by calling `BatchBridgeNotificationCenterDelegate.automaticallyRegister = false` as soon as possible in `application:didFinishLaunchingWithOptions:`.
 - Fixed a bug where notification opens on cold start would not work.
 - Fixed multiple mobile landings related bugs.
 - Fixed multiple `batchPushReceived` related bugs.
