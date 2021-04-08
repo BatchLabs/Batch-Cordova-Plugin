@@ -27,7 +27,8 @@ This is a major release with breaking changes. Please see the [migration guide](
   Ionic users will need to add `cordova-plugin-androidx-adapter`.
 - The plugin doesn't depend on Firebase and appcompat anymore. Batch expects androidx.appcompat and Firebase Cloud Messaging to be in your application.  
   This can be setup using the Firebase plugin of your choice:  
-   - We recommend `cordova-plugin-firebase-messaging` for Cordova.
+   - We recommend `cordova-plugin-firebase-messaging` for Cordova.  
+     If you do not want to add Firebase to your iOS app, manual FCM integration steps are available in our integration documentation.
    - Capacitor comes with appcompat and FCM support out of the box, no extra plugin is needed.
 
   You will also be required to configure your `google-services.json` manually: this is described in the integration documentation and should be covered by your Firebase plugin's documentation.
