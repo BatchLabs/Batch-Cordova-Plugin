@@ -160,6 +160,9 @@ public class Bridge
             case PUSH_SET_ANDROIDNOTIF_TYPES:
                 setNotificationTypes(getTypedParameter(parameters, "notifTypes", Integer.class));
                 break;
+			case PUSH_SET_IOSSHOW_FOREGROUND:
+				// iOS only, do nothing
+				return null;
 			case USER_EDIT:
 				userDataEdit(parameters);
 				break;

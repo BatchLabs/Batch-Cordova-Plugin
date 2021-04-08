@@ -32,6 +32,7 @@ public enum Action
     PUSH_DISMISS_NOTIFICATIONS("push.dismissNotifications"),
     PUSH_SET_IOSNOTIF_TYPES("push.setIOSNotifTypes"),
     PUSH_SET_ANDROIDNOTIF_TYPES("push.setAndroidNotifTypes"),
+    PUSH_SET_IOSSHOW_FOREGROUND("push.setIOSShowForegroundNotifications"),
 	USER_EDIT("user.edit"),
 	USER_TRACK_EVENT("user.track.event"),
     USER_TRACK_LEGACY_EVENT("user.track.legacy_event"),
