@@ -80,7 +80,7 @@
     //NSLog(@"[Batch] DEBUG - PluginInitialize");
     setenv("BATCH_PLUGIN_VERSION", PluginVersion, 1);
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_batchPushReceived:) name:BatchPushReceivedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_batchPushReceived:) name:BatchPushOpenedNotification object:nil];
     
     //[self.commandDelegate evalJs:@"batch._setupCallback()"];
     
