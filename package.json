@@ -4,7 +4,7 @@
   "description": "Builder for the Batch SDK Cordova plugin",
   "private": true,
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "cp types/index.d.ts dist/index.d.ts && webpack --mode production",
     "lint": "eslint src/* types/* --ext .ts",
     "lint-fix": "eslint --fix src/* types/* --ext .ts",
     "test": "jest",
