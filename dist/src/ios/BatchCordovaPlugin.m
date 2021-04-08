@@ -165,7 +165,7 @@
     }
     else
     {
-        bridgeResult = BACSimplePromise resolved:@""];
+        bridgeResult = [BACSimplePromise resolved:@""];
     }
     
     [bridgeResult then:^(NSObject * _Nullable value) {

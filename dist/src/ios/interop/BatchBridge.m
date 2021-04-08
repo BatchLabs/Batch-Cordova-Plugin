@@ -250,7 +250,7 @@ static dispatch_once_t onceToken;
             [NSException raise:INVALID_PARAMETER format:@"Missing parameter 'showForeground' for action %@.", action];
         }
 
-        [BatchBridge setiOSShowForegroundNotifications:[notifshowForegroundTypes boolValue]];
+        [BatchBridge setiOSShowForegroundNotifications:[showForeground boolValue]];
     }
 
     else if ([action caseInsensitiveCompare:SET_IOSNOTIF_TYPES] == NSOrderedSame)
@@ -469,7 +469,8 @@ static dispatch_once_t onceToken;
 
 + (void)registerForRemoteNotifications
 {
-    [BatchPush registerForRemoteNotifications];
+    [BatchPush requestNotificationAuthorization];
+    [BatchPush refreshToken];
 }
 
 + (void)clearBadge
