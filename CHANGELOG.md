@@ -20,6 +20,7 @@ This is a major release with breaking changes. Please see the [migration guide](
   Native SDK version can be configured using the `BATCHSDK_ANDROID_VERSION` and `BATCHSDK_IOS_VERSION` preferences.  
   Please note that this version of the plugin will not work with earlier native Batch SDK versions.
 - Added Ionic Capacitor support. Requires Capacitor 2.4 or higher.
+- Fixed an issue where Cordova/Ionic would not properly write the required AndroidManifest lines.
 
 **Android**
 
