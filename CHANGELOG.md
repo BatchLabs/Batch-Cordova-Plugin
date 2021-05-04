@@ -1,5 +1,9 @@
 Batch Cordova Plugin
 
+## 3.0.0-beta.2
+
+Rerelease of 3.0.0-beta.1, fixing a NPM packaging issue.
+
 ## 3.0.0-beta.1
 
 This is a major release with breaking changes. Please see the [migration guide](https://doc.batch.com/cordova/advanced/2x-migration) for more info.
