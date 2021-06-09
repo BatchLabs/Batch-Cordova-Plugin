@@ -475,6 +475,15 @@ declare namespace BatchSDK {
     addTag(tag: string): BatchEventData;
 
     /**
+     * Add a date attribute for the specified key
+     *
+     * @param key   Attribute key. Should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
+     * @param value Date value to add.
+     * @return Same BatchEventData instance, for chaining
+     */
+    put(key: string, value: Date): BatchEventData;
+
+    /**
      * Add a string attribute for the specified key
      *
      * @param key   Attribute key. Should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.

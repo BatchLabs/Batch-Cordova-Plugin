@@ -6,11 +6,12 @@ export enum TypedEventAttributeType {
   Boolean = "b",
   Integer = "i",
   Float = "f",
+  Date = "d",
 }
 
 export interface ITypedEventAttribute {
   type: TypedEventAttributeType;
-  value: string | boolean | number;
+  value: string | boolean | number | Date;
 }
 
 export interface IEventDataInternalRepresentation {
@@ -68,7 +69,10 @@ export class BatchEventData implements BatchSDK.BatchEventData {
     return this;
   }
 
-  public put(key: string, value: string | number | boolean): BatchEventData {
+  public put(
+    key: string,
+    value: string | number | boolean | Date
+  ): BatchEventData {
     if (!isString(key)) {
       writeBatchLog(false, "BatchEventData - Key must be a string");
       return this;
@@ -111,7 +115,12 @@ export class BatchEventData implements BatchSDK.BatchEventData {
 
     let typedAttrValue: ITypedEventAttribute | undefined;
 
-    if (isString(value)) {
+    if (value instanceof Date) {
+      typedAttrValue = {
+        type: TypedEventAttributeType.Date,
+        value: value.getTime(),
+      };
+    } else if (isString(value)) {
       typedAttrValue = {
         type: TypedEventAttributeType.String,
         value,
@@ -132,7 +141,7 @@ export class BatchEventData implements BatchSDK.BatchEventData {
     } else {
       writeBatchLog(
         false,
-        "BatchEventData - Invalid attribute value type. Must be a string, number or boolean"
+        "BatchEventData - Invalid attribute value type. Must be a string, number, date or boolean"
       );
       return this;
     }
