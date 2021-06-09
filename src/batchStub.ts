@@ -74,7 +74,7 @@ class BatchEventDataStub implements BatchSDK.BatchEventData {
     return this;
   }
 
-  public put(_key: unknown, _value: string | number | boolean) {
+  public put(_key: unknown, _value: string | number | boolean | Date) {
     return this;
   }
 }
