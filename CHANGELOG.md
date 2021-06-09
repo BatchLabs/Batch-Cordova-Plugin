@@ -1,5 +1,10 @@
 Batch Cordova Plugin
 
+## UPCOMING
+
+**User**
+- Added support for dates in event data.
+
 ## 3.0.0-beta.2
 
 Rerelease of 3.0.0-beta.1, fixing a NPM packaging issue.
