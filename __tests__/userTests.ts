@@ -92,7 +92,8 @@ test("it tracks events", () => {
     .put("foo", "bar")
     .put("bool", true)
     .put("float", 2.1)
-    .put("int", 2);
+    .put("int", 2)
+    .put("date", 2);
   userModule.trackEvent("foo_3", "foobar2", eventData);
 
   expect(mockedTrackEvent.mock.calls.length).toBe(3);
@@ -102,22 +103,26 @@ test("it tracks events", () => {
     attributes: {
       bool: {
         type: "b",
-        value: true
+        value: true,
       },
       float: {
         type: "f",
-        value: 2.1
+        value: 2.1,
       },
       foo: {
         type: "s",
-        value: "bar"
+        value: "bar",
       },
       int: {
         type: "i",
-        value: 2
+        value: 2,
+      },
+      date: {
+        type: "d",
+        value: 1520352788000,
       }
     },
-    tags: ["foo", "bar"]
+    tags: ["foo", "bar"],
   });
 });
 
