@@ -671,8 +671,15 @@ static dispatch_once_t onceToken;
 
             NSString *type = typedAttribute[@"type"];
             NSObject *value = typedAttribute[@"value"];
-            
-            if ([@"s" isEqualToString:type]) {
+
+            if ([@"d" isEqualToString:type]) {
+                if (![value isKindOfClass:[NSNumber class]])
+                {
+                    [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: expected number (date) value, got something else"];
+                }
+                double dateValue = [((NSNumber*)value) doubleValue]/1000;
+                [batchEventData putDate:[NSDate dateWithTimeIntervalSince1970:dateValue] forKey:key];
+            } else if ([@"s" isEqualToString:type]) {
                 if (![value isKindOfClass:[NSString class]])
                 {
                     [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: expected string value, got something else"];
