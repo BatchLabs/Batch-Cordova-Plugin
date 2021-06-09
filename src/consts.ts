@@ -3,8 +3,6 @@ export const Consts = {
   AttributeStringMaxLength: 64,
   BatchPluginName: "Batch",
   DevelopmentMode: true,
-  EventDataMaxTags: 10,
-  EventDataMaxValues: 10,
   EventDataStringMaxLength: 64,
 };
 

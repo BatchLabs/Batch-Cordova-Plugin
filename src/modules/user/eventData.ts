@@ -52,18 +52,6 @@ export class BatchEventData implements BatchSDK.BatchEventData {
       return this;
     }
 
-    if (Object.keys(this._tags).length >= Consts.EventDataMaxTags) {
-      writeBatchLog(
-        false,
-        "BatchEventData - Event data cannot hold more than " +
-          Consts.EventDataMaxTags +
-          " tags. Ignoring tag: '" +
-          tag +
-          "'"
-      );
-      return this;
-    }
-
     this._tags[tag.toLowerCase()] = true;
 
     return this;
@@ -97,21 +85,6 @@ export class BatchEventData implements BatchSDK.BatchEventData {
     }
 
     key = key.toLowerCase();
-
-    if (
-      Object.keys(this._tags).length >= Consts.EventDataMaxValues &&
-      !Object.prototype.hasOwnProperty.call(this._attributes, key)
-    ) {
-      writeBatchLog(
-        false,
-        "BatchEventData - Event data cannot hold more than " +
-          Consts.EventDataMaxValues +
-          " attributes. Ignoring attribute: '" +
-          key +
-          "'"
-      );
-      return this;
-    }
 
     let typedAttrValue: ITypedEventAttribute | undefined;
 

@@ -4,6 +4,9 @@ Batch Cordova Plugin
 
 **User**
 - Added support for dates in event data.
+- Removed event data tags/attributes limits from the Cordova plugin.  
+  This does not mean that those limits are gone, but that the native SDK will now enforce them so that the plugin doesn't have to be updated if and then these limits change.  
+  Current native limits are 15 attributes and 10 tags.
 
 ## 3.0.0-beta.2
 
