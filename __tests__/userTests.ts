@@ -93,7 +93,7 @@ test("it tracks events", () => {
     .put("bool", true)
     .put("float", 2.1)
     .put("int", 2)
-    .put("date", 2);
+    .put("date", new Date(1520352788000));
   userModule.trackEvent("foo_3", "foobar2", eventData);
 
   expect(mockedTrackEvent.mock.calls.length).toBe(3);
