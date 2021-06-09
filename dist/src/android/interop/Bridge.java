@@ -606,7 +606,9 @@ public class Bridge
 				Map<String, Object> entryMapValue = (Map<String, Object>)entryValue;
 				String type = getTypedParameter(entryMapValue, "type", String.class);
 				
-				if ("s".equals(type)) {
+				if ("d".equals(type)) {
+					batchEventData.put(entryStringKey, new Date(getTypedParameter(entryMapValue, "value", Number.class).longValue()));
+				} else if ("s".equals(type)) {
 					batchEventData.put(entryStringKey, getTypedParameter(entryMapValue, "value", String.class));
 				} else if ("b".equals(type)) {
 					batchEventData.put(entryStringKey, getTypedParameter(entryMapValue, "value", Boolean.class));
