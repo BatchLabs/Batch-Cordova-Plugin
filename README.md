@@ -50,7 +50,7 @@ Our [official documentation](https://batch.com/doc/cordova/sdk-integration/initi
 
 # Development
 
-If you're reading this, you're probably interested in how to cha
+If you're reading this, you're probably interested in how to tweak the code.
 This section will cover the location of the various files and how to build/test your changes.
 
 ## Folder architecture
