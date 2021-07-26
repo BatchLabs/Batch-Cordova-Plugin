@@ -1,6 +1,6 @@
 /**
  * Batch SDK type definition file.
- * Can be imported using `import '@batch.com/cordova-plugin';`
+ * Can be imported using `import type {} from '@batch.com/cordova-plugin';`
  */
 
 declare namespace BatchSDK {
