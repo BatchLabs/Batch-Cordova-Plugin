@@ -1,3 +1,8 @@
+/**
+ * Batch SDK type definition file.
+ * Can be imported using `import '@batch.com/cordova-plugin';`
+ */
+
 declare namespace BatchSDK {
   /**
    * Batch Configuration object
@@ -549,13 +554,16 @@ declare namespace BatchSDK {
   }
 }
 
-// Cordova extensions
-interface Window {
-  batch: BatchSDK.Batch;
-}
+export {}; // This is a module
 
-interface CordovaPlugins {
-  batch: BatchSDK.Batch;
-}
+declare global {
+    const batch: BatchSDK.Batch;
 
-declare let batch: BatchSDK.Batch;
+    interface Window {
+      batch: BatchSDK.Batch;
+    }
+
+    interface CordovaPlugins {
+      batch: BatchSDK.Batch;
+    }
+}
