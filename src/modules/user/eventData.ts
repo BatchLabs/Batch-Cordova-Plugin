@@ -1,3 +1,4 @@
+import { BatchSDK } from "../../../types";
 import Consts from "../../consts";
 import { isBoolean, isNumber, isString, writeBatchLog } from "../../helpers";
 

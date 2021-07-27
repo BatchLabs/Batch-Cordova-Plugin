@@ -1,3 +1,4 @@
+import { BatchSDK } from "../types";
 import batch from "./batch";
 import batchStub from "./batchStub";
 import { CallbackHandler } from "./callback";

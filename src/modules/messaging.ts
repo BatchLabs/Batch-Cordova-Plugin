@@ -1,3 +1,4 @@
+import { BatchSDK } from "../../types";
 import { Messaging as MessagingActions } from "../actions";
 import { sendToBridge, writeBatchLog } from "../helpers";
 

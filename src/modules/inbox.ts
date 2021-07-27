@@ -1,3 +1,4 @@
+import { BatchSDK } from "../../types";
 import { Inbox as InboxActions } from "../actions";
 import { isNumber, isString, sendToBridge } from "../helpers";
 

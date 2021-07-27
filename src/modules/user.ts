@@ -4,6 +4,7 @@ import { isNumber, isString, sendToBridge, writeBatchLog } from "../helpers";
 import Consts from "../consts";
 import { BatchEventData } from "./user/eventData";
 import { BatchUserDataEditor } from "./user/userDataEditor";
+import { BatchSDK } from "../../types";
 
 export class UserModule implements BatchSDK.UserModule {
   public eventData: typeof BatchSDK.BatchEventData;

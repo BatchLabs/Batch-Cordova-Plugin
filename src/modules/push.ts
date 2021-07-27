@@ -1,5 +1,6 @@
 /* tslint:disable:no-bitwise */
 
+import { BatchSDK } from "../../types";
 import { Push as PushActions } from "../actions";
 import { sendToBridge, writeBatchLog } from "../helpers";
 

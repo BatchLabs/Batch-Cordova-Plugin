@@ -1,3 +1,4 @@
+import { BatchSDK } from "../../../types";
 import { User as UserAction, UserDataOperation } from "../../actions";
 import Consts from "../../consts";
 import { isNumber, isString, sendToBridge, writeBatchLog } from "../../helpers";

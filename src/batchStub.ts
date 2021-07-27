@@ -1,3 +1,4 @@
+import { BatchSDK } from "../types";
 import { InboxNotificationSource } from "./modules/inbox";
 import { AndroidNotificationTypes, iOSNotificationTypes } from "./modules/push";
 

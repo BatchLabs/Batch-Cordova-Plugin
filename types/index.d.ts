@@ -3,7 +3,7 @@
  * Can be imported using `import type {} from '@batch.com/cordova-plugin';`
  */
 
-declare namespace BatchSDK {
+export declare namespace BatchSDK {
   /**
    * Batch Configuration object
    */
@@ -553,8 +553,6 @@ declare namespace BatchSDK {
     TRANSACTIONAL = 2,
   }
 }
-
-export {}; // This is a module
 
 declare global {
   const batch: BatchSDK.Batch;

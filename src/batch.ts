@@ -1,3 +1,4 @@
+import { BatchSDK } from "../types";
 import { Core as CoreActions } from "./actions";
 import { EventEmitter } from "./eventEmitter";
 import { sendToBridge, writeBatchLog } from "./helpers";

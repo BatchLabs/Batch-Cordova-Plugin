@@ -1,3 +1,4 @@
+import { BatchSDK } from "../types";
 import { writeBatchLog } from "./helpers";
 
 export class EventEmitter {
