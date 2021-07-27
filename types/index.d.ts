@@ -557,13 +557,13 @@ declare namespace BatchSDK {
 export {}; // This is a module
 
 declare global {
-    const batch: BatchSDK.Batch;
+  const batch: BatchSDK.Batch;
 
-    interface Window {
-      batch: BatchSDK.Batch;
-    }
+  interface Window {
+    batch: BatchSDK.Batch;
+  }
 
-    interface CordovaPlugins {
-      batch: BatchSDK.Batch;
-    }
+  interface CordovaPlugins {
+    batch: BatchSDK.Batch;
+  }
 }
