@@ -1,5 +1,12 @@
 Batch Cordova Plugin
 
+## 3.0.1
+
+**Plugin**
+
+- Make typescript definition importable, adding type information to the global `batch` object.
+  To import it, add: `import type {} from '@batch.com/cordova-plugin';`.
+
 ## 3.0.0
 
 This is a major release with breaking changes. Please see the [migration guide](https://doc.batch.com/cordova/advanced/2x-migration) for more info.
