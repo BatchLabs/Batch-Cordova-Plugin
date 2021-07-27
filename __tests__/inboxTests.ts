@@ -35,6 +35,7 @@ jest.doMock("../src/helpers", () => {
 });
 
 import { InboxModule } from "../src/modules/inbox";
+import { BatchSDK } from "../types";
 
 test("can fetch notifications for the current installation ID", done => {
   new InboxModule().fetchNotifications((err, notifications) => {
