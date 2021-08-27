@@ -29,7 +29,11 @@ export function sendToBridge(
   // The Bridge never fails as far as Cordova is concerned, but the callback can have a negative response
   // It will need to be handled on a per-case basis
   cordova.exec(
-    callback || (() => {}),
+    (value) => {
+      if (callback) {
+        callback(value === null ? undefined : value);
+      }
+    },
     () => {},
     Consts.BatchPluginName,
     "BA_" + method,

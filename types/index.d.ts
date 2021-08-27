@@ -178,7 +178,7 @@ export declare namespace BatchSDK {
      * You will get the result in a callback you need to provide to this function.
      * @param resultCallback Callback function. First and only argument is the Batch-generated installation ID. Might be null/undefined if Batch isn't started.
      */
-    getInstallationID(resultCallback: (installationID: string) => void): void;
+    getInstallationID(resultCallback: (installationID?: string) => void): void;
 
     /**
      * Get the user data editor. Don't forget to call save when you're done.

@@ -1,5 +1,12 @@
 Batch Cordova Plugin
 
+## UPCOMING
+
+**User**
+
+- Fixed Installation ID getter's type definition to properly match it's implementation: the callback argument can now be `undefined`.
+- Added getters for `language`/`region` and `identifier` in `batch.user`.
+
 ## 4.0.0
 
 **Plugin**
