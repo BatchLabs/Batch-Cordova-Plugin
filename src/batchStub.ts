@@ -34,7 +34,12 @@ class UserStub implements BatchSDK.UserModule {
     this.eventData = BatchEventDataStub;
   }
 
-  public getInstallationID(_resultCallback: (installationID: string) => void) {}
+  public getLanguage(_resultCallback: (language?: string) => void) {}
+  public getRegion(_resultCallback: (region?: string) => void) {}
+  public getIdentifier(_resultCallback: (identifier?: string) => void) {}
+  public getInstallationID(
+    _resultCallback: (installationID?: string) => void
+  ) {}
   public getEditor(): BatchSDK.BatchUserDataEditor {
     return new BatchUserDataEditorStub();
   }
