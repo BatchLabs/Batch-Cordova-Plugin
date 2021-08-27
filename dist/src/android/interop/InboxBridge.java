@@ -1,4 +1,4 @@
-package com.batch.cordova.interop;
+package com.batch.cordova.android.interop;
 
 import android.app.Activity;
 import android.util.Log;

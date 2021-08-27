@@ -1,4 +1,4 @@
-package com.batch.cordova.interop;
+package com.batch.cordova.android.interop;
 
 /**
  * Exception representing internal bridge errors

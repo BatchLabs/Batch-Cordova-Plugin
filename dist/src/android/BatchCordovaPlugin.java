@@ -12,11 +12,11 @@ import com.batch.android.Batch;
 import com.batch.android.BatchMessage;
 import com.batch.android.BatchPushPayload;
 import com.batch.android.LoggerDelegate;
-import com.batch.cordova.interop.Action;
-import com.batch.cordova.interop.Bridge;
-import com.batch.cordova.interop.Callback;
-import com.batch.cordova.interop.JSONHelper;
-import com.batch.cordova.interop.SimplePromise;
+import com.batch.cordova.android.interop.Action;
+import com.batch.cordova.android.interop.Bridge;
+import com.batch.cordova.android.interop.Callback;
+import com.batch.cordova.android.interop.JSONHelper;
+import com.batch.cordova.android.interop.SimplePromise;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;

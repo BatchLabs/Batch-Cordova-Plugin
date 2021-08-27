@@ -1,4 +1,4 @@
-package com.batch.cordova.interop;
+package com.batch.cordova.android.interop;
 
 import java.util.Map;
 

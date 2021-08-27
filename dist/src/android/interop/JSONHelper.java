@@ -1,4 +1,4 @@
-package com.batch.cordova.interop;
+package com.batch.cordova.android.interop;
 
 import com.batch.android.json.JSONArray;
 import com.batch.android.json.JSONException;
