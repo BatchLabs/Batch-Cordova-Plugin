@@ -15,12 +15,6 @@ public enum Action
     OPT_IN("optIn"),
     OPT_OUT("optOut"),
     OPT_OUT_AND_WIPE_DATA("optOutAndWipeData"),
-	SET_CUSTOM_USER_ID("setCustomID"),
-    GET_CUSTOM_USER_ID("getCustomID"),
-    SET_APP_LANGUAGE("setAppLanguage"),
-    GET_APP_LANGUAGE("getAppLanguage"),
-    SET_APP_REGION("setAppRegion"),
-    GET_APP_REGION("getAppRegion"),
     INBOX_FETCH("inbox.fetch"),
     INBOX_FETCH_FOR_USER_ID("inbox.fetchForUserIdentifier"),
     MESSAGING_SET_DO_NOT_DISTURB_ENABLED("messaging.setDoNotDisturbEnabled"),
@@ -39,7 +33,10 @@ public enum Action
 	USER_TRACK_TRANSACTION("user.track.transaction"),
     USER_TRACK_LOCATION("user.track.location"),
 	USER_DATA_DEBUG("user.data.debug"),
-	USER_GET_INSTALLATION_ID("user.getInstallationID");
+	USER_GET_INSTALLATION_ID("user.getInstallationID"),
+    USER_GET_LANGUAGE("user.getLanguage"),
+    USER_GET_REGION("user.getRegion"),
+    USER_GET_IDENTIFIER("user.getIdentifier");
 
     /**
      * Action name, the one passed as a paremeter in {@link com.batch.android.interop.Bridge}

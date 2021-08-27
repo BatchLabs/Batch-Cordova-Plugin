@@ -111,21 +111,6 @@ public class Bridge
 			case OPT_OUT_AND_WIPE_DATA:
 				optOut(activity, true);
 				break;
-			case SET_CUSTOM_USER_ID:
-				setCustomUserID(getTypedParameter(parameters, "customID", String.class));
-				break;
-            case GET_CUSTOM_USER_ID:
-                return SimplePromise.resolved(getCustomUserID());
-            case SET_APP_LANGUAGE:
-                setAppLanguage(getTypedParameter(parameters, "language", String.class));
-                break;
-            case GET_APP_LANGUAGE:
-                return SimplePromise.resolved(getAppLanguage());
-            case SET_APP_REGION:
-                setAppRegion(getTypedParameter(parameters, "region", String.class));
-                break;
-            case GET_APP_REGION:
-                return SimplePromise.resolved(getAppRegion());
 			case INBOX_FETCH:
 				return InboxBridge.fetchNotifications(activity);
 			case INBOX_FETCH_FOR_USER_ID:
@@ -183,6 +168,12 @@ public class Bridge
 				break;
 			case USER_GET_INSTALLATION_ID:
 				return SimplePromise.resolved(Batch.User.getInstallationID());
+			case USER_GET_LANGUAGE:
+				return SimplePromise.resolved(Batch.User.getLanguage(activity));
+			case USER_GET_REGION:
+				return SimplePromise.resolved(Batch.User.getRegion(activity));
+			case USER_GET_IDENTIFIER:
+				return SimplePromise.resolved(Batch.User.getIdentifier(activity));
 			default:
 				throw new BridgeException(INVALID_PARAMETER + " : Action '" + actionName + "' is known, but not implemented");
 		}
@@ -298,66 +289,6 @@ public class Bridge
 			Batch.optOut(activity);
 		}
 	}
-
-	private static void setCustomUserID(String userId)
-	{
-        BatchUserProfile profile = Batch.getUserProfile();
-        if (profile != null)
-        {
-            Batch.getUserProfile().setCustomID(userId);
-        }
-	}
-
-    private static String getCustomUserID()
-    {
-        BatchUserProfile profile = Batch.getUserProfile();
-        if (profile != null)
-        {
-            return Batch.getUserProfile().getCustomID();
-        }
-
-        return null;
-    }
-
-    private static void setAppLanguage(String language)
-    {
-        BatchUserProfile profile = Batch.getUserProfile();
-        if (profile != null)
-        {
-            Batch.getUserProfile().setLanguage(language);
-        }
-    }
-
-    private static String getAppLanguage()
-    {
-        BatchUserProfile profile = Batch.getUserProfile();
-        if (profile != null)
-        {
-            return Batch.getUserProfile().getLanguage();
-        }
-
-        return null;
-    }
-
-    private static void setAppRegion(String region)
-    {
-        BatchUserProfile profile = Batch.getUserProfile();
-        if (profile != null)
-        {
-            Batch.getUserProfile().setRegion(region);
-        }
-    }
-
-    private static String getAppRegion()
-    {
-        BatchUserProfile profile = Batch.getUserProfile();
-        if (profile != null)
-        {
-            return Batch.getUserProfile().getRegion();
-        }
-
-        return null;
-    }
 
     private static String getLastKnownPushToken()
     {
