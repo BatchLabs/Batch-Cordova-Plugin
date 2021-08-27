@@ -145,67 +145,6 @@ static dispatch_once_t onceToken;
     {
         [Batch optOutAndWipeData];
     }
-
-    // setCustomUserIdentifier:
-    else if ([action caseInsensitiveCompare:SET_CUSTOM_USER_ID] == NSOrderedSame)
-    {
-        if (!parameters || [parameters count]==0)
-        {
-            [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action %@.", action];
-        }
-        
-        NSString *identifier = [parameters objectForKey:@"customID"];
-        if (!identifier)
-        {
-            [NSException raise:INVALID_PARAMETER format:@"Missing parameter 'customID' for action %@.", action];
-        }
-
-        [BatchBridge setCustomUserIdentifier:identifier callback:callback];
-    }
-    
-    // getCustomUserIdentifier:
-    else if ([action caseInsensitiveCompare:GET_CUSTOM_USER_ID] == NSOrderedSame)
-    {
-        return [BACSimplePromise resolved:[BatchBridge getCustomUserIdentifier]];
-    }
-    
-    // setAppLanguage:
-    else if ([action caseInsensitiveCompare:SET_APP_LANGUAGE] == NSOrderedSame)
-    {
-        if (!parameters || [parameters count]==0)
-        {
-            [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action %@.", action];
-        }
-        
-        NSString *language = [parameters objectForKey:@"language"];
-        
-        [BatchBridge setAppLanguage:language callback:callback];
-    }
-    
-    // getAppLanguage:
-    else if ([action caseInsensitiveCompare:GET_APP_LANGUAGE] == NSOrderedSame)
-    {
-        return [BACSimplePromise resolved:[BatchBridge getAppLanguage]];
-    }
-    
-    // setAppRegion:
-    else if ([action caseInsensitiveCompare:SET_APP_REGION] == NSOrderedSame)
-    {
-        if (!parameters || [parameters count]==0)
-        {
-            [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action %@.", action];
-        }
-        
-        NSString *region = [parameters objectForKey:@"region"];
-        
-        [BatchBridge setAppRegion:region callback:callback];
-    }
-    
-    // getAppRegion:
-    else if ([action caseInsensitiveCompare:GET_APP_REGION] == NSOrderedSame)
-    {
-        return [BACSimplePromise resolved:[BatchBridge getAppRegion]];
-    }
     
     // setConfigWithApiKey:andUseIDFA:
     else if ([action caseInsensitiveCompare:SET_CONFIG] == NSOrderedSame)
@@ -288,6 +227,21 @@ static dispatch_once_t onceToken;
     else if ([action caseInsensitiveCompare:CLEAR_BADGE] == NSOrderedSame)
     {
         [BatchBridge clearBadge];
+    }
+    
+    else if ([action caseInsensitiveCompare:USER_GET_LANGUAGE] == NSOrderedSame)
+    {
+        return [BACSimplePromise resolved:[BatchBridge user_getLanguage]];
+    }
+    
+    else if ([action caseInsensitiveCompare:USER_GET_REGION] == NSOrderedSame)
+    {
+        return [BACSimplePromise resolved:[BatchBridge user_getRegion]];
+    }
+    
+    else if ([action caseInsensitiveCompare:USER_GET_IDENTIFIER] == NSOrderedSame)
+    {
+        return [BACSimplePromise resolved:[BatchBridge user_getIdentifier]];
     }
     
     else if ([action caseInsensitiveCompare:USER_EDIT] == NSOrderedSame)
@@ -400,41 +354,6 @@ static dispatch_once_t onceToken;
     return [Batch isRunningInDevelopmentMode]?@"true":@"false";
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-
-+ (void)setCustomUserIdentifier:(NSString *)identifier callback:(id<BatchBridgeCallback>)callback
-{
-    [[Batch defaultUserProfile] setCustomIdentifier:identifier];
-}
-
-+ (NSString *)getCustomUserIdentifier
-{
-   return [[Batch defaultUserProfile] customIdentifier];
-}
-
-+ (void)setAppLanguage:(NSString *)language callback:(id<BatchBridgeCallback>)callback
-{
-    [[Batch defaultUserProfile] setLanguage:language];
-}
-
-+ (NSString *)getAppLanguage
-{
-    return [[Batch defaultUserProfile] language];
-}
-
-+ (void)setAppRegion:(NSString *)region callback:(id<BatchBridgeCallback>)callback
-{
-    [[Batch defaultUserProfile] setRegion:region];
-}
-
-+ (NSString *)getAppRegion
-{
-    return [[Batch defaultUserProfile] region];
-}
-
-#pragma clang diagnostic pop
-
 + (void)setConfigWithApiKey:(NSString*)APIKey andUseIDFA:(NSNumber*)useIDFA
 {
     if (useIDFA)
@@ -485,6 +404,21 @@ static dispatch_once_t onceToken;
 
 #pragma mark -
 #pragma mark User methods
+
++ (NSString *)user_getLanguage
+{
+    return [BatchUser language];
+}
+
++ (NSString *)user_getRegion
+{
+    return [BatchUser region];
+}
+
++ (NSString *)user_getIdentifier
+{
+    return [BatchUser identifier];
+}
 
 + (void)userDataEdit:(NSDictionary*)params
 {
