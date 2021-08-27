@@ -181,6 +181,27 @@ export declare namespace BatchSDK {
     getInstallationID(resultCallback: (installationID?: string) => void): void;
 
     /**
+     * Get the application language override set using BatchUserDataEditor. Batch must be started to read it.
+     * You will get the result in a callback you need to provide to this function.
+     * @param resultCallback Callback function. First and only argument is the language you have previously set, if any, or undefined. Might be null/undefined if Batch isn't started.
+     */
+    getLanguage(resultCallback: (language?: string) => void): void;
+
+    /**
+     * Get the application region override set using BatchUserDataEditor. Batch must be started to read it.
+     * You will get the result in a callback you need to provide to this function.
+     * @param resultCallback Callback function. First and only argument is the region you have previously set, if any, or undefined. Might be null/undefined if Batch isn't started.
+     */
+    getRegion(resultCallback: (region?: string) => void): void;
+
+    /**
+     * Get the user identifier set using BatchUserDataEditor. Batch must be started to read it.
+     * You will get the result in a callback you need to provide to this function.
+     * @param resultCallback Callback function. First and only argument is the user identifier you have previously set, if any, or undefined. Might be null/undefined if Batch isn't started.
+     */
+    getIdentifier(resultCallback: (identifier?: string) => void): void;
+
+    /**
      * Get the user data editor. Don't forget to call save when you're done.
      * @return Batch user data editor
      */

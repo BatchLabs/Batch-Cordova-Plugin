@@ -34,6 +34,9 @@ export enum User {
   TrackLocation = "user.track.location",
   DataDebug = "user.data.debug",
   GetInstallationID = "user.getInstallationID",
+  GetLanguage = "user.getLanguage",
+  GetRegion = "user.getRegion",
+  GetIdentifier = "user.getIdentifier",
 }
 
 export enum UserDataOperation {

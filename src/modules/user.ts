@@ -14,9 +14,21 @@ export class UserModule implements BatchSDK.UserModule {
   }
 
   public getInstallationID(
-    resultCallback: (installationID: string) => void
+    resultCallback: (installationID?: string) => void
   ): void {
     sendToBridge(resultCallback, UserAction.GetInstallationID, null);
+  }
+
+  public getLanguage(resultCallback: (language?: string) => void): void {
+    sendToBridge(resultCallback, UserAction.GetLanguage, null);
+  }
+
+  public getRegion(resultCallback: (region?: string) => void): void {
+    sendToBridge(resultCallback, UserAction.GetLanguage, null);
+  }
+
+  public getIdentifier(resultCallback: (identifier?: string) => void): void {
+    sendToBridge(resultCallback, UserAction.GetIdentifier, null);
   }
 
   public getEditor(): BatchUserDataEditor {
