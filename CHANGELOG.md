@@ -2,6 +2,10 @@ Batch Cordova Plugin
 
 ## UPCOMING
 
+**Core**
+
+- **Breaking change**: Fixed an issue where on iOS, the push payload of the `batchPushReceived` event was under the `payload` key. It is now at the root of the event data, just like 2.x and on Android.
+
 **User**
 
 - Fixed Installation ID getter's type definition to properly match it's implementation: the callback argument can now be `undefined`.

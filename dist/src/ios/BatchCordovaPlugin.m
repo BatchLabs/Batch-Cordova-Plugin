@@ -117,14 +117,18 @@
         return;
     }
 
-    BOOL hasLandingMessage = false;
-    if ([notification.userInfo isKindOfClass:[NSDictionary class]])
+    NSDictionary *payload = notification.userInfo[@"payload"];
+    if (![payload isKindOfClass:[NSDictionary class]])
     {
-        BatchPushMessage *parsedMessage = [BatchMessaging messageFromPushPayload:notification.userInfo];
-        hasLandingMessage = parsedMessage != nil;
+        NSLog(@"[Batch] Error: got a push with no payload in userInfo.");
+        return;
     }
 
-    CDVPluginResult *cdvResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"action": @"_dispatchPush", @"payload": notification.userInfo, @"hasLandingMessage": @(hasLandingMessage)}];
+    BOOL hasLandingMessage = false;
+    BatchPushMessage *parsedMessage = [BatchMessaging messageFromPushPayload:payload];
+    hasLandingMessage = parsedMessage != nil;
+
+    CDVPluginResult *cdvResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"action": @"_dispatchPush", @"payload": payload, @"hasLandingMessage": @(hasLandingMessage)}];
     [cdvResult setKeepCallbackAsBool:YES];
     if (!self.genericCallbackId)
     {
