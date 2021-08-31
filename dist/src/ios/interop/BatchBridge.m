@@ -170,6 +170,21 @@ static dispatch_once_t onceToken;
         return [BACSimplePromise resolved:[BatchBridge lastKnownPushToken]];
     }
     
+    else if ([action caseInsensitiveCompare:PUSH_REFRESH_TOKEN] == NSOrderedSame)
+    {
+        [BatchPush refreshToken];
+    }
+
+    else if ([action caseInsensitiveCompare:PUSH_REQUEST_AUTHORIZATION] == NSOrderedSame)
+    {
+        [BatchPush requestNotificationAuthorization];
+    }
+
+    else if ([action caseInsensitiveCompare:PUSH_REQUEST_PROVISIONAL_AUTH] == NSOrderedSame)
+    {
+        [BatchPush requestProvisionalNotificationAuthorization];
+    }
+
     // Android Push Only
     else if ([action caseInsensitiveCompare:SET_GCM_SENDER_ID] == NSOrderedSame)
     {

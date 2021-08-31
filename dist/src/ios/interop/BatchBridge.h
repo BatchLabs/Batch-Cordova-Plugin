@@ -22,6 +22,10 @@
 #define SET_IOS_SHOW_FOREGROUND_NOTIFS  @"push.setIOSShowForegroundNotifications"
 #define SET_IOSNOTIF_TYPES          	@"push.setIOSNotifTypes"
 #define SET_ANDROIDNOTIF_TYPES      	@"push.setAndroidNotifTypes"
+#define PUSH_REFRESH_TOKEN              @"push.iOS.refreshToken"
+#define PUSH_REQUEST_AUTHORIZATION      @"push.iOS.requestAuthorization"
+#define PUSH_REQUEST_PROVISIONAL_AUTH   @"push.iOS.requestProvisionalAuthorization"
+
 #define REGISTER_NOTIFS             	@"push.register"
 #define DISMISS_NOTIFS              	@"push.dismissNotifications"
 #define CLEAR_BADGE                 	@"push.clearBadge"
