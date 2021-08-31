@@ -6,6 +6,13 @@ Batch Cordova Plugin
 
 - **Breaking change**: Fixed an issue where on iOS, the push payload of the `batchPushReceived` event was under the `payload` key. It is now at the root of the event data, just like 2.x and on Android.
 
+**Push**
+
+- iOS: Deprecated `registerForRemoteNotifications` by splitting it into two methods:  
+    - `refreshToken`, which should be called on every app start.
+    - `requestNotificationAuthorization`, which should be called whenever you want to ask the user the permission to display notifications.
+- iOS: Added `requestProvisionalNotificationAuthorization` to request a provisional authorization on iOS 11 and higher.
+
 **User**
 
 - Fixed Installation ID getter's type definition to properly match it's implementation: the callback argument can now be `undefined`.

@@ -38,6 +38,18 @@ export class PushModule implements BatchSDK.PushModule {
     sendToBridge(null, PushActions.Register, null);
   }
 
+  public refreshToken(): void {
+    sendToBridge(null, PushActions.RefreshToken, null);
+  }
+
+  public requestNotificationAuthorization(): void {
+    sendToBridge(null, PushActions.RequestAuthorization, null);
+  }
+
+  public requestProvisionalNotificationAuthorization(): void {
+    sendToBridge(null, PushActions.RequestProvisionalAuthorization, null);
+  }
+
   public setAndroidNotificationTypes(
     notifTypes: AndroidNotificationTypes
   ): void {

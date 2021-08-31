@@ -14,6 +14,9 @@ export enum Push {
   Register = "push.register",
   DismissNotifications = "push.dismissNotifications",
   ClearBadge = "push.clearBadge",
+  RefreshToken = "push.iOS.refreshToken",
+  RequestAuthorization = "push.iOS.requestAuthorization",
+  RequestProvisionalAuthorization = "push.iOS.requestProvisionalAuthorization",
 }
 
 export enum Messaging {

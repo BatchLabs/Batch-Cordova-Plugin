@@ -254,8 +254,42 @@ export declare namespace BatchSDK {
     /**
      * Ask iOS users if they want to accept push notifications. Required to be able to push users.
      * No effect on Android.
+     * @deprecated Use requestNotificationAuthorization/requestProvisionalNotificationAuthorization and refreshToken
      */
     registerForRemoteNotifications(): void;
+
+    /**
+     * Ask iOS to refresh the push token. If the app didn't prompt the user for consent yet, this will not be done.
+     * You should call this at the start of your app, to make sure Batch always gets a valid token after app updates.
+     */
+    refreshToken(): void;
+
+    /**
+     * Call this method to trigger the iOS popup that asks the user if they want
+     * to allow notifications to be displayed, then get a Push token.
+     * The default registration is made with Badge, Sound and Alert.
+     * You should call this at a strategic moment, like at the end of your onboarding.
+     *
+     * Batch will automatically ask for a push token if the user replies positively.
+     * You should then call `refreshToken` on every application start.
+     */
+    requestNotificationAuthorization(): void;
+
+    /**
+     * Call this method to ask iOS for a provisional notification authorization.
+     * Batch will then automatically ask for a push token.
+     * You should then call `refreshToken` on every application start.
+     *
+     * Provisional authorization will NOT show a popup asking for user authorization,
+     * but notifications will NOT be displayed on the lock screen, or as a banner
+     * when the phone is unlocked.
+     * They will directly be sent to the notification center,
+     * accessible when the user swipes up on the lockscreen,
+     * or down from the statusbar when unlocked.
+     *
+     * This method does nothing on iOS 11 or lower.
+     */
+    requestProvisionalNotificationAuthorization(): void;
 
     /**
      * Change the used remote notification types on Android. (Ex: sound, vibrate, alert)
