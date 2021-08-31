@@ -148,6 +148,15 @@ public class Bridge
 			case PUSH_SET_IOSSHOW_FOREGROUND:
 				// iOS only, do nothing
 				return null;
+			case PUSH_IOS_REFRESH_TOKEN:
+				// iOS only, do nothing
+				return null;
+			case PUSH_IOS_REQUEST_AUTHORIZATION:
+				// iOS only, do nothing
+				return null;
+			case PUSH_IOS_REQUEST_PROVISIONAL_AUTH:
+				// iOS only, do nothing
+				return null;
 			case USER_EDIT:
 				userDataEdit(parameters);
 				break;
