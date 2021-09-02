@@ -93,6 +93,7 @@
         <header-file src="src/ios/interop/BACSimplePromise.h" />
         <source-file src="src/ios/interop/BACSimplePromise.m" />
         <header-file src="src/ios/interop/BatchBridgeCallback.h" />
+        <header-file src="src/ios/interop/BatchBridgeShared.h" />
         <header-file src="src/ios/interop/BatchBridge.h" />
         <source-file src="src/ios/interop/BatchBridge.m" />
         <header-file src="src/ios/interop/BatchInboxBridge.h" />
