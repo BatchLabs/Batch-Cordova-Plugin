@@ -6,6 +6,43 @@
 #define NOTIFICATIONS_COUNT 100
 
 @implementation BatchInboxBridge
+{
+    dispatch_queue_t _fetchersSyncQueue;
+    NSMutableDictionary<NSString*, BatchInboxFetcher*> *_fetchers;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _fetchersSyncQueue = dispatch_queue_create("com.batch.interop.inbox", DISPATCH_QUEUE_CONCURRENT);
+        _fetchers = [NSMutableDictionary new];
+    }
+    return self;
+}
+
+- (NSString*)makeFetcherID {
+    return [NSUUID UUID].UUIDString;
+}
+
+- (BACSimplePromise<NSString*>*)createInstallationFetcherForParameters:(NSDictionary*)parameters {
+    NSString *fetcherID = [self makeFetcherID];
+    
+    BACSimplePromise *promise = [BACSimplePromise new];
+    
+    dispatch_barrier_async(_fetchersSyncQueue, ^{
+        BatchInboxFetcher *fetcher = [BatchInbox fetcher];
+        //- (void)setupCommonParameters:(NSDictionary*)parameters onFetcher:(BatchInboxFetcher*)fetcher
+        self->_fetchers[fetcherID] = fetcher;
+        [promise resolve:fetcherID];
+    });
+    
+    return promise;
+}
+
+- (BatchInboxFetcher*)fetcherInstanceForParameters:(NSDictionary*)parameters error:(NSError**)error {
+    
+}
 
 + (BACSimplePromise<NSString*>*)fetchNotifications
 {
