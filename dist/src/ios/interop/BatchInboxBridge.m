@@ -1,5 +1,6 @@
 #import "BatchInboxBridge.h"
 
+#import "BatchBridgeShared.h"
 #import <Batch/BatchInbox.h>
 
 // Number of notifications to fetch
@@ -40,8 +41,39 @@
     return promise;
 }
 
-- (BatchInboxFetcher*)fetcherInstanceForParameters:(NSDictionary*)parameters error:(NSError**)error {
+- (NSString*)fetcherIDForParameters:(NSDictionary*)parameters error:(NSError**)error {
+    BATCH_INIT_AND_BLANK_ERROR_IF_NEEDED(error);
     
+    NSObject *fetcherID = parameters[@"fetcherID"];
+    if ([fetcherID isKindOfClass:[NSString class]]) {
+        return (NSString*)fetcherID;
+    }
+    // TODO: Generate error
+    return nil;
+}
+
+- (BatchInboxFetcher*)fetcherInstanceForParameters:(NSDictionary*)parameters error:(NSError**)error {
+    BATCH_INIT_AND_BLANK_ERROR_IF_NEEDED(error);
+    
+    __block NSError *fetcherIDError = nil;
+    __block BatchInboxFetcher *fetcher = nil;
+    dispatch_sync(_fetchersSyncQueue, ^{
+        NSString *fetcherID = [self fetcherIDForParameters:parameters error:&fetcherIDError];
+        if (fetcherID != nil) {
+            fetcher = _fetchers[fetcherID];
+        }
+    });
+    
+    if (fetcherIDError != nil) {
+        *error = fetcherIDError;
+        return nil;
+    }
+    
+    if (fetcher == nil) {
+        //TODO: Generate error
+    }
+    
+    return fetcher;
 }
 
 + (BACSimplePromise<NSString*>*)fetchNotifications
