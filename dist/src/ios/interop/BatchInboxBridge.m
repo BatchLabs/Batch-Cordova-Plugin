@@ -33,9 +33,45 @@
     
     dispatch_barrier_async(_fetchersSyncQueue, ^{
         BatchInboxFetcher *fetcher = [BatchInbox fetcher];
-        //- (void)setupCommonParameters:(NSDictionary*)parameters onFetcher:(BatchInboxFetcher*)fetcher
+        [self setupCommonParameters:parameters onFetcher:fetcher];
         self->_fetchers[fetcherID] = fetcher;
         [promise resolve:fetcherID];
+    });
+    
+    return promise;
+}
+
+- (BACSimplePromise<NSString*>*)createUserFetcherForParameters:(NSDictionary*)parameters {
+    NSString *fetcherID = [self makeFetcherID];
+    
+    NSObject *user = parameters[@"user"];
+    if (![user isKindOfClass:[NSString class]]) {
+        //TODO: Error message
+        return [BACSimplePromise rejected:[NSError new]];
+    }
+    
+    NSObject *authKey = parameters[@"authKey"];
+    if (![authKey isKindOfClass:[NSString class]]) {
+        //TODO: Error message
+        return [BACSimplePromise rejected:[NSError new]];
+    }
+    
+    BACSimplePromise *promise = [BACSimplePromise new];
+    
+    dispatch_barrier_async(_fetchersSyncQueue, ^{
+        BatchInboxFetcher *fetcher = [BatchInbox fetcherForUserIdentifier:(NSString*)user
+                                                        authenticationKey:(NSString*)authKey];
+        if (fetcher != nil) {
+            [self setupCommonParameters:parameters onFetcher:fetcher];
+            self->_fetchers[fetcherID] = fetcher;
+            [promise resolve:fetcherID];
+        } else {
+            /* TODO:
+             throw BridgeError(code: BridgeError.ErrorCode.internalSDKError,
+                               description: "Internal SDK error: Failed to initialize the fetcher. Make sure your user identifier and authentication key are valid and not empty.",
+                               details: nil)*/
+            [promise reject:[NSError new]];
+        }
     });
     
     return promise;
@@ -74,6 +110,24 @@
     }
     
     return fetcher;
+}
+
+- (void)setupCommonParameters:(NSDictionary*)parameters onFetcher:(BatchInboxFetcher*)fetcher {
+    NSNumber *maxPageSize = parameters[@"maxPageSize"];
+    if ([maxPageSize isKindOfClass:[NSNumber class]]) {
+        NSInteger maxPageSizeInt = [maxPageSize integerValue];
+        if (maxPageSizeInt > 0) {
+            fetcher.maxPageSize = maxPageSizeInt;
+        }
+    }
+    
+    NSNumber *limit = parameters[@"limit"];
+    if ([limit isKindOfClass:[NSNumber class]]) {
+        NSInteger limitInt = [limit integerValue];
+        if (limitInt > 0) {
+            fetcher.limit = limitInt;
+        }
+    }
 }
 
 + (BACSimplePromise<NSString*>*)fetchNotifications
