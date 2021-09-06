@@ -3,7 +3,7 @@
 #import "BatchBridgeShared.h"
 #import <Batch/BatchInbox.h>
 
-typedef NS_ENUM(NSUInteger, BatchInboxBridgeErrorCause) {
+typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     // Internal bridge error
     BatchInboxBridgeErrorCauseInternalBridge = -2001,
     
@@ -262,6 +262,14 @@ typedef NS_ENUM(NSUInteger, BatchInboxBridgeErrorCause) {
     }
     
     return resultPromise;
+}
+
+- (nonnull NSError*)errorWithCode:(BatchInboxBridgeErrorCause)code description:(nonnull NSString*)description {
+    return [NSError errorWithDomain:@"com.batch.ios.interop.bridge"
+                               code:code
+                           userInfo:@{
+                               NSLocalizedDescriptionKey: description
+                           }];
 }
 
 + (BACSimplePromise<NSString*>*)fetchNotificationsUsing:(BatchInboxFetcher*)fetcher
