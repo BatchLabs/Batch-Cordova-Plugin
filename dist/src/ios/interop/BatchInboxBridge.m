@@ -3,13 +3,19 @@
 #import "BatchBridgeShared.h"
 #import <Batch/BatchInbox.h>
 
-// Number of notifications to fetch
-#define NOTIFICATIONS_COUNT 100
-
 @implementation BatchInboxBridge
 {
     dispatch_queue_t _fetchersSyncQueue;
     NSMutableDictionary<NSString*, BatchInboxFetcher*> *_fetchers;
+}
+
++ (instancetype)sharedInboxBridge {
+   static BatchInboxBridge *sharedInboxBridge = nil;
+   static dispatch_once_t onceToken;
+   dispatch_once(&onceToken, ^{
+       sharedInboxBridge = [[self alloc] init];
+   });
+   return sharedInboxBridge;
 }
 
 - (instancetype)init
@@ -20,6 +26,99 @@
         _fetchers = [NSMutableDictionary new];
     }
     return self;
+}
+
+/**
+ Compatibility entry point that bridges promises that return a JSON object or reject to a promise that return a String
+ */
+- (nullable BACSimplePromise<NSString*> *)doAction:(NSString *)action withParameters:(NSDictionary *)parameters {
+    BACSimplePromise *resultPromise = nil;
+    
+    if ([action caseInsensitiveCompare:INBOX_CREATE_INSTALLATION_FETCHER] == NSOrderedSame)
+    {
+        return [self createInstallationFetcherForParameters:parameters];
+    }
+    else if ([action caseInsensitiveCompare:INBOX_CREATE_USER_FETCHER] == NSOrderedSame)
+    {
+        return [self createUserFetcherForParameters:parameters];
+    }
+    else if ([action caseInsensitiveCompare:INBOX_RELEASE_FETCHER] == NSOrderedSame)
+    {
+        [self releaseFetcherForParameters:parameters];
+    }
+    else if ([action caseInsensitiveCompare:INBOX_FETCH_NEW_NOTIFICATIONS] == NSOrderedSame)
+    {
+
+    }
+    else if ([action caseInsensitiveCompare:INBOX_FETCH_NEXT_PAGE] == NSOrderedSame)
+    {
+
+    }
+    else if ([action caseInsensitiveCompare:INBOX_GET_FETCHED_NOTIFICATIONS] == NSOrderedSame)
+    {
+
+    }
+    else if ([action caseInsensitiveCompare:INBOX_MARK_AS_READ] == NSOrderedSame)
+    {
+
+    }
+    else if ([action caseInsensitiveCompare:INBOX_MARK_ALL_AS_READ] == NSOrderedSame)
+    {
+
+    }
+    else if ([action caseInsensitiveCompare:INBOX_MARK_AS_DELETED] == NSOrderedSame)
+    {
+
+    }
+    
+    return [self convertPromiseToLegacyBridge:resultPromise];
+}
+
+// Converts a "new format" Promise matching newer bridges like Flutter (can be resolved to a Dictionary, or rejected)
+// to a "legacy" one that is resolved with a string and shouldn't reject.
+// Stepping stone until we add proper support for those in the base bridge
+- (nullable BACSimplePromise<NSString*> *)convertPromiseToLegacyBridge:(nullable BACSimplePromise*)sourcePromise {
+    if (sourcePromise == nil) {
+        return nil;
+    }
+    
+    // Promise that holds the output, will be resolved by a "sub promise" (as we can't chain simple promises yet)
+    // that convers NSDictionaries to NSStrings and catches errors.
+    BACSimplePromise<NSString*> *responsePromise = [BACSimplePromise new];
+    
+    [sourcePromise then:^(NSObject * _Nullable value) {
+        // No NSNumber/NSArray support. NSNumber might be fine anyway.
+        if ([value isKindOfClass:[NSDictionary class]]) {
+            // dictionaryToJSON: might seria
+            NSString *jsonResponse = [self dictionaryToJSON:(NSDictionary*)value];
+            if (jsonResponse != nil) {
+                [responsePromise resolve:jsonResponse];
+            } else {
+                [responsePromise resolve:@"{'error':'Internal native error (-1100)', 'code': -1100}"];
+            }
+        } else {
+            [responsePromise resolve:(id)value];
+        }
+    }];
+    
+    [sourcePromise catch:^(NSError * _Nullable error) {
+        NSString *jsonError;
+        NSString *description = [error localizedDescription];
+        if ([description length] > 0) {
+            jsonError = [self dictionaryToJSON:@{
+                     @"error": description,
+                     @"code": @(error.code),
+                     }];
+        }
+        
+        if (jsonError == nil) {
+            jsonError = @"{'error':'Internal native error (-1200)', 'code': -1200}";
+        }
+        
+        [responsePromise resolve:jsonError];
+    }];
+    
+    return responsePromise;
 }
 
 - (NSString*)makeFetcherID {
@@ -130,43 +229,40 @@
     }
 }
 
-+ (BACSimplePromise<NSString*>*)fetchNotifications
-{
-    return [self fetchNotificationsUsing:[BatchInbox fetcher]];
-}
-
-+ (BACSimplePromise<NSString*>*)fetchNotificationsForUser:(NSString*)user authKey:(NSString*)authKey
-{
-    return [self fetchNotificationsUsing:[BatchInbox fetcherForUserIdentifier:user authenticationKey:authKey]];
+- (BACSimplePromise<NSObject*>*)releaseFetcherForParameters:(NSDictionary*)parameters {
+    BACSimplePromise *resultPromise = [BACSimplePromise new];
+    
+    NSError *fetcherIDError = nil;
+    NSString *fetcherID = [self fetcherIDForParameters:parameters error:&fetcherIDError];
+    
+    if (fetcherID != nil) {
+        dispatch_barrier_async(_fetchersSyncQueue, ^{
+            [self->_fetchers removeObjectForKey:fetcherID];
+        });
+        [resultPromise resolve:nil];
+    } else {
+        [resultPromise reject:fetcherIDError];
+    }
+    
+    return resultPromise;
 }
 
 + (BACSimplePromise<NSString*>*)fetchNotificationsUsing:(BatchInboxFetcher*)fetcher
 {
-    fetcher.limit = NOTIFICATIONS_COUNT;
-    fetcher.maxPageSize = NOTIFICATIONS_COUNT;
+    fetcher.limit = 100;
+    fetcher.maxPageSize = 100;
     
     BACSimplePromise *promise = [BACSimplePromise new];
     
     [fetcher fetchNextPage:^(NSError * _Nullable error, NSArray<BatchInboxNotificationContent *> * _Nullable notifications, BOOL endReached) {
         if (error) {
-            [promise resolve:[self errorReponse:error]];
+            //[promise resolve:[self errorReponse:error]];  // Will be rewritten
         } else {
             [promise resolve:[self successReponse:notifications]];
         }
     }];
     
     return promise;
-}
-
-+ (NSString*)errorReponse:(NSError*)error
-{
-    NSString *description = [error localizedDescription];
-    if ([description length] > 0) {
-        return [self dictionaryToJSON:@{
-                 @"error": description
-                 }];
-    }
-    return @"{'error':'Internal native error (-200)'}";
 }
 
 + (NSString*)successReponse:(NSArray<BatchInboxNotificationContent *>*)notifications
@@ -180,7 +276,8 @@
         }
     }
     
-    return [self dictionaryToJSON:@{@"notifications": jsonNotifications}];
+    //return [self dictionaryToJSON:@{@"notifications": jsonNotifications}];
+    return @""; // Will be rewritten
 }
 
 + (NSDictionary*)convertNotificationContentToJSON:(BatchInboxNotificationContent*)content
@@ -213,7 +310,7 @@
     return json;
 }
 
-+ (NSString*)dictionaryToJSON:(NSDictionary*)dictionary
+- (NSString*)dictionaryToJSON:(NSDictionary*)dictionary
 {
     if (dictionary) {
         NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil];
@@ -221,7 +318,7 @@
             return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         }
     }
-    return @"{'error':'Internal native error (-100)'}";
+    return nil;
 }
 
 @end

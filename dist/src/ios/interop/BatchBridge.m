@@ -16,6 +16,7 @@
 #import <Batch/BatchUserProfile.h>
 #import <Batch/BatchPush.h>
 
+#import "BatchBridgeShared.h"
 #import "BatchInboxBridge.h"
 #import "BatchBridgeNotificationCenterDelegate.h"
 
@@ -305,37 +306,17 @@ static dispatch_once_t onceToken;
         [BatchMessaging showPendingMessage];
     }
 
-    else if ([action caseInsensitiveCompare:INBOX_FETCH] == NSOrderedSame)
+    else if ([action.lowercaseString hasPrefix:INBOX_PREFIX])
     {
-        return [BatchInboxBridge fetchNotifications];
-    }
-    else if ([action caseInsensitiveCompare:INBOX_FETCH_FOR_USER_ID] == NSOrderedSame)
-    {
-        if (!parameters || [parameters count]==0)
-        {
-            [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action %@.", action];
+        // The Inbox Bridge will take care of every inbox method
+        BACSimplePromise *inboxPromise = [[BatchInboxBridge sharedInboxBridge] doAction:action withParameters:parameters];
+        if (inboxPromise != nil) {
+            return inboxPromise;
         }
-
-        NSString *userID = [parameters objectForKey:@"id"];
-        if (![userID isKindOfClass:[NSString class]])
-        {
-            [NSException raise:INVALID_PARAMETER format:@"Missing parameter 'id' for action %@.", action];
-        }
-
-        NSString *authKey = [parameters objectForKey:@"auth"];
-        if (![authKey isKindOfClass:[NSString class]])
-        {
-            [NSException raise:INVALID_PARAMETER format:@"Missing parameter 'auth' for action %@.", action];
-        }
-
-        return [BatchInboxBridge fetchNotificationsForUser:userID authKey:authKey];
     }
     
     // Unknown method.
-    else
-    {
-        [NSException raise:INVALID_PARAMETER format:@"Unknown action: %@", action];
-    }
+    [NSException raise:INVALID_PARAMETER format:@"Unknown action: %@", action];
     
     return [BACSimplePromise resolved:@""];
 }
@@ -687,7 +668,10 @@ static dispatch_once_t onceToken;
         [NSException raise:INVALID_PARAMETER format:@"data should be an object or null"];
     }
     
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [BatchUser trackEvent:name withLabel:label data:data];
+#pragma clang diagnostic pop
 }
 
 + (void)trackTransaction:(NSDictionary*)params

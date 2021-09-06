@@ -174,7 +174,7 @@
     
     [bridgeResult then:^(NSObject * _Nullable value) {
         // Thought using NO_RESULT was a good idea? Think again https://github.com/don/cordova-plugin-ble-central/issues/32
-        CDVPluginResult *cdvResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:value ? value : @""];
+        CDVPluginResult *cdvResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:value ? (NSString*)value : @""];
         
         [self.commandDelegate sendPluginResult:cdvResult callbackId:cdvCommand.callbackId];
     }];

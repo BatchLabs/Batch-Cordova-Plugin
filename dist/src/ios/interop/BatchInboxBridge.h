@@ -13,8 +13,9 @@
 
 @interface BatchInboxBridge : NSObject
 
-+ (BACSimplePromise<NSString*>*)fetchNotifications;
++ (nonnull instancetype)sharedInboxBridge;
 
-+ (BACSimplePromise<NSString*>*)fetchNotificationsForUser:(NSString*)user authKey:(NSString*)authKey;
+- (nullable BACSimplePromise<NSString*> *)doAction:(nonnull NSString *)action
+                                    withParameters:(nonnull NSDictionary *)parameters;
 
 @end
