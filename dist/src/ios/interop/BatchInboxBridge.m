@@ -3,6 +3,23 @@
 #import "BatchBridgeShared.h"
 #import <Batch/BatchInbox.h>
 
+typedef NS_ENUM(NSUInteger, BatchInboxBridgeErrorCause) {
+    // Internal bridge error
+    BatchInboxBridgeErrorCauseInternalBridge = -2001,
+    
+    // SDK Internal Error (Bridge called the SDK properly, but the SDK failed)
+    BatchInboxBridgeErrorCauseInternalSDK = -2002,
+    
+    // Inbox Error (SDK returned an error when performing an inbox operation
+    // You should print the localized description and error code in your wrapping error
+    BatchInboxBridgeErrorCauseInvalidResponse = -2003,
+    
+    // User error. This means that the call failed due to invalid input parameters supplied
+    // from the plugin implementation.
+    // Example: Wrong user inbox parameters (malformed HMAC, etc...)
+    BatchInboxBridgeErrorCauseUser = -2004
+};
+
 @implementation BatchInboxBridge
 {
     dispatch_queue_t _fetchersSyncQueue;
