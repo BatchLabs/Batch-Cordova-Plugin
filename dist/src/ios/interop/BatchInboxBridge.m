@@ -48,6 +48,8 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     return self;
 }
 
+#pragma mark - Helpers
+
 /**
  Compatibility entry point that bridges promises that return a JSON object or reject to a promise that return a String
  */
@@ -141,54 +143,34 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     return responsePromise;
 }
 
+- (NSString*)dictionaryToJSON:(NSDictionary*)dictionary
+{
+    if (dictionary) {
+        NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil];
+        if (data) {
+            return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        }
+    }
+    return nil;
+}
+
+- (nonnull NSError*)errorWithCode:(BatchInboxBridgeErrorCause)code description:(nonnull NSString*)description {
+    return [NSError errorWithDomain:@"com.batch.ios.interop.bridge"
+                               code:code
+                           userInfo:@{
+                               NSLocalizedDescriptionKey: description
+                           }];
+}
+
+- (nonnull NSError*)errorForBadAgument:(nonnull NSString*)argumentName {
+    return [self errorWithCode:BatchInboxBridgeErrorCauseBadArgument
+                   description:[NSString stringWithFormat:@"Required parameter '%@' missing or of wrong type", argumentName]];
+}
+
+#pragma mark - General Inbox instance helpers
+
 - (NSString*)makeFetcherID {
     return [NSUUID UUID].UUIDString;
-}
-
-- (BACSimplePromise<NSString*>*)createInstallationFetcherForParameters:(NSDictionary*)parameters {
-    NSString *fetcherID = [self makeFetcherID];
-    
-    BACSimplePromise *promise = [BACSimplePromise new];
-    
-    dispatch_barrier_async(_fetchersSyncQueue, ^{
-        BatchInboxFetcher *fetcher = [BatchInbox fetcher];
-        [self setupCommonParameters:parameters onFetcher:fetcher];
-        self->_fetchers[fetcherID] = fetcher;
-        [promise resolve:fetcherID];
-    });
-    
-    return promise;
-}
-
-- (BACSimplePromise<NSString*>*)createUserFetcherForParameters:(NSDictionary*)parameters {
-    NSString *fetcherID = [self makeFetcherID];
-    
-    NSObject *user = parameters[@"user"];
-    if (![user isKindOfClass:[NSString class]]) {
-        return [BACSimplePromise rejected:[self errorForBadAgument:@"user"]];
-    }
-    
-    NSObject *authKey = parameters[@"authKey"];
-    if (![authKey isKindOfClass:[NSString class]]) {
-        return [BACSimplePromise rejected:[self errorForBadAgument:@"authKey"]];
-    }
-    
-    BACSimplePromise *promise = [BACSimplePromise new];
-    
-    dispatch_barrier_async(_fetchersSyncQueue, ^{
-        BatchInboxFetcher *fetcher = [BatchInbox fetcherForUserIdentifier:(NSString*)user
-                                                        authenticationKey:(NSString*)authKey];
-        if (fetcher != nil) {
-            [self setupCommonParameters:parameters onFetcher:fetcher];
-            self->_fetchers[fetcherID] = fetcher;
-            [promise resolve:fetcherID];
-        } else {
-            [promise reject:[self errorWithCode:BatchInboxBridgeErrorCauseUser
-                                    description:@"Internal SDK error: Failed to initialize the fetcher. Make sure your user identifier and authentication key are valid and not empty."]];
-        }
-    });
-    
-    return promise;
 }
 
 - (NSString*)fetcherIDForParameters:(NSDictionary*)parameters error:(NSError**)error {
@@ -247,6 +229,54 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     }
 }
 
+#pragma mark - Inbox Fetcher lifecycle
+
+- (BACSimplePromise<NSString*>*)createInstallationFetcherForParameters:(NSDictionary*)parameters {
+    NSString *fetcherID = [self makeFetcherID];
+    
+    BACSimplePromise *promise = [BACSimplePromise new];
+    
+    dispatch_barrier_async(_fetchersSyncQueue, ^{
+        BatchInboxFetcher *fetcher = [BatchInbox fetcher];
+        [self setupCommonParameters:parameters onFetcher:fetcher];
+        self->_fetchers[fetcherID] = fetcher;
+        [promise resolve:fetcherID];
+    });
+    
+    return promise;
+}
+
+- (BACSimplePromise<NSString*>*)createUserFetcherForParameters:(NSDictionary*)parameters {
+    NSString *fetcherID = [self makeFetcherID];
+    
+    NSObject *user = parameters[@"user"];
+    if (![user isKindOfClass:[NSString class]]) {
+        return [BACSimplePromise rejected:[self errorForBadAgument:@"user"]];
+    }
+    
+    NSObject *authKey = parameters[@"authKey"];
+    if (![authKey isKindOfClass:[NSString class]]) {
+        return [BACSimplePromise rejected:[self errorForBadAgument:@"authKey"]];
+    }
+    
+    BACSimplePromise *promise = [BACSimplePromise new];
+    
+    dispatch_barrier_async(_fetchersSyncQueue, ^{
+        BatchInboxFetcher *fetcher = [BatchInbox fetcherForUserIdentifier:(NSString*)user
+                                                        authenticationKey:(NSString*)authKey];
+        if (fetcher != nil) {
+            [self setupCommonParameters:parameters onFetcher:fetcher];
+            self->_fetchers[fetcherID] = fetcher;
+            [promise resolve:fetcherID];
+        } else {
+            [promise reject:[self errorWithCode:BatchInboxBridgeErrorCauseUser
+                                    description:@"Internal SDK error: Failed to initialize the fetcher. Make sure your user identifier and authentication key are valid and not empty."]];
+        }
+    });
+    
+    return promise;
+}
+
 - (BACSimplePromise<NSObject*>*)releaseFetcherForParameters:(NSDictionary*)parameters {
     BACSimplePromise *resultPromise = [BACSimplePromise new];
     
@@ -265,18 +295,7 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     return resultPromise;
 }
 
-- (nonnull NSError*)errorWithCode:(BatchInboxBridgeErrorCause)code description:(nonnull NSString*)description {
-    return [NSError errorWithDomain:@"com.batch.ios.interop.bridge"
-                               code:code
-                           userInfo:@{
-                               NSLocalizedDescriptionKey: description
-                           }];
-}
-
-- (nonnull NSError*)errorForBadAgument:(nonnull NSString*)argumentName {
-    return [self errorWithCode:BatchInboxBridgeErrorCauseBadArgument
-                   description:[NSString stringWithFormat:@"Required parameter '%@' missing or of wrong type", argumentName]];
-}
+#pragma mark - Legacy (yet to be rewritten)
 
 + (BACSimplePromise<NSString*>*)fetchNotificationsUsing:(BatchInboxFetcher*)fetcher
 {
@@ -339,17 +358,6 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     }
     
     return json;
-}
-
-- (NSString*)dictionaryToJSON:(NSDictionary*)dictionary
-{
-    if (dictionary) {
-        NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil];
-        if (data) {
-            return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        }
-    }
-    return nil;
 }
 
 @end
