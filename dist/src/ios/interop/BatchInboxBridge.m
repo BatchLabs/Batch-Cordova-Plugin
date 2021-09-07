@@ -82,15 +82,15 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     }
     else if ([action caseInsensitiveCompare:INBOX_MARK_AS_READ] == NSOrderedSame)
     {
-
+        return [self markAsRead:parameters];
     }
     else if ([action caseInsensitiveCompare:INBOX_MARK_ALL_AS_READ] == NSOrderedSame)
     {
-
+        return [self markAllAsRead:parameters];
     }
     else if ([action caseInsensitiveCompare:INBOX_MARK_AS_DELETED] == NSOrderedSame)
     {
-
+        return [self markAsDeleted:parameters];
     }
     
     return [self convertPromiseToLegacyBridge:resultPromise];
@@ -152,6 +152,39 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
         }
     }
     return nil;
+}
+
+- (NSDictionary*)serializeNotificationContent:(BatchInboxNotificationContent*)content
+{
+    NSMutableDictionary *json = [NSMutableDictionary new];
+    json[@"identifier"] = content.identifier;
+    json[@"body"] = content.body;
+    json[@"is_unread"] = @(content.isUnread);
+    json[@"date"] = @(floor([content.date timeIntervalSince1970] * 1000));
+    json[@"payload"] = content.payload;
+    
+    NSUInteger source = 0; // Unknown
+    switch (content.source) {
+        case BatchNotificationSourceCampaign:
+            source = 1;
+            break;
+        case BatchNotificationSourceTransactional:
+            source = 2;
+            break;
+        case BatchNotificationSourceTrigger:
+            source = 3;
+            break;
+        default:
+            source = 0;
+            break;
+    }
+    json[@"source"] = @(source);
+    
+    if ([content.title length] > 0) {
+        json[@"title"] = content.title;
+    }
+    
+    return json;
 }
 
 - (nonnull NSError*)errorWithCode:(BatchInboxBridgeErrorCause)code description:(nonnull NSString*)description {
@@ -295,69 +328,99 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     return resultPromise;
 }
 
-#pragma mark - Legacy (yet to be rewritten)
+#pragma mark - Fetcher methods
 
-+ (BACSimplePromise<NSString*>*)fetchNotificationsUsing:(BatchInboxFetcher*)fetcher
-{
-    fetcher.limit = 100;
-    fetcher.maxPageSize = 100;
+#pragma mark - Mark as * methods
+
+- (BACSimplePromise<NSString*>*)markAsRead:(NSDictionary*)parameters {
+    NSError *error = nil;
+    BatchInboxFetcher *fetcher = [self fetcherInstanceForParameters:parameters error:&error];
     
-    BACSimplePromise *promise = [BACSimplePromise new];
+    if (fetcher == nil) {
+        return [BACSimplePromise rejected:error];
+    }
     
-    [fetcher fetchNextPage:^(NSError * _Nullable error, NSArray<BatchInboxNotificationContent *> * _Nullable notifications, BOOL endReached) {
-        if (error) {
-            //[promise resolve:[self errorReponse:error]];  // Will be rewritten
+    NSString *notifID = parameters[@"notifID"];
+    if (![notifID isKindOfClass:[NSString class]]) {
+        return [BACSimplePromise rejected:[self errorForBadAgument:@"notifID"]];
+    }
+    
+    BACSimplePromise *resultPromise = [BACSimplePromise new];
+    
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        // Find the native notification matching the bridged one
+        NSArray<BatchInboxNotificationContent*>* allNotifications = [fetcher allFetchedNotifications];
+        
+        BatchInboxNotificationContent *associatedNativeNotification = nil;
+        for (BatchInboxNotificationContent *notification in allNotifications) {
+            if ([notifID isEqualToString:notification.identifier]) {
+                associatedNativeNotification = notification;
+                break;
+            }
+        }
+        
+        if (associatedNativeNotification != nil) {
+            [fetcher markNotificationAsRead:associatedNativeNotification];
         } else {
-            [promise resolve:[self successReponse:notifications]];
+            NSLog(@"[Batch] Inbox: Could not mark notification as read: No matching native notification. This can happen if you kept a JavaScript instance of a notification but are trying to use it with another fetcher, or if the fetcher has been reset inbetween.");
         }
-    }];
+        
+        [resultPromise resolve:nil];
+    });
     
-    return promise;
+    return resultPromise;
 }
 
-+ (NSString*)successReponse:(NSArray<BatchInboxNotificationContent *>*)notifications
-{
-    NSMutableArray<NSDictionary*>* jsonNotifications = [NSMutableArray arrayWithCapacity:notifications.count];
+- (BACSimplePromise<NSString*>*)markAllAsRead:(NSDictionary*)parameters {
+    NSError *error = nil;
+    BatchInboxFetcher *fetcher = [self fetcherInstanceForParameters:parameters error:&error];
     
-    for (BatchInboxNotificationContent* content in notifications) {
-        NSDictionary* convertedContent = [self convertNotificationContentToJSON:content];
-        if (convertedContent != nil) {
-            [jsonNotifications addObject:convertedContent];
-        }
+    if (fetcher == nil) {
+        return [BACSimplePromise rejected:error];
     }
     
-    //return [self dictionaryToJSON:@{@"notifications": jsonNotifications}];
-    return @""; // Will be rewritten
+    [fetcher markAllNotificationsAsRead];
+    
+    return [BACSimplePromise resolved:nil];
 }
 
-+ (NSDictionary*)convertNotificationContentToJSON:(BatchInboxNotificationContent*)content
-{
-    NSMutableDictionary *json = [NSMutableDictionary new];
-    json[@"identifier"] = content.identifier;
-    json[@"body"] = content.body;
-    json[@"is_unread"] = @(content.isUnread);
-    json[@"date"] = @(floor([content.date timeIntervalSince1970] * 1000));
-    json[@"payload"] = content.payload;
+- (BACSimplePromise<NSString*>*)markAsDeleted:(NSDictionary*)parameters {
+    NSError *error = nil;
+    BatchInboxFetcher *fetcher = [self fetcherInstanceForParameters:parameters error:&error];
     
-    NSUInteger source = 0; // Unknown
-    switch (content.source) {
-        case BatchNotificationSourceCampaign:
-            source = 1;
-            break;
-        case BatchNotificationSourceTransactional:
-            source = 2;
-            break;
-        default:
-            source = 0;
-            break;
-    }
-    json[@"source"] = @(source);
-    
-    if ([content.title length] > 0) {
-        json[@"title"] = content.title;
+    if (fetcher == nil) {
+        return [BACSimplePromise rejected:error];
     }
     
-    return json;
+    NSString *notifID = parameters[@"notifID"];
+    if (![notifID isKindOfClass:[NSString class]]) {
+        return [BACSimplePromise rejected:[self errorForBadAgument:@"notifID"]];
+    }
+    
+    BACSimplePromise *resultPromise = [BACSimplePromise new];
+    
+    dispatch_async(dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0), ^{
+        // Find the native notification matching the bridged one
+        NSArray<BatchInboxNotificationContent*>* allNotifications = [fetcher allFetchedNotifications];
+        
+        BatchInboxNotificationContent *associatedNativeNotification = nil;
+        for (BatchInboxNotificationContent *notification in allNotifications) {
+            if ([notifID isEqualToString:notification.identifier]) {
+                associatedNativeNotification = notification;
+                break;
+            }
+        }
+        
+        if (associatedNativeNotification != nil) {
+            [fetcher markNotificationAsDeleted:associatedNativeNotification];
+        } else {
+            NSLog(@"[Batch] Inbox: Could not mark notification as deleted: No matching native notification. This can happen if you kept a JavaScript instance of a notification but are trying to use it with another fetcher, or if the fetcher has been reset inbetween.");
+        }
+        
+        [resultPromise resolve:nil];
+    });
+    
+    return resultPromise;
 }
 
 @end
