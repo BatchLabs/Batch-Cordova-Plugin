@@ -17,7 +17,10 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     // User error. This means that the call failed due to invalid input parameters supplied
     // from the plugin implementation.
     // Example: Wrong user inbox parameters (malformed HMAC, etc...)
-    BatchInboxBridgeErrorCauseUser = -2004
+    BatchInboxBridgeErrorCauseUser = -2004,
+    
+    // Missing bridge argument. This is a specialized InternalBridge error.
+    BatchInboxBridgeErrorCauseBadArgument = -2005,
 };
 
 @implementation BatchInboxBridge
@@ -162,14 +165,12 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     
     NSObject *user = parameters[@"user"];
     if (![user isKindOfClass:[NSString class]]) {
-        //TODO: Error message
-        return [BACSimplePromise rejected:[NSError new]];
+        return [BACSimplePromise rejected:[self errorForBadAgument:@"user"]];
     }
     
     NSObject *authKey = parameters[@"authKey"];
     if (![authKey isKindOfClass:[NSString class]]) {
-        //TODO: Error message
-        return [BACSimplePromise rejected:[NSError new]];
+        return [BACSimplePromise rejected:[self errorForBadAgument:@"authKey"]];
     }
     
     BACSimplePromise *promise = [BACSimplePromise new];
@@ -182,11 +183,8 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
             self->_fetchers[fetcherID] = fetcher;
             [promise resolve:fetcherID];
         } else {
-            /* TODO:
-             throw BridgeError(code: BridgeError.ErrorCode.internalSDKError,
-                               description: "Internal SDK error: Failed to initialize the fetcher. Make sure your user identifier and authentication key are valid and not empty.",
-                               details: nil)*/
-            [promise reject:[NSError new]];
+            [promise reject:[self errorWithCode:BatchInboxBridgeErrorCauseUser
+                                    description:@"Internal SDK error: Failed to initialize the fetcher. Make sure your user identifier and authentication key are valid and not empty."]];
         }
     });
     
@@ -200,7 +198,9 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     if ([fetcherID isKindOfClass:[NSString class]]) {
         return (NSString*)fetcherID;
     }
-    // TODO: Generate error
+    
+    *error = [self errorForBadAgument:@"fetcherID"];
+    
     return nil;
 }
 
@@ -222,7 +222,8 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     }
     
     if (fetcher == nil) {
-        //TODO: Generate error
+        [self errorWithCode:BatchInboxBridgeErrorCauseInternalBridge
+                description:@"The native inbox fetcher backing this object could not be found. Did you call dispose() and attempted to use the object afterwards?"];
     }
     
     return fetcher;
@@ -270,6 +271,11 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
                            userInfo:@{
                                NSLocalizedDescriptionKey: description
                            }];
+}
+
+- (nonnull NSError*)errorForBadAgument:(nonnull NSString*)argumentName {
+    return [self errorWithCode:BatchInboxBridgeErrorCauseBadArgument
+                   description:[NSString stringWithFormat:@"Required parameter '%@' missing or of wrong type", argumentName]];
 }
 
 + (BACSimplePromise<NSString*>*)fetchNotificationsUsing:(BatchInboxFetcher*)fetcher
