@@ -8,6 +8,7 @@
 #import "BatchCordovaPlugin.h"
 
 #import "BACSimplePromise.h"
+#import "BatchBridgeShared.h"
 
 @implementation BatchCordovaPlugin
 
