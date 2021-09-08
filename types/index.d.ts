@@ -606,6 +606,7 @@ export declare namespace BatchSDK {
     UNKNOWN = 0,
     CAMPAIGN = 1,
     TRANSACTIONAL = 2,
+    TRIGGER = 3,
   }
 }
 

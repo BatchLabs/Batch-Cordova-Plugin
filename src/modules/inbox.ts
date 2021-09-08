@@ -12,6 +12,7 @@ export enum InboxNotificationSource {
   UNKNOWN = 0,
   CAMPAIGN = 1,
   TRANSACTIONAL = 2,
+  TRIGGER = 3,
 }
 
 export class InboxModule implements BatchSDK.InboxModule {
