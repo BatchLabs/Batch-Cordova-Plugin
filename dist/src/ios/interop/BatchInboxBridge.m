@@ -10,7 +10,7 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     // SDK Internal Error (Bridge called the SDK properly, but the SDK failed)
     BatchInboxBridgeErrorCauseInternalSDK = -2002,
     
-    // Inbox Error (SDK returned an error when performing an inbox operation
+    // Inbox Error (SDK returned an error when performing an inbox operation)
     // You should print the localized description and error code in your wrapping error
     BatchInboxBridgeErrorCauseInvalidResponse = -2003,
     
@@ -58,39 +58,39 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     
     if ([action caseInsensitiveCompare:INBOX_CREATE_INSTALLATION_FETCHER] == NSOrderedSame)
     {
-        return [self createInstallationFetcherForParameters:parameters];
+        resultPromise = [self createInstallationFetcherForParameters:parameters];
     }
     else if ([action caseInsensitiveCompare:INBOX_CREATE_USER_FETCHER] == NSOrderedSame)
     {
-        return [self createUserFetcherForParameters:parameters];
+        resultPromise = [self createUserFetcherForParameters:parameters];
     }
     else if ([action caseInsensitiveCompare:INBOX_RELEASE_FETCHER] == NSOrderedSame)
     {
-        [self releaseFetcherForParameters:parameters];
+        resultPromise = [self releaseFetcherForParameters:parameters];
     }
     else if ([action caseInsensitiveCompare:INBOX_FETCH_NEW_NOTIFICATIONS] == NSOrderedSame)
     {
-
+        resultPromise = [self fetchNewNotifications:parameters];
     }
     else if ([action caseInsensitiveCompare:INBOX_FETCH_NEXT_PAGE] == NSOrderedSame)
     {
-
+        resultPromise = [self fetchNextPage:parameters];
     }
     else if ([action caseInsensitiveCompare:INBOX_GET_FETCHED_NOTIFICATIONS] == NSOrderedSame)
     {
-
+        resultPromise = [self allFetchedNotifications:parameters];
     }
     else if ([action caseInsensitiveCompare:INBOX_MARK_AS_READ] == NSOrderedSame)
     {
-        return [self markAsRead:parameters];
+        resultPromise = [self markAsRead:parameters];
     }
     else if ([action caseInsensitiveCompare:INBOX_MARK_ALL_AS_READ] == NSOrderedSame)
     {
-        return [self markAllAsRead:parameters];
+        resultPromise = [self markAllAsRead:parameters];
     }
     else if ([action caseInsensitiveCompare:INBOX_MARK_AS_DELETED] == NSOrderedSame)
     {
-        return [self markAsDeleted:parameters];
+        resultPromise = [self markAsDeleted:parameters];
     }
     
     return [self convertPromiseToLegacyBridge:resultPromise];
@@ -185,6 +185,14 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     }
     
     return json;
+}
+
+- (NSArray<NSDictionary*>*)serializeNotificationContents:(nonnull NSArray<BatchInboxNotificationContent*>*)notifications {
+    NSMutableArray<NSDictionary*>* serializedNotifications = [NSMutableArray arrayWithCapacity:notifications.count];
+    for (BatchInboxNotificationContent *notification in notifications) {
+        [serializedNotifications addObject:[self serializeNotificationContent:notification]];
+    }
+    return serializedNotifications;
 }
 
 - (nonnull NSError*)errorWithCode:(BatchInboxBridgeErrorCause)code description:(nonnull NSString*)description {
@@ -329,6 +337,89 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
 }
 
 #pragma mark - Fetcher methods
+
+- (BACSimplePromise<NSDictionary*>*)allFetchedNotifications:(NSDictionary*)parameters {
+    NSError *error = nil;
+    BatchInboxFetcher *fetcher = [self fetcherInstanceForParameters:parameters error:&error];
+    
+    if (fetcher == nil) {
+        return [BACSimplePromise rejected:error];
+    }
+    
+    NSArray<BatchInboxNotificationContent*>* allNotifications = [fetcher allFetchedNotifications];
+    return [BACSimplePromise resolved:@{
+        @"notifications": [self serializeNotificationContents:allNotifications],
+    }];
+}
+
+- (BACSimplePromise<NSDictionary*>*)fetchNewNotifications:(NSDictionary*)parameters {
+    NSError *error = nil;
+    BatchInboxFetcher *fetcher = [self fetcherInstanceForParameters:parameters error:&error];
+    
+    if (fetcher == nil) {
+        return [BACSimplePromise rejected:error];
+    }
+    
+    BACSimplePromise<NSDictionary*>* resultPromise = [BACSimplePromise new];
+    
+    [fetcher fetchNewNotifications:^(NSError * _Nullable error,
+                                     NSArray<BatchInboxNotificationContent *> * _Nullable notifications,
+                                     BOOL foundNewNotifications,
+                                     BOOL endReached) {
+        if (error != nil) {
+            [resultPromise reject:[self errorWithCode:BatchInboxBridgeErrorCauseInvalidResponse
+                                          description:[@"Inbox fetchNewNotifications failed with error: " stringByAppendingString:error.localizedDescription]]];
+            return;
+        }
+        
+        if (notifications == nil) {
+            [resultPromise reject:[self errorWithCode:BatchInboxBridgeErrorCauseInternalSDK
+                                          description:@"Internal SDK error: no error was returned, but no inbox notifications were returned"]];
+            return;
+        }
+        
+        [resultPromise resolve:@{
+            @"notifications": [self serializeNotificationContents:notifications],
+            @"endReached": @(endReached),
+        }];
+    }];
+    
+    return resultPromise;
+}
+
+- (BACSimplePromise<NSDictionary*>*)fetchNextPage:(NSDictionary*)parameters {
+    NSError *error = nil;
+    BatchInboxFetcher *fetcher = [self fetcherInstanceForParameters:parameters error:&error];
+    
+    if (fetcher == nil) {
+        return [BACSimplePromise rejected:error];
+    }
+    
+    BACSimplePromise<NSDictionary*>* resultPromise = [BACSimplePromise new];
+    
+    [fetcher fetchNextPage:^(NSError * _Nullable error,
+                             NSArray<BatchInboxNotificationContent *> * _Nullable notifications,
+                             BOOL endReached) {
+        if (error != nil) {
+            [resultPromise reject:[self errorWithCode:BatchInboxBridgeErrorCauseInvalidResponse
+                                          description:[@"Inbox fetchNextPage failed with error: " stringByAppendingString:error.localizedDescription]]];
+            return;
+        }
+        
+        if (notifications == nil) {
+            [resultPromise reject:[self errorWithCode:BatchInboxBridgeErrorCauseInternalSDK
+                                          description:@"Internal SDK error: no error was returned, but no inbox notifications were returned"]];
+            return;
+        }
+        
+        [resultPromise resolve:@{
+            @"notifications": [self serializeNotificationContents:notifications],
+            @"endReached": @(endReached),
+        }];
+    }];
+    
+    return resultPromise;
+}
 
 #pragma mark - Mark as * methods
 
