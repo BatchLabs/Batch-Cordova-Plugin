@@ -36,6 +36,7 @@
         <source-file src="src/android/BatchCordovaPushService.java" target-dir="app/src/main/java/com/batch/cordova/android" />
 
         <source-file src="src/android/interop/Action.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
+        <source-file src="src/android/interop/BatchBridgeNotImplementedException.java.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
         <source-file src="src/android/interop/Bridge.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
         <source-file src="src/android/interop/BridgeException.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
         <source-file src="src/android/interop/Callback.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />

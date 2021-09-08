@@ -35,6 +35,8 @@ public class Bridge
 
 	private static final String BRIDGE_VERSION = "Bridge/2.0";
 
+	private static final InboxBridge inboxBridge = new InboxBridge();
+
 	static
 	{
 		System.setProperty(BRIDGE_VERSION_ENVIRONEMENT_VAR, BRIDGE_VERSION);
@@ -68,7 +70,7 @@ public class Bridge
         return result;
     }
 
-	private static SimplePromise<String> doAction(String actionName, Map<String, Object> parameters, Activity activity) throws BridgeException
+	private static SimplePromise<String> doAction(String actionName, Map<String, Object> parameters, Activity activity) throws BridgeException, BatchBridgeNotImplementedException
 	{
 		if( actionName == null || actionName.length() == 0 )
 		{
@@ -111,14 +113,6 @@ public class Bridge
 			case OPT_OUT_AND_WIPE_DATA:
 				optOut(activity, true);
 				break;
-			case INBOX_FETCH:
-				return InboxBridge.fetchNotifications(activity);
-			case INBOX_FETCH_FOR_USER_ID:
-				return InboxBridge.fetchNotifications(
-					activity,
-					getTypedParameter(parameters, "id", String.class),
-					getTypedParameter(parameters, "auth", String.class)
-				);
 			case MESSAGING_SET_DO_NOT_DISTURB_ENABLED:
 				Batch.Messaging.setDoNotDisturbEnabled(getTypedParameter(parameters, "enabled", Boolean.class));
 				break;
@@ -183,6 +177,16 @@ public class Bridge
 				return SimplePromise.resolved(Batch.User.getRegion(activity));
 			case USER_GET_IDENTIFIER:
 				return SimplePromise.resolved(Batch.User.getIdentifier(activity));
+			case INBOX_CREATE_INSTALLATION_FETCHER:
+			case INBOX_CREATE_USER_FETCHER:
+			case INBOX_RELEASE_FETCHER:
+			case INBOX_FETCH_NEW_NOTIFICATIONS:
+			case INBOX_FETCH_NEXT_PAGE:
+			case INBOX_GET_FETCHED_NOTIFICATIONS:
+			case INBOX_MARK_AS_READ:
+			case INBOX_MARK_ALL_AS_READ:
+			case INBOX_MARK_AS_DELETED:
+				return inboxBridge.compatDoAction(action, parameters, activity);
 			default:
 				throw new BridgeException(INVALID_PARAMETER + " : Action '" + actionName + "' is known, but not implemented");
 		}
@@ -191,7 +195,7 @@ public class Bridge
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T> T getTypedParameter(Map<String, Object> parameters, String parameterName, Class<T> parameterClass) throws BridgeException
+	static <T> T getTypedParameter(Map<String, Object> parameters, String parameterName, Class<T> parameterClass) throws BridgeException
 	{
 		Object result = null;
 
@@ -208,6 +212,21 @@ public class Bridge
 		if( !parameterClass.isInstance(result) )
 		{
 			throw new BridgeException(INVALID_PARAMETER + " : Required parameter '" + parameterName + "' of wrong type");
+		}
+
+		return (T) result;
+	}
+
+	@SuppressWarnings("unchecked")
+	static <T> T getOptionalTypedParameter(Map<String, Object> parameters, String parameterName, Class<T> parameterClass, T fallback) {
+		Object result = null;
+
+		if (parameters != null) {
+			result = parameters.get(parameterName);
+		}
+
+		if (result == null || !parameterClass.isInstance(result)) {
+			return fallback;
 		}
 
 		return (T) result;

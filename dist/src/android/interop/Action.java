@@ -15,8 +15,6 @@ public enum Action
     OPT_IN("optIn"),
     OPT_OUT("optOut"),
     OPT_OUT_AND_WIPE_DATA("optOutAndWipeData"),
-    INBOX_FETCH("inbox.fetch"),
-    INBOX_FETCH_FOR_USER_ID("inbox.fetchForUserIdentifier"),
     MESSAGING_SET_DO_NOT_DISTURB_ENABLED("messaging.setDoNotDisturbEnabled"),
     MESSAGING_SHOW_PENDING_MESSAGE("messaging.showPendingMessage"),
     PUSH_GET_LAST_KNOWN_TOKEN("push.getLastKnownPushToken"),
@@ -39,7 +37,17 @@ public enum Action
 	USER_GET_INSTALLATION_ID("user.getInstallationID"),
     USER_GET_LANGUAGE("user.getLanguage"),
     USER_GET_REGION("user.getRegion"),
-    USER_GET_IDENTIFIER("user.getIdentifier");
+    USER_GET_IDENTIFIER("user.getIdentifier"),
+
+    INBOX_CREATE_INSTALLATION_FETCHER("inbox.createInstallationFetcher"),
+    INBOX_CREATE_USER_FETCHER("inbox.createUserFetcher"),
+    INBOX_RELEASE_FETCHER("inbox.releaseFetcher"),
+    INBOX_FETCH_NEW_NOTIFICATIONS("inbox.fetchNewNotifications"),
+    INBOX_FETCH_NEXT_PAGE("inbox.fetchNextPage"),
+    INBOX_GET_FETCHED_NOTIFICATIONS("inbox.getFetchedNotifications"),
+    INBOX_MARK_AS_READ("inbox.markAsRead"),
+    INBOX_MARK_ALL_AS_READ("inbox.markAllAsRead"),
+    INBOX_MARK_AS_DELETED("inbox.markAsDeleted");
 
     /**
      * Action name, the one passed as a paremeter in {@link com.batch.android.interop.Bridge}
