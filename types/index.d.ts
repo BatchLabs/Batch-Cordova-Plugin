@@ -374,28 +374,158 @@ export declare namespace BatchSDK {
     NotificationSource: typeof InboxNotificationSource;
 
     /**
-     * Fetch notifications for the current installation.
-     * Only the 100 latest notifications will be fetched.
+     * Get an inbox fetcher for the current installation ID.
      *
-     * @param callback Callback. A method that takes two parameters: error, which will contain the Error if any, and notifications, which will be an array of inbox notifications if no error occurred.
+     * The [maxPageSize] is the maximum of notifications to fetch on each call,
+     * up to 100 messages per page. Note that the actual count of fetched
+     * messages might differ from the value you've set here.
+     *
+     * Set [limit] to be the maximum number of notifications to fetch, ever.
+     * This allows you to let Batch manage the upper limit itself, so you can
+     * be sure not to use a crazy amount of memory.
      */
-    fetchNotifications(
-      callback: (error?: Error, notifications?: InboxNotification[]) => void
-    ): void;
+    getFetcherForInstallation(
+      maxPageSize?: number,
+      limit?: number
+    ): Promise<InboxFetcher>;
 
     /**
-     * Fetch notifications for the specified user identifier.
-     * Only the 100 latest notifications will be fetched.
+     * Get an inbox fetcher for a user identifier.
      *
-     * @param identifier User identifier for which you want the notifications
-     * @param authKey Secret authentication key: it should be computed your backend and given to this method. Information on how to compute it can be found in our online documentation.
-     * @param callback Callback. A method that takes two parameters: error, which will contain the Error if any, and notifications, which will be an array of inbox notifications if no error occurred.
+     * Set [userIdentifier] to the identifier for which you want the notifications:
+     * this is usually the current user's identifier, set in `BatchUser`.
+     *
+     * The [authenticationKey] is the secret used to authenticate the request.
+     * It should be computed by your backend. See the documentation for more info
+     * on how to generate it.
+     *
+     * The [maxPageSize] is the maximum of notifications to fetch on each call,
+     * up to 100 messages per page. Note that the actual count of fetched
+     * messages might differ from the value you've set here.
+     *
+     * Set [limit] to be the maximum number of notifications to fetch, ever.
+     * This allows you to let Batch manage the upper limit itself, so you can
+     * be sure not to use a crazy amount of memory.
      */
-    fetchNotificationsForUserIdentifier(
+    getFetcherForUser(
       userIdentifier: string,
       authenticationKey: string,
-      callback: (error?: Error, notifications?: InboxNotification[]) => void
-    ): void;
+      maxPageSize?: number,
+      limit?: number
+    ): Promise<InboxFetcher>;
+  }
+
+  /**
+   * BatchInboxFetcher allows you to fetch notifications that have been sent to a
+   * user (or installation, more on that later) in their raw form, allowing you
+   * to display them in a list, for example.
+   * This is also useful to display messages to users who disabled notifications.
+   *
+   * Once you get your BatchInboxFetcher instance, you should call
+   * {@link fetchNewNotifications()} to fetch the initial page of messages:
+   * nothing is done automatically.
+   * This method is also useful to refresh the list from the beginning, like in a
+   * "pull to refresh" scenario.
+   *
+   * In an effort to minimize network and memory usage,
+   * messages are fetched by page (batches of messages): this allows you to
+   * easily create an infinite list, loading more messages on demand.
+   *
+   * While you can configure the maximum number of messages you want in a page,
+   * the actual number of returned messages can differ, as the SDK may filter
+   * some of the messages returned by the server
+   * (such as duplicate notifications, etc...).
+   *
+   * Please MAKE SURE to call {@link dispose()} once you're done with the fetcher
+   * (for example, when the user navigates away).
+   * Failure to do so will leak memory, as Batch will not know that the associated
+   * native object can be released, and the message channel freed.
+   *
+   * As BatchInboxFetcher caches answers from the server, instances
+   * of this class should be tied to the lifecycle of
+   * the UI consuming it (if applicable).
+   *
+   * Another reason to keep the object around, is that you cannot mark a
+   * message as read with another BatchInboxFetcher instance that the one
+   * that gave you the message in the first place, as this relies on internal
+   * data structures that are only loaded in memory.
+   *
+   * You can also set a upper messages limit, after which BatchInbox will stop
+   * fetching new messages, even if you call fetchNextPage.
+   */
+  interface InboxFetcher {
+    /**
+     * Fetch new notifications.
+     * While {@link fetchNextPage()} is used to fetch older notifications than the ones currently loaded, this method checks for new notifications.
+     * For example, this is the method you would call on initial load, or on a "pull to refresh".
+     * The previously loaded notifications will be cleared to ensure consistency.
+     * Otherwise, a gap could be created between new notifications and your current set.
+     * Upon calling this method, please clear your cache and fill it with this
+     * method's results and ask again for more pages if you need.
+     */
+    fetchNewNotifications(): Promise<InboxFetchResult>;
+
+    /**
+     * Fetch a page of notifications.
+     * Calling this method when no messages have been loaded will be equivalent
+     * to calling {@link fetchNewNotifications()}
+     */
+    fetchNextPage(): Promise<InboxFetchResult>;
+
+    /**
+     * Marks a notification as read.
+     *
+     * Note: Please refresh your copy of the notifications using [allNotifications]
+     * to update the read status.
+     * Calling [fetchNewNotifications()]/[fetchNextPage()] right away
+     * might cause notifications to come as unread, as the server needs time to
+     * process your request.
+     */
+    markNotificationAsRead(notification: InboxNotification): void;
+    /**
+     * Marks all notifications as read.
+     * Note: Please refresh your copy of the notifications using [allNotifications]
+     * to update the read status.
+     * Calling [fetchNewNotifications()]/[fetchNextPage()] right away
+     * might cause notifications to come as unread, as the server needs time to
+     * process your request.
+     */
+    markAllNotificationsAsRead(): void;
+
+    /**
+     * Marks a notification as deleted.
+     *
+     * Calling [fetchNewNotifications()]/[fetchNextPage()] right away
+     * might cause notifications to still be present, as the server needs time to
+     * process your request.
+     */
+    markNotificationAsDeleted(notification: InboxNotification): void;
+
+    /**
+     * Call this once you're finished with this fetcher to release the native
+     * object and free all memory. Usually, this should be called
+     * in your State's dispose.
+     * Due to dart/flutter limitations, not calling this will leak memory.
+     *
+     * Calling any method after calling dispose will result in an error
+     * being thrown.
+     */
+    dispose(): void;
+  }
+
+  /**
+   * Describes an inbox fetch operation result
+   */
+  interface InboxFetchResult {
+    /**
+     * Fetched notifications
+     */
+    notifications: InboxNotification[];
+
+    /**
+     * Are more notifications available, or did we reach the end of the Inbox feed?
+     */
+    endReached: boolean;
   }
 
   /**
