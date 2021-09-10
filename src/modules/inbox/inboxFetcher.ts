@@ -6,7 +6,7 @@ import { InboxModule, InboxNotificationSource } from "../inbox";
 abstract class BatchInboxFetcherBaseImplementation
   implements BatchSDK.InboxFetcher {
   private _disposed = false;
-  private _fetcherID?: string;
+  protected _fetcherID?: string;
 
   abstract init(maxPageSize?: number, limit?: number): Promise<void>;
 
@@ -42,6 +42,20 @@ abstract class BatchInboxFetcherBaseImplementation
         this._makeBaseBridgeParameters()
       );
     }
+  }
+
+  protected _makeBaseInitParameters(maxPageSize?: number, limit?: number) {
+    const params: { maxPageSize?: number; limit?: number } = {};
+
+    if (maxPageSize) {
+      params["maxPageSize"] = maxPageSize;
+    }
+
+    if (limit) {
+      params["limit"] = limit;
+    }
+
+    return params;
   }
 
   protected _makeBaseBridgeParameters() {
@@ -130,17 +144,53 @@ export class BatchInboxFetcherInstallationImplementation extends BatchInboxFetch
     super();
   }
 
-  init(maxPageSize?: number, limit?: number): Promise<void> {
-    throw new Error("Method not implemented.");
+  async init(maxPageSize?: number, limit?: number): Promise<void> {
+    const bridgeParameters = this._makeBaseInitParameters(maxPageSize, limit);
+    const response = (await invokeModernBridge(
+      InboxAction.CreateInstallationFetcher,
+      bridgeParameters
+    )) as void | { fetcherID?: string };
+    const fetcherID = response?.fetcherID;
+    if (fetcherID && fetcherID.length > 0) {
+      this._fetcherID = fetcherID;
+    } else {
+      throw new Error(
+        "Internal error: Failed to create installation inbox fetcher"
+      );
+    }
   }
 }
 
 export class BatchInboxFetcherUserImplementation extends BatchInboxFetcherBaseImplementation {
+  private _userIdentifier: string;
+  private _authenticationKey: string;
+
   constructor(userIdentifier: string, authenticationKey: string) {
     super();
+    this._userIdentifier = userIdentifier;
+    this._authenticationKey = authenticationKey;
   }
 
-  init(maxPageSize?: number, limit?: number): Promise<void> {
-    throw new Error("Method not implemented.");
+  async init(maxPageSize?: number, limit?: number): Promise<void> {
+    const bridgeParameters = this._makeBaseInitParameters(
+      maxPageSize,
+      limit
+    ) as { [key: string]: string };
+
+    bridgeParameters["user"] = this._userIdentifier;
+    bridgeParameters["authKey"] = this._authenticationKey;
+
+    const response = (await invokeModernBridge(
+      InboxAction.CreateUserFetcher,
+      bridgeParameters
+    )) as void | { fetcherID?: string };
+    const fetcherID = response?.fetcherID;
+    if (fetcherID && fetcherID.length > 0) {
+      this._fetcherID = fetcherID;
+    } else {
+      throw new Error(
+        "Internal error: Failed to create installation user fetcher"
+      );
+    }
   }
 }
