@@ -11,27 +11,42 @@ abstract class BatchInboxFetcherBaseImplementation
   abstract init(maxPageSize?: number, limit?: number): Promise<void>;
 
   async fetchNewNotifications(): Promise<BatchSDK.InboxFetchResult> {
+    this._throwIfDisposed();
     throw new Error("Method not implemented.");
   }
 
   async fetchNextPage(): Promise<BatchSDK.InboxFetchResult> {
+    this._throwIfDisposed();
     throw new Error("Method not implemented.");
   }
 
   async markNotificationAsRead(
     notification: BatchSDK.InboxNotification
   ): Promise<void> {
-    throw new Error("Method not implemented.");
+    this._throwIfDisposed();
+
+    const parameters = this._makeBaseBridgeParameters();
+    parameters["notifID"] = notification.identifier;
+    invokeModernBridge(InboxAction.MarkAsRead, parameters);
   }
 
   async markAllNotificationsAsRead(): Promise<void> {
-    throw new Error("Method not implemented.");
+    this._throwIfDisposed();
+
+    invokeModernBridge(
+      InboxAction.MarkAllAsRead,
+      this._makeBaseBridgeParameters()
+    );
   }
 
   async markNotificationAsDeleted(
     notification: BatchSDK.InboxNotification
   ): Promise<void> {
-    throw new Error("Method not implemented.");
+    this._throwIfDisposed();
+
+    const parameters = this._makeBaseBridgeParameters();
+    parameters["notifID"] = notification.identifier;
+    invokeModernBridge(InboxAction.MarkAsDeleted, parameters);
   }
 
   dispose(): void {
@@ -58,7 +73,7 @@ abstract class BatchInboxFetcherBaseImplementation
     return params;
   }
 
-  protected _makeBaseBridgeParameters() {
+  protected _makeBaseBridgeParameters(): { [key: string]: string } {
     if (this._fetcherID === undefined) {
       throw "Internal Error: Missing internal fetcher ID";
     }
