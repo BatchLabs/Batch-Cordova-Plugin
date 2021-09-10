@@ -1,5 +1,6 @@
 import { BatchSDK } from "../../../types";
-import { isNumber, isString } from "../../helpers";
+import { Inbox as InboxAction } from "../../actions";
+import { invokeModernBridge, isNumber, isString } from "../../helpers";
 import { InboxModule, InboxNotificationSource } from "../inbox";
 
 abstract class BatchInboxFetcherBaseImplementation
@@ -17,7 +18,9 @@ abstract class BatchInboxFetcherBaseImplementation
     throw new Error("Method not implemented.");
   }
 
-  async markNotificationAsRead(notification: BatchSDK.InboxNotification): Promise<void> {
+  async markNotificationAsRead(
+    notification: BatchSDK.InboxNotification
+  ): Promise<void> {
     throw new Error("Method not implemented.");
   }
 
@@ -25,12 +28,35 @@ abstract class BatchInboxFetcherBaseImplementation
     throw new Error("Method not implemented.");
   }
 
-  async markNotificationAsDeleted(notification: BatchSDK.InboxNotification): Promise<void> {
+  async markNotificationAsDeleted(
+    notification: BatchSDK.InboxNotification
+  ): Promise<void> {
     throw new Error("Method not implemented.");
   }
 
   dispose(): void {
-    throw new Error("Method not implemented.");
+    this._disposed = true;
+    if (this._fetcherID !== undefined) {
+      invokeModernBridge(
+        InboxAction.ReleaseFetcher,
+        this._makeBaseBridgeParameters()
+      );
+    }
+  }
+
+  protected _makeBaseBridgeParameters() {
+    if (this._fetcherID === undefined) {
+      throw "Internal Error: Missing internal fetcher ID";
+    }
+    return { fetcherID: this._fetcherID };
+  }
+
+  protected _throwIfDisposed(): void {
+    if (this._disposed) {
+      throw new Error(
+        "DisposedInboxError: BatchInboxFetcher instances cannot be used anymore once .dispose() has been called."
+      );
+    }
   }
 
   protected _parseBridgeNotification(notif: {
