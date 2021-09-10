@@ -1,6 +1,10 @@
 import { BatchSDK } from "../../types";
 import { Inbox as InboxActions } from "../actions";
 import { isNumber, isString, sendToBridge } from "../helpers";
+import {
+  BatchInboxFetcherInstallationImplementation,
+  BatchInboxFetcherUserImplementation,
+} from "./inbox/inboxFetcher";
 
 /**
  * Inbox Notification Source enum.
@@ -22,36 +26,27 @@ export class InboxModule implements BatchSDK.InboxModule {
     this.NotificationSource = InboxNotificationSource;
   }
 
-  public fetchNotifications(
-    callback: (
-      error?: Error,
-      notifications?: BatchSDK.InboxNotification[]
-    ) => void
-  ): void {
-    sendToBridge(
-      (res) => {
-        this.handleFetchCallback(res, callback);
-      },
-      InboxActions.Fetch,
-      null
-    );
+  async getFetcherForInstallation(
+    maxPageSize?: number,
+    limit?: number
+  ): Promise<BatchSDK.InboxFetcher> {
+    const fetcher = new BatchInboxFetcherInstallationImplementation();
+    await fetcher.init(maxPageSize, limit);
+    return fetcher;
   }
 
-  public fetchNotificationsForUserIdentifier(
+  async getFetcherForUser(
     userIdentifier: string,
     authenticationKey: string,
-    callback: (
-      error?: Error,
-      notifications?: BatchSDK.InboxNotification[]
-    ) => void
-  ): void {
-    sendToBridge(
-      (res) => {
-        this.handleFetchCallback(res, callback);
-      },
-      InboxActions.FetchForUserID,
-      [{ id: userIdentifier, auth: authenticationKey }]
+    maxPageSize?: number,
+    limit?: number
+  ): Promise<BatchSDK.InboxFetcher> {
+    const fetcher = new BatchInboxFetcherUserImplementation(
+      userIdentifier,
+      authenticationKey
     );
+    await fetcher.init(maxPageSize, limit);
+    return fetcher;
   }
 
   private handleFetchCallback(
