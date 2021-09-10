@@ -8,6 +8,7 @@
     "noImplicitThis": true,
     "alwaysStrict": true,
     "esModuleInterop": true,
+    "module": "commonjs",
     "moduleResolution": "node",
     "lib": ["dom", "es2015"],
     "types": ["cordova"]
