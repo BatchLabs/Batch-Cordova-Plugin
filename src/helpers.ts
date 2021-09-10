@@ -14,6 +14,42 @@ export function writeBatchLog(debug: boolean, ...message: unknown[]): void {
   }
 }
 
+// Promise version of sendToBridge that
+// expects a JSON object to be returned from the bridge
+export async function invokeModernBridge(
+  method:
+    | Actions.Core
+    | Actions.Push
+    | Actions.Messaging
+    | Actions.Inbox
+    | Actions.User
+    | Actions.UserDataOperation
+    | Actions.Internal,
+  args: unknown[] | null
+): Promise<{ [key: string]: unknown }> {
+  return new Promise((resolve, reject) => {
+    sendToBridge(
+      (result: string) => {
+        const resultObj = JSON.parse(result);
+
+        if (typeof resultObj !== "object") {
+          reject("Internal error: malformed modern bridge response");
+          return;
+        }
+
+        if (isString(resultObj.error)) {
+          reject(resultObj.error);
+          return;
+        }
+
+        resolve(resultObj);
+      },
+      method,
+      args
+    );
+  });
+}
+
 export function sendToBridge(
   callback: ((result: string) => void) | null,
   method:
