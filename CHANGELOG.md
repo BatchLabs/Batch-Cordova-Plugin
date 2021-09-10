@@ -5,6 +5,7 @@ Batch Cordova Plugin
 **Core**
 
 - **Breaking change**: Fixed an issue where on iOS, the push payload of the `batchPushReceived` event was under the `payload` key. It is now at the root of the event data, just like 2.x and on Android.
+- Batch Cordova now requires some ES2015 APIs such as promises. 
 
 **Push**
 
