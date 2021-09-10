@@ -272,7 +272,7 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
 
 #pragma mark - Inbox Fetcher lifecycle
 
-- (BACSimplePromise<NSString*>*)createInstallationFetcherForParameters:(NSDictionary*)parameters {
+- (BACSimplePromise<NSDictionary*>*)createInstallationFetcherForParameters:(NSDictionary*)parameters {
     NSString *fetcherID = [self makeFetcherID];
     
     BACSimplePromise *promise = [BACSimplePromise new];
@@ -281,13 +281,13 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
         BatchInboxFetcher *fetcher = [BatchInbox fetcher];
         [self setupCommonParameters:parameters onFetcher:fetcher];
         self->_fetchers[fetcherID] = fetcher;
-        [promise resolve:fetcherID];
+        [promise resolve:@{@"fetcherID": fetcherID}];
     });
     
     return promise;
 }
 
-- (BACSimplePromise<NSString*>*)createUserFetcherForParameters:(NSDictionary*)parameters {
+- (BACSimplePromise<NSDictionary*>*)createUserFetcherForParameters:(NSDictionary*)parameters {
     NSString *fetcherID = [self makeFetcherID];
     
     NSObject *user = parameters[@"user"];
@@ -308,7 +308,7 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
         if (fetcher != nil) {
             [self setupCommonParameters:parameters onFetcher:fetcher];
             self->_fetchers[fetcherID] = fetcher;
-            [promise resolve:fetcherID];
+            [promise resolve:@{@"fetcherID": fetcherID}];
         } else {
             [promise reject:[self errorWithCode:BatchInboxBridgeErrorCauseUser
                                     description:@"Internal SDK error: Failed to initialize the fetcher. Make sure your user identifier and authentication key are valid and not empty."]];

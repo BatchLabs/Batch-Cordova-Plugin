@@ -103,23 +103,29 @@ class InboxBridge {
     }
 
     @NonNull
-    private String createInstallationFetcher(@NonNull Context context, @NonNull Map<String, Object> parameters) {
+    private Map<String, Object> createInstallationFetcher(@NonNull Context context, @NonNull Map<String, Object> parameters) {
         String id = makeFetcherID();
         BatchInboxFetcher fetcher = Batch.Inbox.getFetcher(context.getApplicationContext());
         configureSharedFetcherParameters(fetcher, parameters);
         fetchers.put(id, fetcher);
-        return id;
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("fetcherID", id);
+        return result;
     }
 
     @NonNull
-    private String createUserFetcher(@NonNull Context context, @NonNull Map<String, Object> parameters) throws BridgeException {
+    private Map<String, Object> createUserFetcher(@NonNull Context context, @NonNull Map<String, Object> parameters) throws BridgeException {
         String id = makeFetcherID();
         String user = getTypedParameter(parameters, "user", String.class);
         String authKey = getTypedParameter(parameters, "authKey", String.class);
         BatchInboxFetcher fetcher = Batch.Inbox.getFetcher(context.getApplicationContext(), user, authKey);
         configureSharedFetcherParameters(fetcher, parameters);
         fetchers.put(id, fetcher);
-        return id;
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("fetcherID", id);
+        return result;
     }
 
     private void configureSharedFetcherParameters(@NonNull BatchInboxFetcher fetcher, @NonNull Map<String, Object> parameters) {
