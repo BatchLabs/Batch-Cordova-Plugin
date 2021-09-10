@@ -132,6 +132,7 @@ export class InboxModule implements BatchSDK.InboxModule {
     if (
       source !== InboxNotificationSource.CAMPAIGN &&
       source !== InboxNotificationSource.TRANSACTIONAL &&
+      source !== InboxNotificationSource.TRIGGER &&
       source !== InboxNotificationSource.UNKNOWN
     ) {
       source = InboxNotificationSource.UNKNOWN;
