@@ -25,7 +25,7 @@ export async function invokeModernBridge(
     | Actions.User
     | Actions.UserDataOperation
     | Actions.Internal,
-  args: unknown[] | null
+  args?: unknown | null
 ): Promise<{ [key: string]: unknown } | void> {
   return new Promise((resolve, reject) => {
     sendToBridge(
@@ -51,7 +51,7 @@ export async function invokeModernBridge(
         resolve(resultObj);
       },
       method,
-      args
+      args !== undefined ? [args] : null
     );
   });
 }
