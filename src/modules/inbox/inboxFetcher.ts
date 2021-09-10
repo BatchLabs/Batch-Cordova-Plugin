@@ -40,7 +40,7 @@ export class BatchInboxFetcherInstallationImplementation extends BatchInboxFetch
 }
 
 export class BatchInboxFetcherUserImplementation extends BatchInboxFetcherBaseImplementation {
-  constructor(user: string, authenticationKey: string) {
+  constructor(userIdentifier: string, authenticationKey: string) {
     super();
   }
 

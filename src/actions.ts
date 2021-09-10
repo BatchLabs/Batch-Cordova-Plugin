@@ -25,8 +25,15 @@ export enum Messaging {
 }
 
 export enum Inbox {
-  Fetch = "inbox.fetch",
-  FetchForUserID = "inbox.fetchForUserIdentifier",
+  CreateInstallationFetcher = "inbox.createInstallationFetcher",
+  CreateUserFetcher = "inbox.createUserFetcher",
+  GetFetchedNotifications = "inbox.getFetchedNotifications",
+  NewNotifications = "inbox.fetchNewNotifications",
+  NextPage = "inbox.fetchNextPage",
+  MarkAsRead = "inbox.markAsRead",
+  MarkAllAsRead = "inbox.markAllAsRead",
+  MarkAsDeleted = "inbox.markAsDeleted",
+  ReleaseFetcher = "inbox.releaseFetcher",
 }
 
 export enum User {
