@@ -26,10 +26,16 @@ export async function invokeModernBridge(
     | Actions.UserDataOperation
     | Actions.Internal,
   args: unknown[] | null
-): Promise<{ [key: string]: unknown }> {
+): Promise<{ [key: string]: unknown } | void> {
   return new Promise((resolve, reject) => {
     sendToBridge(
-      (result: string) => {
+      (result?: string | null) => {
+        // Bridge supports empty results
+        if (result === undefined || result === null || result === "") {
+          resolve();
+          return;
+        }
+
         const resultObj = JSON.parse(result);
 
         if (typeof resultObj !== "object") {
