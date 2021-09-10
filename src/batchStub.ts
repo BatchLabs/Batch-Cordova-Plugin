@@ -61,21 +61,21 @@ class InboxStub implements BatchSDK.InboxModule {
   constructor() {
     this.NotificationSource = InboxNotificationSource;
   }
+  getFetcherForInstallation(
+    _maxPageSize?: number,
+    _limit?: number
+  ): Promise<BatchSDK.InboxFetcher> {
+    return new Promise(() => {});
+  }
 
-  public fetchNotifications(
-    _callback: (
-      error?: Error,
-      notifications?: BatchSDK.InboxNotification[]
-    ) => void
-  ) {}
-  public fetchNotificationsForUserIdentifier(
+  getFetcherForUser(
     _userIdentifier: string,
     _authenticationKey: string,
-    _callback: (
-      error?: Error,
-      notifications?: BatchSDK.InboxNotification[]
-    ) => void
-  ) {}
+    _maxPageSize?: number,
+    _limit?: number
+  ): Promise<BatchSDK.InboxFetcher> {
+    return new Promise(() => {});
+  }
 }
 
 class BatchEventDataStub implements BatchSDK.BatchEventData {
