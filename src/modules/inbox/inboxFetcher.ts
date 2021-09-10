@@ -4,25 +4,28 @@ import { InboxModule, InboxNotificationSource } from "../inbox";
 
 abstract class BatchInboxFetcherBaseImplementation
   implements BatchSDK.InboxFetcher {
+  private _disposed = false;
+  private _fetcherID?: string;
+
   abstract init(maxPageSize?: number, limit?: number): Promise<void>;
 
-  fetchNewNotifications(): Promise<BatchSDK.InboxFetchResult> {
+  async fetchNewNotifications(): Promise<BatchSDK.InboxFetchResult> {
     throw new Error("Method not implemented.");
   }
 
-  fetchNextPage(): Promise<BatchSDK.InboxFetchResult> {
+  async fetchNextPage(): Promise<BatchSDK.InboxFetchResult> {
     throw new Error("Method not implemented.");
   }
 
-  markNotificationAsRead(notification: BatchSDK.InboxNotification): void {
+  async markNotificationAsRead(notification: BatchSDK.InboxNotification): Promise<void> {
     throw new Error("Method not implemented.");
   }
 
-  markAllNotificationsAsRead(): void {
+  async markAllNotificationsAsRead(): Promise<void> {
     throw new Error("Method not implemented.");
   }
 
-  markNotificationAsDeleted(notification: BatchSDK.InboxNotification): void {
+  async markNotificationAsDeleted(notification: BatchSDK.InboxNotification): Promise<void> {
     throw new Error("Method not implemented.");
   }
 

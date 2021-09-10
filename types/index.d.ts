@@ -481,7 +481,7 @@ export declare namespace BatchSDK {
      * might cause notifications to come as unread, as the server needs time to
      * process your request.
      */
-    markNotificationAsRead(notification: InboxNotification): void;
+    markNotificationAsRead(notification: InboxNotification): Promise<void>;
     /**
      * Marks all notifications as read.
      * Note: Please refresh your copy of the notifications using [allNotifications]
@@ -490,7 +490,7 @@ export declare namespace BatchSDK {
      * might cause notifications to come as unread, as the server needs time to
      * process your request.
      */
-    markAllNotificationsAsRead(): void;
+    markAllNotificationsAsRead(): Promise<void>;
 
     /**
      * Marks a notification as deleted.
@@ -499,7 +499,7 @@ export declare namespace BatchSDK {
      * might cause notifications to still be present, as the server needs time to
      * process your request.
      */
-    markNotificationAsDeleted(notification: InboxNotification): void;
+    markNotificationAsDeleted(notification: InboxNotification): Promise<void>;
 
     /**
      * Call this once you're finished with this fetcher to release the native
