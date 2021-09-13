@@ -2,6 +2,12 @@ import { BatchSDK } from "../../../types";
 import { Inbox as InboxAction } from "../../actions";
 import { invokeModernBridge, isNumber, isString } from "../../helpers";
 import { InboxModule, InboxNotificationSource } from "../inbox";
+import { BatchInboxFetchResult } from "./inboxFetchResult";
+
+interface BridgeNotificationPageResponse {
+  notifications?: [{ [key: string]: unknown }];
+  endReached: boolean;
+}
 
 abstract class BatchInboxFetcherBaseImplementation
   implements BatchSDK.InboxFetcher {
@@ -12,12 +18,48 @@ abstract class BatchInboxFetcherBaseImplementation
 
   async fetchNewNotifications(): Promise<BatchSDK.InboxFetchResult> {
     this._throwIfDisposed();
-    throw new Error("Method not implemented.");
+
+    const rawResponse = await invokeModernBridge(
+      InboxAction.FetchNewNotifications,
+      this._makeBaseBridgeParameters()
+    );
+
+    if (!rawResponse) {
+      throw new Error("Internal Error: Empty inbox bridge response (-4)");
+    }
+
+    const castedResponse = (rawResponse as unknown) as BridgeNotificationPageResponse;
+    if (!castedResponse.notifications) {
+      throw new Error("Internal Error: Malformed inbox bridge response (-5)");
+    }
+
+    return new BatchInboxFetchResult(
+      this._parseBridgeNotifications(castedResponse.notifications),
+      !!castedResponse.endReached
+    );
   }
 
   async fetchNextPage(): Promise<BatchSDK.InboxFetchResult> {
     this._throwIfDisposed();
-    throw new Error("Method not implemented.");
+
+    const rawResponse = await invokeModernBridge(
+      InboxAction.FetchNextPage,
+      this._makeBaseBridgeParameters()
+    );
+
+    if (!rawResponse) {
+      throw new Error("Internal Error: Empty inbox bridge response (-5)");
+    }
+
+    const castedResponse = (rawResponse as unknown) as BridgeNotificationPageResponse;
+    if (!castedResponse.notifications) {
+      throw new Error("Internal Error: Malformed inbox bridge response (-6)");
+    }
+
+    return new BatchInboxFetchResult(
+      this._parseBridgeNotifications(castedResponse.notifications),
+      !!castedResponse.endReached
+    );
   }
 
   async markNotificationAsRead(
@@ -86,6 +128,16 @@ abstract class BatchInboxFetcherBaseImplementation
         "DisposedInboxError: BatchInboxFetcher instances cannot be used anymore once .dispose() has been called."
       );
     }
+  }
+
+  protected _parseBridgeNotifications(
+    response: [{ [key: string]: unknown }]
+  ): BatchSDK.InboxNotification[] {
+    if (!Array.isArray(response)) {
+      throw new Error("Internal Error: Malformed inbox bridge response (-7)");
+    }
+
+    return response.map(this._parseBridgeNotification);
   }
 
   protected _parseBridgeNotification(notif: {
