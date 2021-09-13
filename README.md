@@ -114,9 +114,10 @@ npm run build
 
 Then, link the plugin to your test application. This only needs to be done once.  
 ```bash
+mkdir -p plugins/@batch.com
 cordova plugin add ../<relative path to where you cloned this repository>/Batch-Cordova-Plugin/dist/ --link
 
-# Ionic users:
+# Ionic Capacitor users:
 npm link ../<path to where you checked out the plugin>/dist
 ```
 
@@ -129,6 +130,8 @@ Thus, you'll have to manually add it to your project, using the cordova CLI:
 
 ```
 cordova plugin rm com.batch.cordova
+#or
+cordova plugin rm @batch.com/cordova-plugin
 cordova plugin add <path to where you checked out cordova-plugin>/dist --nofetch
 ```
 
