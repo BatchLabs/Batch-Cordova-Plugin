@@ -124,7 +124,7 @@ class BatchUserDataEditorStub implements BatchSDK.BatchUserDataEditor {
   }
 }
 
-class BatchStub implements BatchSDK.Batch {
+export class BatchStub implements BatchSDK.Batch {
   public push: BatchSDK.PushModule;
   public user: BatchSDK.UserModule;
   public messaging: BatchSDK.MessagingModule;
@@ -153,5 +153,3 @@ class BatchStub implements BatchSDK.Batch {
   public optOut(): void {}
   public optOutAndWipeData(): void {}
 }
-
-export default BatchStub;

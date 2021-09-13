@@ -1,15 +1,15 @@
 import { BatchSDK } from "../types";
-import batch from "./batch";
-import batchStub from "./batchStub";
+import { Batch } from "./batch";
+import { BatchStub } from "./batchStub";
 import { CallbackHandler } from "./callback";
 import Platform from "./platform";
 
 let batchImpl: BatchSDK.Batch;
 if (Platform.isCurrent(Platform.iOS) || Platform.isCurrent(Platform.Android)) {
-  batchImpl = new batch();
+  batchImpl = new Batch();
   new CallbackHandler().setup();
 } else {
-  batchImpl = new batchStub();
+  batchImpl = new BatchStub();
 }
 
 export = batchImpl;

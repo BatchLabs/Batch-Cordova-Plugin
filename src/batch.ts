@@ -8,7 +8,7 @@ import { PushModule } from "./modules/push";
 import { UserModule } from "./modules/user";
 import Platform from "./platform";
 
-export default class Batch implements BatchSDK.Batch {
+export class Batch implements BatchSDK.Batch {
   public push: PushModule;
   public user: UserModule;
   public messaging: MessagingModule;

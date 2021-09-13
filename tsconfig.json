@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    // Do not set anything higher than es5, or methods on "batch" will disappear for
+    // some unknown reason.
+    "target": "es5",
     "sourceMap": false,
     "allowJs": true,
     "strictNullChecks": true,
@@ -8,7 +10,7 @@
     "noImplicitThis": true,
     "alwaysStrict": true,
     "esModuleInterop": true,
-    "module": "commonjs",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "lib": ["dom", "es2015"],
     "types": ["cordova"]
