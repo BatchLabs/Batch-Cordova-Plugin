@@ -461,7 +461,7 @@ export declare namespace BatchSDK {
      * the native code. Therefore, this is an expensive method to call: you should
      * cache the result on your end.
      */
-     getAllFetchedNotifications(): Promise<BatchSDK.InboxNotification[]>;
+    getAllFetchedNotifications(): Promise<BatchSDK.InboxNotification[]>;
 
     /**
      * Fetch new notifications.
