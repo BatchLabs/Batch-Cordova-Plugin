@@ -96,7 +96,7 @@ class InboxBridge {
             } catch (JSONException jsonException) {
                 finalValue = "{'error':'Internal native error (-1200)', 'code': -1200}";
             }
-            resultPromise.resolve(finalValue);
+            resultPromise.resolve(finalValue != null ? finalValue.toString() : null);
         });
 
         return resultPromise;
