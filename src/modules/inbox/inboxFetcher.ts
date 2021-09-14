@@ -4,6 +4,10 @@ import { invokeModernBridge, isNumber, isString } from "../../helpers";
 import { InboxModule, InboxNotificationSource } from "../inbox";
 import { BatchInboxFetchResult } from "./inboxFetchResult";
 
+interface BridgeNotificationListResponse {
+  notifications?: [{ [key: string]: unknown }];
+}
+
 interface BridgeNotificationPageResponse {
   notifications?: [{ [key: string]: unknown }];
   endReached: boolean;
@@ -15,6 +19,26 @@ abstract class BatchInboxFetcherBaseImplementation
   protected _fetcherID?: string;
 
   abstract init(maxPageSize?: number, limit?: number): Promise<void>;
+
+  async getAllFetchedNotifications(): Promise<BatchSDK.InboxNotification[]> {
+    this._throwIfDisposed();
+
+    const rawResponse = await invokeModernBridge(
+      InboxAction.GetFetchedNotifications,
+      this._makeBaseBridgeParameters()
+    );
+
+    if (!rawResponse) {
+      throw new Error("Internal Error: Empty inbox bridge response (-7)");
+    }
+
+    const castedResponse = (rawResponse as unknown) as BridgeNotificationListResponse;
+    if (!castedResponse.notifications) {
+      throw new Error("Internal Error: Malformed inbox bridge response (-8)");
+    }
+
+    return this._parseBridgeNotifications(castedResponse.notifications);
+  }
 
   async fetchNewNotifications(): Promise<BatchSDK.InboxFetchResult> {
     this._throwIfDisposed();

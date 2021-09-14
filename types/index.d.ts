@@ -455,6 +455,15 @@ export declare namespace BatchSDK {
    */
   interface InboxFetcher {
     /**
+     * Get all of the notifications that have been fetched by this fetcher instance.
+     *
+     * Note: This doesn't cache anything on the javascript side, but always asks
+     * the native code. Therefore, this is an expensive method to call: you should
+     * cache the result on your end.
+     */
+     getAllFetchedNotifications(): Promise<BatchSDK.InboxNotification[]>;
+
+    /**
      * Fetch new notifications.
      * While {@link fetchNextPage()} is used to fetch older notifications than the ones currently loaded, this method checks for new notifications.
      * For example, this is the method you would call on initial load, or on a "pull to refresh".
@@ -505,7 +514,7 @@ export declare namespace BatchSDK {
      * Call this once you're finished with this fetcher to release the native
      * object and free all memory. Usually, this should be called
      * in your State's dispose.
-     * Due to dart/flutter limitations, not calling this will leak memory.
+     * Due to javascript limitations, not calling this will leak memory.
      *
      * Calling any method after calling dispose will result in an error
      * being thrown.
