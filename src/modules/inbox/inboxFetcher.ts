@@ -21,7 +21,7 @@ abstract class BatchInboxFetcherBaseImplementation
   abstract init(maxPageSize?: number, limit?: number): Promise<void>;
 
   async getAllFetchedNotifications(): Promise<BatchSDK.InboxNotification[]> {
-    this._throwIfDisposed();
+    await this._throwIfDisposed();
 
     const rawResponse = await invokeModernBridge(
       InboxAction.GetFetchedNotifications,
@@ -41,7 +41,7 @@ abstract class BatchInboxFetcherBaseImplementation
   }
 
   async fetchNewNotifications(): Promise<BatchSDK.InboxFetchResult> {
-    this._throwIfDisposed();
+    await this._throwIfDisposed();
 
     const rawResponse = await invokeModernBridge(
       InboxAction.FetchNewNotifications,
@@ -64,7 +64,7 @@ abstract class BatchInboxFetcherBaseImplementation
   }
 
   async fetchNextPage(): Promise<BatchSDK.InboxFetchResult> {
-    this._throwIfDisposed();
+    await this._throwIfDisposed();
 
     const rawResponse = await invokeModernBridge(
       InboxAction.FetchNextPage,
@@ -89,7 +89,7 @@ abstract class BatchInboxFetcherBaseImplementation
   async markNotificationAsRead(
     notification: BatchSDK.InboxNotification
   ): Promise<void> {
-    this._throwIfDisposed();
+    await this._throwIfDisposed();
 
     const parameters = this._makeBaseBridgeParameters();
     parameters["notifID"] = notification.identifier;
@@ -97,7 +97,7 @@ abstract class BatchInboxFetcherBaseImplementation
   }
 
   async markAllNotificationsAsRead(): Promise<void> {
-    this._throwIfDisposed();
+    await this._throwIfDisposed();
 
     await invokeModernBridge(
       InboxAction.MarkAllAsRead,
@@ -108,7 +108,7 @@ abstract class BatchInboxFetcherBaseImplementation
   async markNotificationAsDeleted(
     notification: BatchSDK.InboxNotification
   ): Promise<void> {
-    this._throwIfDisposed();
+    await this._throwIfDisposed();
 
     const parameters = this._makeBaseBridgeParameters();
     parameters["notifID"] = notification.identifier;
@@ -146,12 +146,15 @@ abstract class BatchInboxFetcherBaseImplementation
     return { fetcherID: this._fetcherID };
   }
 
-  protected _throwIfDisposed(): void {
+  protected _throwIfDisposed(): Promise<void> {
     if (this._disposed) {
-      throw new Error(
-        "DisposedInboxError: BatchInboxFetcher instances cannot be used anymore once .dispose() has been called."
+      return Promise.reject(
+        new Error(
+          "DisposedInboxError: BatchInboxFetcher instances cannot be used anymore once .dispose() has been called."
+        )
       );
     }
+    return Promise.resolve();
   }
 
   protected _parseBridgeNotifications(
