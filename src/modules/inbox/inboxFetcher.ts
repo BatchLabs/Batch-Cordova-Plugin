@@ -152,7 +152,7 @@ abstract class BatchInboxFetcherBaseImplementation
       throw new Error("An Inbox Notification must at least have a body");
     }
 
-    const identifier = notif.identifier;
+    const identifier = notif.id;
     if (!isString(identifier)) {
       throw new Error("An Inbox Notification must at least have an identifier");
     }
@@ -162,7 +162,7 @@ abstract class BatchInboxFetcherBaseImplementation
       throw new Error("An Inbox Notification must at least have a date");
     }
 
-    const isUnread = notif.is_unread;
+    const isUnread = notif.isUnread;
     if (typeof isUnread !== "boolean") {
       throw new Error("An Inbox Notification must at least have a read flag");
     }
