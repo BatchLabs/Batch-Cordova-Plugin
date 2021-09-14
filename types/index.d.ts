@@ -635,11 +635,6 @@ export declare namespace BatchSDK {
     body: string;
 
     /**
-     * URL of the rich notification attachment (image/audio/video) - iOS Only
-     */
-    iOSAttachmentURL?: string;
-
-    /**
      * Raw notification user data (also called payload)
      */
     payload: { [key: string]: unknown };

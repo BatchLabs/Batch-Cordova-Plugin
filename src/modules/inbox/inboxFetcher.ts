@@ -213,10 +213,6 @@ abstract class BatchInboxFetcherBaseImplementation
       source: source as InboxModule["NotificationSource"],
     };
 
-    if (isString(notif.ios_attachment_url)) {
-      parsedNotif.iOSAttachmentURL = notif.ios_attachment_url;
-    }
-
     // TODO: make sure it's uniform with batchPushReceived
     if (typeof notif.payload === "object" && notif.payload !== null) {
       parsedNotif.payload = notif.payload as { [key: string]: unknown };

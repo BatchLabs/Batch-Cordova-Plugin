@@ -96,7 +96,6 @@ const fakeNotifications = JSON.stringify({
       is_unread: false,
       date: 1520352788001,
       source: NotificationSource.TRANSACTIONAL,
-      ios_attachment_url: "https://batch.com/attachment.png",
       payload: {
         foo: "bar"
       }
@@ -117,7 +116,6 @@ function checkNotificationsContent(
   expect(notif.source).toBe(NotificationSource.CAMPAIGN);
   expect(notif.title).toBeUndefined();
   expect(notif.payload).toEqual({});
-  expect(notif.iOSAttachmentURL).toBeUndefined();
 
   notif = notifications[1];
   expect(notif.identifier).toBe("2");
@@ -129,5 +127,4 @@ function checkNotificationsContent(
   expect(notif.payload).toEqual({
     foo: "bar"
   });
-  expect(notif.iOSAttachmentURL).toBe("https://batch.com/attachment.png");
 }
