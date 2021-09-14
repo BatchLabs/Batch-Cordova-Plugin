@@ -157,9 +157,9 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
 - (NSDictionary*)serializeNotificationContent:(BatchInboxNotificationContent*)content
 {
     NSMutableDictionary *json = [NSMutableDictionary new];
-    json[@"identifier"] = content.identifier;
+    json[@"id"] = content.identifier;
     json[@"body"] = content.body;
-    json[@"is_unread"] = @(content.isUnread);
+    json[@"isUnread"] = @(content.isUnread);
     json[@"date"] = @(floor([content.date timeIntervalSince1970] * 1000));
     json[@"payload"] = content.payload;
     
