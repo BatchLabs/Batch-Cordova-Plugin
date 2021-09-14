@@ -27,7 +27,9 @@ class PushStub implements BatchSDK.PushModule {
   public setiOSNotificationTypes(_notifTypes: unknown) {}
   public clearBadge() {}
   public dismissNotifications() {}
-  public getLastKnownPushToken(_resultCallback: (token: string) => void) {}
+  public getLastKnownPushToken(): Promise<undefined | string> {
+    return Promise.resolve(undefined);
+  }
 }
 
 class UserStub implements BatchSDK.UserModule {
@@ -37,12 +39,18 @@ class UserStub implements BatchSDK.UserModule {
     this.eventData = BatchEventDataStub;
   }
 
-  public getLanguage(_resultCallback: (language?: string) => void) {}
-  public getRegion(_resultCallback: (region?: string) => void) {}
-  public getIdentifier(_resultCallback: (identifier?: string) => void) {}
-  public getInstallationID(
-    _resultCallback: (installationID?: string) => void
-  ) {}
+  public getLanguage(): Promise<undefined | string> {
+    return Promise.resolve(undefined);
+  }
+  public getRegion(): Promise<undefined | string> {
+    return Promise.resolve(undefined);
+  }
+  public getIdentifier(): Promise<undefined | string> {
+    return Promise.resolve(undefined);
+  }
+  public getInstallationID(): Promise<undefined | string> {
+    return Promise.resolve(undefined);
+  }
   public getEditor(): BatchSDK.BatchUserDataEditor {
     return new BatchUserDataEditorStub();
   }
