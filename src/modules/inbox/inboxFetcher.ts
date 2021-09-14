@@ -93,13 +93,13 @@ abstract class BatchInboxFetcherBaseImplementation
 
     const parameters = this._makeBaseBridgeParameters();
     parameters["notifID"] = notification.identifier;
-    invokeModernBridge(InboxAction.MarkAsRead, parameters);
+    await invokeModernBridge(InboxAction.MarkAsRead, parameters);
   }
 
   async markAllNotificationsAsRead(): Promise<void> {
     this._throwIfDisposed();
 
-    invokeModernBridge(
+    await invokeModernBridge(
       InboxAction.MarkAllAsRead,
       this._makeBaseBridgeParameters()
     );
@@ -112,7 +112,7 @@ abstract class BatchInboxFetcherBaseImplementation
 
     const parameters = this._makeBaseBridgeParameters();
     parameters["notifID"] = notification.identifier;
-    invokeModernBridge(InboxAction.MarkAsDeleted, parameters);
+    await invokeModernBridge(InboxAction.MarkAsDeleted, parameters);
   }
 
   dispose(): void {
@@ -121,7 +121,7 @@ abstract class BatchInboxFetcherBaseImplementation
       invokeModernBridge(
         InboxAction.ReleaseFetcher,
         this._makeBaseBridgeParameters()
-      );
+      ).catch(() => {});
     }
   }
 
