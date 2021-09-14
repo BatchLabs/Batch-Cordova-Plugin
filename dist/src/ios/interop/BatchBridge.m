@@ -312,11 +312,16 @@ static dispatch_once_t onceToken;
         BACSimplePromise *inboxPromise = [[BatchInboxBridge sharedInboxBridge] doAction:action withParameters:parameters];
         if (inboxPromise != nil) {
             return inboxPromise;
+        } else {
+            [NSException raise:INVALID_PARAMETER format:@"Unknown inbox action: %@", action];
         }
     }
     
-    // Unknown method.
-    [NSException raise:INVALID_PARAMETER format:@"Unknown action: %@", action];
+    else
+    {
+        // Unknown method.
+        [NSException raise:INVALID_PARAMETER format:@"Unknown action: %@", action];
+    }
     
     return [BACSimplePromise resolved:@""];
 }
