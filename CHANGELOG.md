@@ -14,6 +14,17 @@ Batch Cordova Plugin
     - `requestNotificationAuthorization`, which should be called whenever you want to ask the user the permission to display notifications.
 - iOS: Added `requestProvisionalNotificationAuthorization` to request a provisional authorization on iOS 11 and higher.
 
+**Inbox**
+
+- The Inbox module has been fully rewritten to reach feature parity with the native SDKs:
+  - `batch.inbox.getFetcherForInstallation()` and `batch.inbox.getFetcherForUser()` now return objects that are used to interact with the inbox.
+  - Marking a notification as read, deleted or marking all notifications as read is now supported.
+  - Fetching multiple pages is now supported.
+  - Inbox page size and the limit of notifications to fetch are now configurable.
+
+The new fetcher objects MUST be disposed by calling `.dispose()` once you are finished with them to free up memory.  
+See documentation for more info about migrating to the new Inbox API.  
+
 **User**
 
 - Fixed Installation ID getter's type definition to properly match it's implementation: the callback argument can now be `undefined`.
