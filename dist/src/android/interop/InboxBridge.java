@@ -304,10 +304,26 @@ class InboxBridge {
                     break;
             }
             serializedNotification.put("source", source);
-            serializedNotification.put("payload", nativeNotification.getRawPayload());
+            serializedNotification.put("payload", pushPayloadToJSON(nativeNotification.getRawPayload()));
             serializedNotifications.add(serializedNotification);
         }
 
         return serializedNotifications;
+    }
+
+    private static JSONObject pushPayloadToJSON(Map<String, String> payload) {
+        try {
+            final JSONObject jsonPayload = new JSONObject();
+            for (String key : payload.keySet()) {
+                Object value = payload.get(key);
+                if (value == null) {
+                    continue;
+                }
+                jsonPayload.put(key, value);
+            }
+            return jsonPayload;
+        } catch(JSONException e) {
+            return new JSONObject();
+        }
     }
 }
