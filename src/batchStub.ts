@@ -51,6 +51,14 @@ class UserStub implements BatchSDK.UserModule {
   public getInstallationID(): Promise<undefined | string> {
     return Promise.resolve(undefined);
   }
+  public getAttributes(): Promise<{
+    [key: string]: BatchSDK.BatchUserAttribute;
+  }> {
+    return Promise.resolve({});
+  }
+  public getTagCollections(): Promise<{ [key: string]: string[] }> {
+    return Promise.resolve({});
+  }
   public getEditor(): BatchSDK.BatchUserDataEditor {
     return new BatchUserDataEditorStub();
   }

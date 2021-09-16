@@ -270,6 +270,18 @@ export declare namespace BatchSDK {
      * @param location User location object
      */
     trackLocation(location: Location): void;
+
+    /**
+     * Read the saved attributes.
+     * Reading is asynchronous so as not to interfere with saving operations.
+     */
+    getAttributes(): Promise<{ [key: string]: BatchUserAttribute }>;
+
+    /**
+     * Read the saved tag collections.
+     * Reading is asynchronous so as not to interfere with saving operations.
+     */
+    getTagCollections(): Promise<{ [key: string]: string[] }>;
   }
 
   /**

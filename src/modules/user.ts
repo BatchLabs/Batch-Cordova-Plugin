@@ -45,6 +45,15 @@ export class UserModule implements BatchSDK.UserModule {
     return sendToBridgePromise(UserAction.GetIdentifier, null);
   }
 
+  public getAttributes(): Promise<{
+    [key: string]: BatchSDK.BatchUserAttribute;
+  }> {
+    throw new Error("Method not implemented.");
+  }
+  public getTagCollections(): Promise<{ [key: string]: string[] }> {
+    throw new Error("Method not implemented.");
+  }
+
   public getEditor(): BatchUserDataEditor {
     return new BatchUserDataEditor(true);
   }
