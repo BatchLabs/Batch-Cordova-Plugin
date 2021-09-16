@@ -47,6 +47,8 @@ export enum User {
   GetLanguage = "user.getLanguage",
   GetRegion = "user.getRegion",
   GetIdentifier = "user.getIdentifier",
+  FetchAttributes = "user.fetch.attributes",
+  FetchTags = "user.fetch.tags",
 }
 
 export enum UserDataOperation {
