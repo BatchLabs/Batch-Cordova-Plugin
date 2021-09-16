@@ -83,6 +83,30 @@ export function sendToBridge(
   );
 }
 
+// Promise version of sendToBridge that always resolves a Promise
+// with the bridge reply, no matter if it is a success or a failure.
+export async function sendToBridgePromise(
+  method:
+    | Actions.Core
+    | Actions.Push
+    | Actions.Messaging
+    | Actions.Inbox
+    | Actions.User
+    | Actions.UserDataOperation
+    | Actions.Internal,
+  args: unknown[] | null
+): Promise<undefined | string> {
+  return new Promise((resolve) => {
+    sendToBridge(
+      (result) => {
+        resolve(result);
+      },
+      method,
+      args
+    );
+  });
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 export function isString(value: any): value is string {
   return value instanceof String || typeof value === "string";
