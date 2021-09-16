@@ -28,7 +28,7 @@ export class UserModule implements BatchSDK.UserModule {
   }
 
   public getRegion(): Promise<undefined | string> {
-    return sendToBridgePromise(UserAction.GetLanguage, null);
+    return sendToBridgePromise(UserAction.GetRegion, null);
   }
 
   public getIdentifier(): Promise<undefined | string> {
