@@ -1,5 +1,11 @@
 import { User as UserAction } from "../actions";
-import { isNumber, isString, sendToBridge, writeBatchLog } from "../helpers";
+import {
+  isNumber,
+  isString,
+  sendToBridge,
+  sendToBridgePromise,
+  writeBatchLog,
+} from "../helpers";
 
 import Consts from "../consts";
 import { BatchEventData } from "./user/eventData";
@@ -13,22 +19,20 @@ export class UserModule implements BatchSDK.UserModule {
     this.eventData = BatchEventData;
   }
 
-  public getInstallationID(
-    resultCallback: (installationID?: string) => void
-  ): void {
-    sendToBridge(resultCallback, UserAction.GetInstallationID, null);
+  public getInstallationID(): Promise<undefined | string> {
+    return sendToBridgePromise(UserAction.GetInstallationID, null);
   }
 
-  public getLanguage(resultCallback: (language?: string) => void): void {
-    sendToBridge(resultCallback, UserAction.GetLanguage, null);
+  public getLanguage(): Promise<undefined | string> {
+    return sendToBridgePromise(UserAction.GetLanguage, null);
   }
 
-  public getRegion(resultCallback: (region?: string) => void): void {
-    sendToBridge(resultCallback, UserAction.GetLanguage, null);
+  public getRegion(): Promise<undefined | string> {
+    return sendToBridgePromise(UserAction.GetLanguage, null);
   }
 
-  public getIdentifier(resultCallback: (identifier?: string) => void): void {
-    sendToBridge(resultCallback, UserAction.GetIdentifier, null);
+  public getIdentifier(): Promise<undefined | string> {
+    return sendToBridgePromise(UserAction.GetIdentifier, null);
   }
 
   public getEditor(): BatchUserDataEditor {

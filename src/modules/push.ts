@@ -2,7 +2,7 @@
 
 import { BatchSDK } from "../../types";
 import { Push as PushActions } from "../actions";
-import { sendToBridge, writeBatchLog } from "../helpers";
+import { sendToBridge, sendToBridgePromise, writeBatchLog } from "../helpers";
 
 /**
  * Android Notification Types enum.
@@ -97,7 +97,7 @@ export class PushModule implements BatchSDK.PushModule {
     sendToBridge(null, PushActions.DismissNotifications, null);
   }
 
-  public getLastKnownPushToken(resultCallback: (token: string) => void): void {
-    sendToBridge(resultCallback, PushActions.GetLastKnownPushToken, null);
+  public getLastKnownPushToken(): Promise<undefined | string> {
+    return sendToBridgePromise(PushActions.GetLastKnownPushToken, null);
   }
 }

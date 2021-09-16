@@ -13,6 +13,7 @@ Batch Cordova Plugin
     - `refreshToken`, which should be called on every app start.
     - `requestNotificationAuthorization`, which should be called whenever you want to ask the user the permission to display notifications.
 - iOS: Added `requestProvisionalNotificationAuthorization` to request a provisional authorization on iOS 11 and higher.
+- `getLastKnownPushToken()` now returns a `Promise` rather than taking a callback as a parameter.
 
 **Inbox**
 
@@ -27,7 +28,7 @@ See documentation for more info about migrating to the new Inbox API.
 
 **User**
 
-- Fixed Installation ID getter's type definition to properly match it's implementation: the callback argument can now be `undefined`.
+- `getInstallationID()` now returns a `Promise` rather than taking a callback as a parameter. The promise's result can be undefinied if the Installation ID is unavailable.
 - Added getters for `language`/`region` and `identifier` in `batch.user`.
 
 ## 4.0.0
