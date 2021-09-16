@@ -12,11 +12,21 @@ import { BatchEventData } from "./user/eventData";
 import { BatchUserDataEditor } from "./user/userDataEditor";
 import { BatchSDK } from "../../types";
 
+export enum BatchUserAttributeType {
+  STRING = 1,
+  BOOLEAN = 1,
+  INTEGER = 2,
+  DOUBLE = 3,
+  DATE = 4,
+}
+
 export class UserModule implements BatchSDK.UserModule {
   public eventData: typeof BatchSDK.BatchEventData;
+  public BatchUserAttributeType: typeof BatchUserAttributeType;
 
   constructor() {
     this.eventData = BatchEventData;
+    this.BatchUserAttributeType = BatchUserAttributeType;
   }
 
   public getInstallationID(): Promise<undefined | string> {

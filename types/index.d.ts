@@ -168,6 +168,37 @@ export declare namespace BatchSDK {
   type LegacyBatchEventData = { [key: string]: unknown };
 
   /**
+   * User attribute types.
+   *
+   * This enum's implementation is available on batch.user.BatchUserAttributeType.
+   */
+  enum BatchUserAttributeType {
+    STRING = 1,
+    BOOLEAN = 1,
+    INTEGER = 2,
+    DOUBLE = 3,
+    DATE = 4,
+  }
+
+  /**
+   * Object representing a user attribute.
+   * An attribute is represented by it's type, which maches the one you've used
+   * when setting the attribute, and its value.
+   *
+   * You can get the attribute using the generic getter, or use the typed ones
+   * that will cast the value or return undefined if the type doesn't match.
+   */
+  interface BatchUserAttribute {
+    getType(): BatchUserAttributeType;
+    getValue(): unknown;
+
+    getStringValue(): string | undefined;
+    getBooleanValue(): boolean | undefined;
+    getNumberValue(): number | undefined;
+    getDateValue(): Date | undefined;
+  }
+
+  /**
    * Batch's user module
    */
   interface UserModule {
