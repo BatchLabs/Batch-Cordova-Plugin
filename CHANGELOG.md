@@ -2,11 +2,11 @@ Batch Cordova Plugin
 
 ## 4.0.0
 
-Major release.
-
 **Plugin**
 
-- Changed the Plugin ID from `com.batch.cordova` to `@batch.com/cordova-plugin`. This fixes an issue where `cordova prepare` would reinstall an older version of the plugin if the plugins folder was missing.
+- Changed the Plugin ID from `com.batch.cordova` to `@batch.com/cordova-plugin`. This fixes an issue where `cordova prepare` would reinstall an older version of the plugin if the plugins folder was missing.  
+  Cordova users: when updating please remove the old plugin via `cordova plugin remove com.batch.cordova`, then install the new one.  
+  Ionic Capacitor users: Nothing needs to be done as Capacitor integrates with NPM and the package.json natively.
 
 ## 3.0.1
 
