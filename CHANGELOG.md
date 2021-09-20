@@ -8,6 +8,10 @@ Batch Cordova Plugin
   Cordova users: when updating please remove the old plugin via `cordova plugin remove com.batch.cordova`, then install the new one.  
   Ionic Capacitor users: Nothing needs to be done as Capacitor integrates with NPM and the package.json natively.
 
+**Android**
+
+- Android 12 compatibility: Added explicit `android:exported` values to the manifest entries added by the plugin.
+
 ## 3.0.1
 
 **Plugin**
