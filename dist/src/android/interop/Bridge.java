@@ -5,23 +5,31 @@ import android.content.Intent;
 import android.location.Location;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.batch.android.Batch;
+import com.batch.android.BatchAttributesFetchListener;
 import com.batch.android.BatchEventData;
 import com.batch.android.BatchMessage;
+import com.batch.android.BatchTagCollectionsFetchListener;
+import com.batch.android.BatchUserAttribute;
 import com.batch.android.BatchUserDataEditor;
 import com.batch.android.BatchUserProfile;
 import com.batch.android.Config;
 import com.batch.android.LoggerDelegate;
 import com.batch.android.PushNotificationType;
 
+import com.batch.android.json.JSONException;
 import com.batch.android.json.JSONObject;
 
 import java.lang.RuntimeException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Bridge that allows code to use Batch's APIs via an action+parameters request, to easily bridge it to some kind of JSON RPC
@@ -36,6 +44,8 @@ public class Bridge
 	private static final String BRIDGE_VERSION = "Bridge/2.0";
 
 	private static final InboxBridge inboxBridge = new InboxBridge();
+
+	private static final String TAG = "BatchBridge";
 
 	static
 	{
@@ -177,6 +187,10 @@ public class Bridge
 				return SimplePromise.resolved(Batch.User.getRegion(activity));
 			case USER_GET_IDENTIFIER:
 				return SimplePromise.resolved(Batch.User.getIdentifier(activity));
+			case USER_FETCH_ATTRIBUTES:
+				return convertModernPromiseToLegacy(userFetchAttributes(activity));
+			case USER_FETCH_TAGS:
+				return convertModernPromiseToLegacy(userFetchTags(activity));
 			case INBOX_CREATE_INSTALLATION_FETCHER:
 			case INBOX_CREATE_USER_FETCHER:
 			case INBOX_RELEASE_FETCHER:
@@ -682,6 +696,87 @@ public class Bridge
 		Batch.User.trackLocation(location);
 	}
 
+	private static SimplePromise<Object> userFetchAttributes(Activity activity) {
+		return new SimplePromise<>(promise -> {
+			Batch.User.fetchAttributes(activity, new BatchAttributesFetchListener() {
+				@Override
+				public void onSuccess(@NonNull Map<String, BatchUserAttribute> map) {
+					Map<String, Map<String, Object>> bridgeAttributes = new HashMap<>();
+
+					for (Map.Entry<String, BatchUserAttribute> attributeEntry : map.entrySet()) {
+						Map<String, Object> typedBrdigeAttribute = new HashMap<>();
+						BatchUserAttribute attribute = attributeEntry.getValue();
+
+						String type;
+						Object value = attribute.value;
+						switch (attribute.type) {
+							case BOOL:
+								type = "b";
+								break;
+							case DATE: {
+								type = "d";
+								Date dateValue = attribute.getDateValue();
+								if (dateValue == null) {
+									promise.reject(new BridgeException("Fetch attribute: Could not parse date for key: " + attributeEntry.getKey()));
+									return;
+								}
+								value = dateValue.getTime();
+								break;
+							}
+							case STRING:
+								type = "s";
+								break;
+							case LONGLONG:
+								type = "i";
+								break;
+							case DOUBLE:
+								type = "f";
+								break;
+							default:
+								promise.reject(new BridgeException("Fetch attribute: Unknown attribute type " + attribute.type + " for key: " + attributeEntry.getKey()));
+								return;
+						}
+
+						typedBrdigeAttribute.put("type", type);
+						typedBrdigeAttribute.put("value", value);
+
+						bridgeAttributes.put(attributeEntry.getKey(), typedBrdigeAttribute);
+					}
+
+
+					promise.resolve(bridgeAttributes);
+				}
+
+				@Override
+				public void onError() {
+					promise.reject(new BridgeException("Native fetchAttributes returned an error"));
+				}
+			});
+		});
+	}
+
+	private static SimplePromise<Object> userFetchTags(Activity activity) {
+		return new SimplePromise<>(promise -> {
+			Batch.User.fetchTagCollections(activity, new BatchTagCollectionsFetchListener() {
+				@Override
+				public void onSuccess(@NonNull Map<String, Set<String>> map) {
+					Map<String, List<String>> bridgeTagCollections = new HashMap<>();
+
+					for (Map.Entry<String, Set<String>> tagCollection : map.entrySet()) {
+						bridgeTagCollections.put(tagCollection.getKey(), new ArrayList<>(tagCollection.getValue()));
+					}
+
+					promise.resolve(bridgeTagCollections);
+				}
+
+				@Override
+				public void onError() {
+					promise.reject(new BridgeException("Native fetchTagCollections returned an error"));
+				}
+			});
+		});
+	}
+
 	private static void showPendingMessage(Activity activity)
 	{
 		BatchMessage msg = Batch.Messaging.popPendingMessage();
@@ -691,4 +786,41 @@ public class Bridge
 	}
 
 //endregion
+
+	// Translates a modern Promise (that returns complex objects or throw) to a "legacy" bridge one (for older base bridges)
+	// To do this, it serializes Maps (arrays and numbers are not supported) to JSON strings
+	// and also wraps errors as the Bridge doesn't support catching and expects the Promise to always
+	// be resolved with a JSON message, even if it's an error object.
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	@NonNull
+	public static SimplePromise<String> convertModernPromiseToLegacy(@NonNull SimplePromise<Object> originalPromise) {
+		SimplePromise<String> resultPromise = new SimplePromise<>();
+
+		originalPromise.then(value -> {
+			Object finalValue = value;
+			if (value instanceof Map) {
+				try {
+					finalValue = JSONHelper.fromMap((Map)value);
+				} catch (JSONException e) {
+					Log.d(TAG, "Could not convert error", e);
+					finalValue = "{'error':'Internal native error (-1100)', 'code': -1100}";
+				}
+			}
+			resultPromise.resolve(finalValue != null ? finalValue.toString() : null);
+		});
+		originalPromise.catchException(e -> {
+			String finalValue;
+			try {
+				JSONObject errorObject = new JSONObject();
+				errorObject.put("error", e.getMessage());
+				errorObject.put("code", -1101); // Error codes are not yet supported on Android
+				finalValue = errorObject.toString();
+			} catch (JSONException jsonException) {
+				finalValue = "{'error':'Internal native error (-1200)', 'code': -1200}";
+			}
+			resultPromise.resolve(finalValue);
+		});
+
+		return resultPromise;
+	}
 }

@@ -1,5 +1,6 @@
 package com.batch.cordova.android.interop;
 
+import static com.batch.cordova.android.interop.Bridge.convertModernPromiseToLegacy;
 import static com.batch.cordova.android.interop.Bridge.getOptionalTypedParameter;
 import static com.batch.cordova.android.interop.Bridge.getTypedParameter;
 
@@ -65,41 +66,9 @@ class InboxBridge {
     }
 
     // Translates doAction's Promise to a "legacy" bridge one (for older base bridges)
-    // To do this, it serializes Maps (arrays and numbers are not supported) to JSON strings
-    // and also wraps errors as the Bridge doesn't support catching and expects the Promise to always
-    // be resolved with a JSON message, even if it's an error object.
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @NonNull
     SimplePromise<String> compatDoAction(@NonNull Action action, @NonNull Map<String, Object> parameters, @NonNull Activity activity) throws BridgeException, BatchBridgeNotImplementedException {
-        SimplePromise<String> resultPromise = new SimplePromise<>();
-        SimplePromise<Object> actionPromise = doAction(action, parameters, activity);
-
-        actionPromise.then(value -> {
-            Object finalValue = value;
-            if (value instanceof Map) {
-                try {
-                    finalValue = JSONHelper.fromMap((Map)value);
-                } catch (JSONException e) {
-                    Log.d(TAG, "Could not convert error", e);
-                    finalValue = "{'error':'Internal native error (-1100)', 'code': -1100}";
-                }
-            }
-            resultPromise.resolve(finalValue.toString());
-        });
-        actionPromise.catchException(e -> {
-            String finalValue;
-            try {
-                JSONObject errorObject = new JSONObject();
-                errorObject.put("error", e.getMessage());
-                errorObject.put("code", -1101); // Error codes are not yet supported on Android
-                finalValue = errorObject.toString();
-            } catch (JSONException jsonException) {
-                finalValue = "{'error':'Internal native error (-1200)', 'code': -1200}";
-            }
-            resultPromise.resolve(finalValue != null ? finalValue.toString() : null);
-        });
-
-        return resultPromise;
+        return convertModernPromiseToLegacy(doAction(action, parameters, activity));
     }
 
     @NonNull

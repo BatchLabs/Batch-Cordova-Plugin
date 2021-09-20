@@ -38,6 +38,8 @@ public enum Action
     USER_GET_LANGUAGE("user.getLanguage"),
     USER_GET_REGION("user.getRegion"),
     USER_GET_IDENTIFIER("user.getIdentifier"),
+    USER_FETCH_ATTRIBUTES("user.fetch.attributes"),
+    USER_FETCH_TAGS("user.fetch.tags"),
 
     INBOX_CREATE_INSTALLATION_FETCHER("inbox.createInstallationFetcher"),
     INBOX_CREATE_USER_FETCHER("inbox.createUserFetcher"),
