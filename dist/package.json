@@ -1,6 +1,6 @@
 {
   "name": "@batch.com/cordova-plugin",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "Batch.com SDK Cordova/Ionic plugin for Android and iOS",
   "types": "index.d.ts",
   "cordova": {
@@ -18,6 +18,11 @@
   ],
   "cordovaDependencies": {
     "3.0.1": {
+      "cordova": ">=9.0.0",
+      "cordova-android": ">=9.0.0",
+      "cordova-ios": ">=6.0.0"
+    },
+    "4.0.0": {
       "cordova": ">=9.0.0",
       "cordova-android": ">=9.0.0",
       "cordova-ios": ">=6.0.0"

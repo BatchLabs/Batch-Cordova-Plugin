@@ -1,5 +1,13 @@
 Batch Cordova Plugin
 
+## 4.0.0
+
+Major release.
+
+**Plugin**
+
+- Changed the Plugin ID from `com.batch.cordova` to `@batch.com/cordova-plugin`. This fixes an issue where `cordova prepare` would reinstall an older version of the plugin if the plugins folder was missing.
+
 ## 3.0.1
 
 **Plugin**
