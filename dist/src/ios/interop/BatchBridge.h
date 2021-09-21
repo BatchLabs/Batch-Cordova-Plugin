@@ -27,6 +27,11 @@
  @param params      :   JSON compatible map of parameters.
  @param callback    :   The object to call back on. @see BatchBridgeCallback
  */
-+ (BACSimplePromise<NSString*> *)call:(NSString *)action withParameters:(NSDictionary *)params callback:(id<BatchBridgeCallback>)callback;
++ (nonnull BACSimplePromise<NSString*> *)call:(nonnull NSString *)action withParameters:(nonnull NSDictionary *)params callback:(nonnull id<BatchBridgeCallback>)callback;
+
+/// Converts a "new format" Promise matching newer bridges like Flutter (can be resolved to a Dictionary, or rejected)
+/// to a "legacy" one that is resolved with a string and shouldn't reject.
+/// Stepping stone until we add proper support for those in the base bridge
++ (nullable BACSimplePromise<NSString*> *)convertPromiseToLegacyBridge:(nullable BACSimplePromise*)sourcePromise;
 
 @end

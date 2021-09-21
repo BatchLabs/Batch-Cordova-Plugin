@@ -1,6 +1,7 @@
 #import "BatchInboxBridge.h"
 
 #import "BatchBridgeShared.h"
+#import "BatchBridge.h"
 #import <Batch/BatchInbox.h>
 
 typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
@@ -93,65 +94,7 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
         resultPromise = [self markAsDeleted:parameters];
     }
     
-    return [self convertPromiseToLegacyBridge:resultPromise];
-}
-
-// Converts a "new format" Promise matching newer bridges like Flutter (can be resolved to a Dictionary, or rejected)
-// to a "legacy" one that is resolved with a string and shouldn't reject.
-// Stepping stone until we add proper support for those in the base bridge
-- (nullable BACSimplePromise<NSString*> *)convertPromiseToLegacyBridge:(nullable BACSimplePromise*)sourcePromise {
-    if (sourcePromise == nil) {
-        return nil;
-    }
-    
-    // Promise that holds the output, will be resolved by a "sub promise" (as we can't chain simple promises yet)
-    // that convers NSDictionaries to NSStrings and catches errors.
-    BACSimplePromise<NSString*> *responsePromise = [BACSimplePromise new];
-    
-    [sourcePromise then:^(NSObject * _Nullable value) {
-        // No NSNumber/NSArray support. NSNumber might be fine anyway.
-        if ([value isKindOfClass:[NSDictionary class]]) {
-            // dictionaryToJSON: might seria
-            NSString *jsonResponse = [self dictionaryToJSON:(NSDictionary*)value];
-            if (jsonResponse != nil) {
-                [responsePromise resolve:jsonResponse];
-            } else {
-                [responsePromise resolve:@"{'error':'Internal native error (-1100)', 'code': -1100}"];
-            }
-        } else {
-            [responsePromise resolve:(id)value];
-        }
-    }];
-    
-    [sourcePromise catch:^(NSError * _Nullable error) {
-        NSString *jsonError;
-        NSString *description = [error localizedDescription];
-        if ([description length] > 0) {
-            jsonError = [self dictionaryToJSON:@{
-                     @"error": description,
-                     @"code": @(error.code),
-                     }];
-        }
-        
-        if (jsonError == nil) {
-            jsonError = @"{'error':'Internal native error (-1200)', 'code': -1200}";
-        }
-        
-        [responsePromise resolve:jsonError];
-    }];
-    
-    return responsePromise;
-}
-
-- (NSString*)dictionaryToJSON:(NSDictionary*)dictionary
-{
-    if (dictionary) {
-        NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil];
-        if (data) {
-            return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        }
-    }
-    return nil;
+    return [BatchBridge convertPromiseToLegacyBridge:resultPromise];
 }
 
 - (NSDictionary*)serializeNotificationContent:(BatchInboxNotificationContent*)content
