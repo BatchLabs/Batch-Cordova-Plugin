@@ -1,5 +1,6 @@
 import { User as UserAction } from "../actions";
 import {
+  invokeModernBridge,
   isNumber,
   isString,
   sendToBridge,
@@ -50,8 +51,17 @@ export class UserModule implements BatchSDK.UserModule {
   }> {
     throw new Error("Method not implemented.");
   }
-  public getTagCollections(): Promise<{ [key: string]: string[] }> {
-    throw new Error("Method not implemented.");
+
+  public async getTagCollections(): Promise<{ [key: string]: string[] }> {
+    const response = (await invokeModernBridge(
+      UserAction.FetchTags
+    )) as void | { tagCollections: { [key: string]: string[] } };
+
+    if (!response) {
+      throw new Error("Internal error: Failed to fetch tag collections");
+    }
+
+    return response.tagCollections;
   }
 
   public getEditor(): BatchUserDataEditor {
