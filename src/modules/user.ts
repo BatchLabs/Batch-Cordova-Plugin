@@ -12,6 +12,7 @@ import Consts from "../consts";
 import { BatchEventData } from "./user/eventData";
 import { BatchUserDataEditor } from "./user/userDataEditor";
 import { BatchSDK } from "../../types";
+import { BatchUserAttribute } from "./user/userAttributes";
 
 export enum BatchUserAttributeType {
   STRING = 1,
@@ -46,10 +47,59 @@ export class UserModule implements BatchSDK.UserModule {
     return sendToBridgePromise(UserAction.GetIdentifier, null);
   }
 
-  public getAttributes(): Promise<{
+  public async getAttributes(): Promise<{
     [key: string]: BatchSDK.BatchUserAttribute;
   }> {
-    throw new Error("Method not implemented.");
+    const response = (await invokeModernBridge(
+      UserAction.FetchAttributes
+    )) as void | {
+      attributes: { [key: string]: { type: string; value: unknown } };
+    };
+
+    if (!response) {
+      throw new Error("Internal error: Failed to fetch attributes");
+    }
+
+    const outAttributes: { [key: string]: BatchSDK.BatchUserAttribute } = {};
+    const rawAttributes = response.attributes;
+
+    for (const key of Object.keys(rawAttributes)) {
+      if (!Object.prototype.hasOwnProperty.call(rawAttributes, key)) {
+        continue;
+      }
+
+      const rawAttribute = rawAttributes[key];
+      let type: BatchUserAttributeType = BatchUserAttributeType.STRING;
+      let value = rawAttribute.value;
+
+      switch (rawAttribute.type) {
+        case "d":
+          type = BatchUserAttributeType.DATE;
+          value = new Date(rawAttribute.value as number);
+          break;
+        case "i":
+          type = BatchUserAttributeType.INTEGER;
+          break;
+        case "f":
+          type = BatchUserAttributeType.DOUBLE;
+          break;
+        case "b":
+          type = BatchUserAttributeType.BOOLEAN;
+          value = !!rawAttribute.value;
+          break;
+        case "s":
+          type = BatchUserAttributeType.STRING;
+          break;
+        default:
+          throw new Error(
+            "Internal error: unknown user attribute type. Is the native SDK too new for this plugin?"
+          );
+      }
+
+      outAttributes[key] = new BatchUserAttribute(type, value);
+    }
+
+    return outAttributes;
   }
 
   public async getTagCollections(): Promise<{ [key: string]: string[] }> {
