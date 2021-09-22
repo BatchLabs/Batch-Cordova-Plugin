@@ -19,6 +19,7 @@
 #import "BatchBridgeShared.h"
 #import "BatchInboxBridge.h"
 #import "BatchBridgeNotificationCenterDelegate.h"
+#import "BatchUserBridge.h"
 
 #define INVALID_PARAMETER   @"Invalid parameter."
 
@@ -298,11 +299,11 @@ static dispatch_once_t onceToken;
     }
     else if ([action caseInsensitiveCompare:USER_FETCH_ATTRIBUTES] == NSOrderedSame)
     {
-        
+        return [self convertPromiseToLegacyBridge:[BatchUserBridge fetchAttributes]];
     }
     else if ([action caseInsensitiveCompare:USER_FETCH_TAGS] == NSOrderedSame)
     {
-        
+        return [self convertPromiseToLegacyBridge:[BatchUserBridge fetchTags]];
     }
 
     else if ([action caseInsensitiveCompare:MESSAGING_SET_DND_ENABLED] == NSOrderedSame)

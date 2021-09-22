@@ -139,7 +139,7 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
 }
 
 - (nonnull NSError*)errorWithCode:(BatchInboxBridgeErrorCause)code description:(nonnull NSString*)description {
-    return [NSError errorWithDomain:@"com.batch.ios.interop.bridge"
+    return [NSError errorWithDomain:@"com.batch.ios.interop.bridge.inbox"
                                code:code
                            userInfo:@{
                                NSLocalizedDescriptionKey: description
