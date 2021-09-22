@@ -84,7 +84,7 @@ typedef NS_ENUM(NSInteger, BatchUserBridgeErrorCause) {
             return;
         }
         
-        [result resolve:bridgeAttributes];
+        [result resolve:@{@"attributes": bridgeAttributes}];
     }];
     
     return result;
@@ -105,7 +105,7 @@ typedef NS_ENUM(NSInteger, BatchUserBridgeErrorCause) {
             bridgeTagCollections[key] = [obj allObjects];
         }];
         
-        [result resolve:bridgeTagCollections];
+        [result resolve:@{@"tagCollections": bridgeTagCollections}];
     }];
     
     return result;

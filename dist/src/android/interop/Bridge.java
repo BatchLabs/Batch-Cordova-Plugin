@@ -14,7 +14,6 @@ import com.batch.android.BatchMessage;
 import com.batch.android.BatchTagCollectionsFetchListener;
 import com.batch.android.BatchUserAttribute;
 import com.batch.android.BatchUserDataEditor;
-import com.batch.android.BatchUserProfile;
 import com.batch.android.Config;
 import com.batch.android.LoggerDelegate;
 import com.batch.android.PushNotificationType;
@@ -22,7 +21,6 @@ import com.batch.android.PushNotificationType;
 import com.batch.android.json.JSONException;
 import com.batch.android.json.JSONObject;
 
-import java.lang.RuntimeException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumSet;
@@ -743,8 +741,9 @@ public class Bridge
 						bridgeAttributes.put(attributeEntry.getKey(), typedBrdigeAttribute);
 					}
 
-
-					promise.resolve(bridgeAttributes);
+					final Map<String, Map<String, Map<String, Object>>> resultMap = new HashMap<>();
+					resultMap.put("attributes", bridgeAttributes);
+					promise.resolve(resultMap);
 				}
 
 				@Override
@@ -766,7 +765,9 @@ public class Bridge
 						bridgeTagCollections.put(tagCollection.getKey(), new ArrayList<>(tagCollection.getValue()));
 					}
 
-					promise.resolve(bridgeTagCollections);
+					final Map<String, Map<String, List<String>>> resultMap = new HashMap<>();
+					resultMap.put("tagCollections", bridgeTagCollections);
+					promise.resolve(resultMap);
 				}
 
 				@Override
