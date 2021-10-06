@@ -27,6 +27,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Default: false
 @property (assign) BOOL showForegroundNotifications;
 
+/// Should Batch use the chained delegate's completionHandler responses or force its own, while still calling the chained delegate.
+/// This is useful if you want Batch to enforce its "showForegroundNotifications" setting while still informing the chained delegate.
+/// Default: false, but the plugin will automatically set that to true when calling "setiOSShowForegroundNotifications" from JavaScript.
+@property (assign) BOOL shouldUseChainedCompletionHandlerResponse;
+
 /// Previous delegate
 @property (weak, nullable) id<UNUserNotificationCenterDelegate> previousDelegate;
 

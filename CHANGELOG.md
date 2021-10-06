@@ -13,6 +13,9 @@ Batch Cordova Plugin
     - `refreshToken`, which should be called on every app start.
     - `requestNotificationAuthorization`, which should be called whenever you want to ask the user the permission to display notifications.
 - iOS: Added `requestProvisionalNotificationAuthorization` to request a provisional authorization on iOS 11 and higher.
+- iOS: Calling `setiOSShowForegroundNotifications()` under Capacitor now works as expected.
+  It works by disabling Capacitor's control of the notification presentation (but Capacitor is still informed of notification events).
+  Not calling this method preserves Capacitor's handling, which can be configured using `@capacitor/push-notifications`.
 - `getLastKnownPushToken()` now returns a `Promise` rather than taking a callback as a parameter.
 
 **Inbox**

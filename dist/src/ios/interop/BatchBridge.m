@@ -448,7 +448,9 @@ static dispatch_once_t onceToken;
 
 + (void)setiOSShowForegroundNotifications:(BOOL)showForegroundNotifications
 {
-    [BatchBridgeNotificationCenterDelegate sharedInstance].showForegroundNotifications = showForegroundNotifications;
+    BatchBridgeNotificationCenterDelegate *delegate = [BatchBridgeNotificationCenterDelegate sharedInstance];
+    delegate.showForegroundNotifications = showForegroundNotifications;
+    delegate.shouldUseChainedCompletionHandlerResponse = true;
 }
 
 + (void)setNotificationTypes:(BatchNotificationType)type

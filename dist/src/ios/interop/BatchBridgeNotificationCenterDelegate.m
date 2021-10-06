@@ -59,6 +59,7 @@ static BOOL _batBridgeNotifDelegateShouldAutomaticallyRegister = true;
     self = [super init];
     if (self) {
         _showForegroundNotifications = false;
+        _shouldUseChainedCompletionHandlerResponse = false;
         _isBatchReady = false;
         _enqueuedNotificationResponses = [NSMutableArray new];
     }
@@ -72,28 +73,24 @@ static BOOL _batBridgeNotifDelegateShouldAutomaticallyRegister = true;
     id<UNUserNotificationCenterDelegate> chainDelegate = self.previousDelegate;
     // It's the chain delegate's responsibility to call the completionHandler
     if ([chainDelegate respondsToSelector:@selector(userNotificationCenter:willPresentNotification:withCompletionHandler:)]) {
-        [chainDelegate userNotificationCenter:center
-                      willPresentNotification:notification
-                        withCompletionHandler:completionHandler];
-    } else {
-        UNNotificationPresentationOptions options = UNNotificationPresentationOptionNone;
-        if (self.showForegroundNotifications) {
-            options = UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound;
-            
-#ifdef __IPHONE_14_0
-            if (@available(iOS 14.0, *)) {
-                options = options | UNNotificationPresentationOptionList | UNNotificationPresentationOptionBanner;
-            } else {
-                options = options | UNNotificationPresentationOptionAlert;
-            }
-#else
-            options = options | UNNotificationPresentationOptionAlert;
-#endif
+        //returnType (^blockName)(parameterTypes) = ^returnType(parameters) {...};
+        void (^chainCompletionHandler)(UNNotificationPresentationOptions);
+        
+        if (self.shouldUseChainedCompletionHandlerResponse) {
+            // Set iOS' completion handler as the one we give to the method, as we don't want to override the result
+            chainCompletionHandler = completionHandler;
+        } else {
+            // Set ourselves as the chained completion handler so we can wait for the implementation but rewrite the response
+            chainCompletionHandler = ^(UNNotificationPresentationOptions ignored) {
+                [self performPresentCompletionHandler:completionHandler];
+            };
         }
         
-        if (completionHandler) {
-            completionHandler(options);
-        };
+        [chainDelegate userNotificationCenter:center
+                      willPresentNotification:notification
+                        withCompletionHandler:chainCompletionHandler];
+    } else {
+        [self performPresentCompletionHandler:completionHandler];
     }
 }
 
@@ -128,6 +125,28 @@ static BOOL _batBridgeNotifDelegateShouldAutomaticallyRegister = true;
                               openSettingsForNotification:notification];
         }
     }
+}
+
+/// Call iOS back on the "present" completion handler with Batch controlled presentation options
+- (void)performPresentCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
+    UNNotificationPresentationOptions options = UNNotificationPresentationOptionNone;
+    if (self.showForegroundNotifications) {
+        options = UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound;
+        
+#ifdef __IPHONE_14_0
+        if (@available(iOS 14.0, *)) {
+            options = options | UNNotificationPresentationOptionList | UNNotificationPresentationOptionBanner;
+        } else {
+            options = options | UNNotificationPresentationOptionAlert;
+        }
+#else
+        options = options | UNNotificationPresentationOptionAlert;
+#endif
+    }
+    
+    if (completionHandler) {
+        completionHandler(options);
+    };
 }
 
 - (BOOL)isBatchReady {
