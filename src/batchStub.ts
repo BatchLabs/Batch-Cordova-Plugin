@@ -1,6 +1,7 @@
 import { BatchSDK } from "../types";
 import { InboxNotificationSource } from "./modules/inbox";
 import { AndroidNotificationTypes, iOSNotificationTypes } from "./modules/push";
+import { BatchUserAttributeType } from "./modules/user";
 
 /* tslint:disable:no-console */
 
@@ -34,9 +35,11 @@ class PushStub implements BatchSDK.PushModule {
 
 class UserStub implements BatchSDK.UserModule {
   public eventData: typeof BatchSDK.BatchEventData;
+  public BatchUserAttributeType: typeof BatchSDK.BatchUserAttributeType;
 
   constructor() {
     this.eventData = BatchEventDataStub;
+    this.BatchUserAttributeType = BatchUserAttributeType;
   }
 
   public getLanguage(): Promise<undefined | string> {
