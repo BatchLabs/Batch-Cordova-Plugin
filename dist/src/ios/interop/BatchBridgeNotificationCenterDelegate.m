@@ -59,7 +59,7 @@ static BOOL _batBridgeNotifDelegateShouldAutomaticallyRegister = true;
     self = [super init];
     if (self) {
         _showForegroundNotifications = false;
-        _shouldUseChainedCompletionHandlerResponse = false;
+        _shouldUseChainedCompletionHandlerResponse = true;
         _isBatchReady = false;
         _enqueuedNotificationResponses = [NSMutableArray new];
     }

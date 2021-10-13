@@ -450,7 +450,7 @@ static dispatch_once_t onceToken;
 {
     BatchBridgeNotificationCenterDelegate *delegate = [BatchBridgeNotificationCenterDelegate sharedInstance];
     delegate.showForegroundNotifications = showForegroundNotifications;
-    delegate.shouldUseChainedCompletionHandlerResponse = true;
+    delegate.shouldUseChainedCompletionHandlerResponse = false;
 }
 
 + (void)setNotificationTypes:(BatchNotificationType)type
