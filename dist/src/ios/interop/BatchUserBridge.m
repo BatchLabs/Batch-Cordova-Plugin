@@ -1,4 +1,4 @@
-#import <BatchUserBridge.h>
+#import "BatchUserBridge.h"
 
 #import <Batch/BatchUser.h>
 
