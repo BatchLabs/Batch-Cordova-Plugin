@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="@batch.com/cordova-plugin"
-        version="5.0.0">
+        version="5.0.1">
     <engines>
         <engine name="cordova" version=">=9.0.0" />
         <engine name="cordova-android" version=">=9.0.0" />
