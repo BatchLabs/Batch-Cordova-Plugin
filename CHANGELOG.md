@@ -1,5 +1,11 @@
 Batch Cordova Plugin
 
+## 5.0.1
+
+**iOS**
+
+- Fix an issue where the plugin could not be built in some environments due to `BatchUserBridge.h`.
+
 ## 5.0.0
 
 **Core**
