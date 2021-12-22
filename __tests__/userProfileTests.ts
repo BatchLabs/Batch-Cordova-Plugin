@@ -84,11 +84,12 @@ describe("it enqueues operations correctly", () => {
     editor.setAttribute("foo", 2.5);
     editor.setAttribute("foo", true);
     editor.setAttribute("foo", new Date(1520352788000));
+    editor.setAttribute("foo", new URL("https://batch.com"));
     editor.setAttribute("foo", NaN);
     (editor as any).setAttribute(null, null);
     (editor as any).setAttribute("foo", null);
 
-    expect(enqueueMock.mock.calls.length).toBe(5);
+    expect(enqueueMock.mock.calls.length).toBe(6);
     expect(enqueueMock).toBeCalledWith(UserDataOperation.SetAttribute, {
       key: "foo",
       type: "string",
@@ -113,6 +114,11 @@ describe("it enqueues operations correctly", () => {
       key: "foo",
       type: "date",
       value: 1520352788000
+    });
+    expect(enqueueMock).toBeCalledWith(UserDataOperation.SetAttribute, {
+      key: "foo",
+      type: "url",
+      value: "https://batch.com/",
     });
   });
 

@@ -132,7 +132,8 @@ test("it tracks events", () => {
     .put("bool", true)
     .put("float", 2.1)
     .put("int", 2)
-    .put("date", new Date(1520352788000));
+    .put("date", new Date(1520352788000))
+    .put("url", new URL("https://batch.com"));
   userModule.trackEvent("foo_3", "foobar2", eventData);
 
   expect(mockedTrackEvent.mock.calls.length).toBe(3);
@@ -159,6 +160,10 @@ test("it tracks events", () => {
       date: {
         type: "d",
         value: 1520352788000,
+      },
+      url: {
+        type: "u",
+        value: "https://batch.com/",
       },
     },
     tags: ["foo", "bar"],
