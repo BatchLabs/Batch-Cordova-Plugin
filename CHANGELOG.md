@@ -1,5 +1,15 @@
 Batch Cordova Plugin
 
+## 5.1.0
+
+**Plugin**
+
+- Updated Batch native SDKs to 1.18.1.
+
+**User**
+
+- Added support for the URL attribute and event data type.
+
 ## 5.0.1
 
 **iOS**
