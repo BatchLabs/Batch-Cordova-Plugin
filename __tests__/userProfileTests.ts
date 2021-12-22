@@ -7,7 +7,7 @@ jest.doMock("../src/helpers", () => {
   // tslint:disable-next-line:only-arrow-functions
   return {
     ...helpers,
-    sendToBridge: mockSendToBridge
+    sendToBridge: mockSendToBridge,
   };
 });
 
@@ -43,10 +43,10 @@ describe("it enqueues operations correctly", () => {
 
     expect(enqueueMock.mock.calls.length).toBe(2);
     expect(enqueueMock).toBeCalledWith(UserDataOperation.SetLanguage, {
-      value: "en"
+      value: "en",
     });
     expect(enqueueMock).toBeCalledWith(UserDataOperation.SetLanguage, {
-      value: null
+      value: null,
     });
   });
 
@@ -57,10 +57,10 @@ describe("it enqueues operations correctly", () => {
 
     expect(enqueueMock.mock.calls.length).toBe(2);
     expect(enqueueMock).toBeCalledWith(UserDataOperation.SetRegion, {
-      value: "en"
+      value: "en",
     });
     expect(enqueueMock).toBeCalledWith(UserDataOperation.SetRegion, {
-      value: null
+      value: null,
     });
   });
 
@@ -71,10 +71,10 @@ describe("it enqueues operations correctly", () => {
 
     expect(enqueueMock.mock.calls.length).toBe(2);
     expect(enqueueMock).toBeCalledWith(UserDataOperation.SetIdentifier, {
-      value: "foo"
+      value: "foo",
     });
     expect(enqueueMock).toBeCalledWith(UserDataOperation.SetIdentifier, {
-      value: null
+      value: null,
     });
   });
 
@@ -93,27 +93,27 @@ describe("it enqueues operations correctly", () => {
     expect(enqueueMock).toBeCalledWith(UserDataOperation.SetAttribute, {
       key: "foo",
       type: "string",
-      value: "bar"
+      value: "bar",
     });
     expect(enqueueMock).toBeCalledWith(UserDataOperation.SetAttribute, {
       key: "foo",
       type: "integer",
-      value: 2
+      value: 2,
     });
     expect(enqueueMock).toBeCalledWith(UserDataOperation.SetAttribute, {
       key: "foo",
       type: "float",
-      value: 2.5
+      value: 2.5,
     });
     expect(enqueueMock).toBeCalledWith(UserDataOperation.SetAttribute, {
       key: "foo",
       type: "boolean",
-      value: true
+      value: true,
     });
     expect(enqueueMock).toBeCalledWith(UserDataOperation.SetAttribute, {
       key: "foo",
       type: "date",
-      value: 1520352788000
+      value: 1520352788000,
     });
     expect(enqueueMock).toBeCalledWith(UserDataOperation.SetAttribute, {
       key: "foo",
@@ -128,7 +128,7 @@ describe("it enqueues operations correctly", () => {
 
     expect(enqueueMock.mock.calls.length).toBe(1);
     expect(enqueueMock).toBeCalledWith(UserDataOperation.RemoveAttribute, {
-      key: "foo"
+      key: "foo",
     });
   });
 
@@ -143,11 +143,11 @@ describe("it enqueues operations correctly", () => {
     expect(enqueueMock.mock.calls.length).toBe(2);
     expect(enqueueMock).toBeCalledWith(UserDataOperation.AddTag, {
       collection: "foo",
-      tag: "bar"
+      tag: "bar",
     });
     expect(enqueueMock).toBeCalledWith(UserDataOperation.AddTag, {
       collection: "foo",
-      tag: "bar bar$"
+      tag: "bar bar$",
     });
   });
 
@@ -162,11 +162,11 @@ describe("it enqueues operations correctly", () => {
     expect(enqueueMock.mock.calls.length).toBe(2);
     expect(enqueueMock).toBeCalledWith(UserDataOperation.RemoveTag, {
       collection: "foo",
-      tag: "bar"
+      tag: "bar",
     });
     expect(enqueueMock).toBeCalledWith(UserDataOperation.RemoveTag, {
       collection: "foo",
-      tag: "bar bar$"
+      tag: "bar bar$",
     });
   });
 
@@ -180,7 +180,7 @@ describe("it enqueues operations correctly", () => {
 
     expect(enqueueMock.mock.calls.length).toBe(2);
     expect(enqueueMock).toBeCalledWith(UserDataOperation.ClearTagCollection, {
-      collection: "foo"
+      collection: "foo",
     });
     expect(enqueueMock).toBeCalledWith(UserDataOperation.ClearTags, {});
   });
@@ -201,9 +201,9 @@ test("can save operations", () => {
           key: "foo",
           operation: UserDataOperation.SetAttribute,
           type: "string",
-          value: "bar"
-        }
-      ]
-    }
+          value: "bar",
+        },
+      ],
+    },
   ]);
 });
