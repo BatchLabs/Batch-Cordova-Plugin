@@ -21,6 +21,8 @@ import com.batch.android.PushNotificationType;
 import com.batch.android.json.JSONException;
 import com.batch.android.json.JSONObject;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumSet;
@@ -421,6 +423,14 @@ public class Bridge
 					{
 						editor.setAttribute(key, getTypedParameter(operationDescription, "value", String.class));
 					}
+					else if ("url".equals(type))
+					{
+						try {
+							editor.setAttribute(key, new URI(getTypedParameter(operationDescription, "value", String.class)));
+						} catch (URISyntaxException e) {
+							Log.e("Batch Bridge", "Invalid SET_ATTRIBUTE url value: couldn't parse value", e);
+						}
+					}
 					else if ("date".equals(type))
 					{
 						editor.setAttribute(key, new Date(getTypedParameter(operationDescription, "value", Number.class).longValue()));
@@ -587,6 +597,13 @@ public class Bridge
 					batchEventData.put(entryStringKey, getTypedParameter(entryMapValue, "value", Number.class).longValue());
 				} else if ("f".equals(type)) {
 					batchEventData.put(entryStringKey, getTypedParameter(entryMapValue, "value", Number.class).doubleValue());
+				} else if ("u".equals(type)) {
+					String rawURI = getTypedParameter(entryMapValue, "value", String.class);
+					try {
+						batchEventData.put(entryStringKey, new URI(rawURI));
+					} catch (URISyntaxException e) {
+						throw new BridgeException(INVALID_PARAMETER + " : Bad URL event data value");
+					}
 				} else {
 					throw new BridgeException(INVALID_PARAMETER + " : Unknown event_data.attributes type");
 				}
@@ -729,6 +746,15 @@ public class Bridge
 								break;
 							case DOUBLE:
 								type = "f";
+								break;
+							case URL:
+								type = "u";
+								URI uriValue = attribute.getUriValue();
+								if (uriValue == null) {
+									promise.reject(new BridgeException("Fetch attribute: Could not parse URL for key: " + attributeEntry.getKey()));
+									return;
+								}
+								value = uriValue.toString();
 								break;
 							default:
 								promise.reject(new BridgeException("Fetch attribute: Unknown attribute type " + attribute.type + " for key: " + attributeEntry.getKey()));
