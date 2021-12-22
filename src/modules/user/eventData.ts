@@ -121,7 +121,7 @@ export class BatchEventData implements BatchSDK.BatchEventData {
     } else {
       writeBatchLog(
         false,
-        "BatchEventData - Invalid attribute value type. Must be a string, number, date or boolean"
+        "BatchEventData - Invalid attribute value type. Must be a string, number, date, URL or boolean"
       );
       return this;
     }
