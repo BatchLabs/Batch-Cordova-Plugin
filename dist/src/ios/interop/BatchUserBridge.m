@@ -56,6 +56,10 @@ typedef NS_ENUM(NSInteger, BatchUserBridgeErrorCause) {
                     bridgeType = @"s";
                     bridgeValue = attribute.stringValue;
                     break;
+                case BatchUserAttributeTypeURL:
+                    bridgeType = @"u";
+                    bridgeValue = attribute.urlValue.absoluteString;
+                    break;
                 default:
                 {
                     mapError = [self errorWithCode:BatchUserBridgeErrorCauseInternalBridge

@@ -538,9 +538,25 @@ static dispatch_once_t onceToken;
                 continue;
             }
             
+            NSString *key = operationDescription[@"key"];
+            
             if ([@"string" isEqualToString:type])
             {
                 [editor setAttribute:operationDescription[@"value"] forKey:operationDescription[@"key"]];
+            }
+            else if ([@"url" isEqualToString:type])
+            {
+                NSString *absoluteURL = operationDescription[@"value"];
+                if (![absoluteURL isKindOfClass:[NSString class]]) {
+                    NSLog(@"Batch Bridge - %@", @"Error while setting URL attribute: invalid internal value");
+                    continue;
+                }
+                NSURL *urlValue = [NSURL URLWithString:absoluteURL];
+                if (urlValue == nil) {
+                    NSLog(@"Batch Bridge - Could not set URL for attribute '%@': the URL is not valid", key);
+                    continue;
+                }
+                [editor setURLAttribute:urlValue forKey:key error:nil];
             }
             else if ([@"date" isEqualToString:type])
             {
@@ -709,6 +725,16 @@ static dispatch_once_t onceToken;
                     [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: expected number (float) value, got something else"];
                 }
                 [batchEventData putDouble:[(NSNumber*)value doubleValue] forKey:key];
+            } else if ([@"u" isEqualToString:type]) {
+                if (![value isKindOfClass:[NSString class]])
+                {
+                    [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: expected url (string) value, got something else"];
+                }
+                NSURL *urlValue = [NSURL URLWithString:(NSString*)value];
+                if (urlValue == nil) {
+                    [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: invalid URL"];
+                }
+                [batchEventData putURL:urlValue forKey:key];
             } else {
                 [NSException raise:INVALID_PARAMETER format:@"Unknown event_data.attributes type"];
             }
