@@ -178,6 +178,7 @@ export declare namespace BatchSDK {
     INTEGER = 2,
     DOUBLE = 3,
     DATE = 4,
+    URL = 5,
   }
 
   /**
@@ -196,6 +197,7 @@ export declare namespace BatchSDK {
     getBooleanValue(): boolean | undefined;
     getNumberValue(): number | undefined;
     getDateValue(): Date | undefined;
+    getURLValue(): URL | undefined;
   }
 
   /**
@@ -610,7 +612,7 @@ export declare namespace BatchSDK {
      */
     setAttribute(
       key: string,
-      value: string | number | boolean | Date
+      value: string | number | boolean | Date | URL
     ): BatchUserDataEditor;
 
     /**
@@ -741,10 +743,19 @@ export declare namespace BatchSDK {
      * Add a boolean attribute for the specified key
      *
      * @param key   Attribute key. Should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
-     * @param value Boolean value to add.
+     * @param value URL value to add. Must be a URL instance, not be longer than 2048 characters and must follow the format scheme://[authority][path][?query][#fragment].
      * @return Same BatchEventData instance, for chaining
      */
     put(key: string, value: boolean): BatchEventData;
+
+    /**
+     * Add a URL attribute for the specified key
+     *
+     * @param key   Attribute key. Should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
+     * @param value Boolean value to add.
+     * @return Same BatchEventData instance, for chaining
+     */
+    put(key: string, value: URL): BatchEventData;
   }
 
   /**

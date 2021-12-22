@@ -70,7 +70,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
 
   public setAttribute(
     key: string,
-    value: string | number | boolean | Date
+    value: string | number | boolean | Date | URL
   ): this {
     if (!Consts.AttributeKeyRegexp.test(key || "")) {
       writeBatchLog(
@@ -102,6 +102,9 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
       // It's a date, yay
       operationData.value = value.getTime();
       operationData.type = "date";
+    } else if (value instanceof URL) {
+      operationData.value = URL.prototype.toString.call(value);
+      operationData.type = "url";
     } else if (typeof value === "number" && isNaN(value)) {
       writeBatchLog(false, "BatchUserDataEditor - Value cannot be NaN");
       return this;

@@ -20,6 +20,7 @@ export enum BatchUserAttributeType {
   INTEGER = 2,
   DOUBLE = 3,
   DATE = 4,
+  URL = 5,
 }
 
 export class UserModule implements BatchSDK.UserModule {
@@ -73,6 +74,10 @@ export class UserModule implements BatchSDK.UserModule {
       let value = rawAttribute.value;
 
       switch (rawAttribute.type) {
+        case "u":
+          type = BatchUserAttributeType.URL;
+          value = new URL(rawAttribute.value as string);
+          break;
         case "d":
           type = BatchUserAttributeType.DATE;
           value = new Date(rawAttribute.value as number);

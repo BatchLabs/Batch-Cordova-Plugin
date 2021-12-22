@@ -8,11 +8,12 @@ export enum TypedEventAttributeType {
   Integer = "i",
   Float = "f",
   Date = "d",
+  URL = "u",
 }
 
 export interface ITypedEventAttribute {
   type: TypedEventAttributeType;
-  value: string | boolean | number | Date;
+  value: string | boolean | number;
 }
 
 export interface IEventDataInternalRepresentation {
@@ -60,7 +61,7 @@ export class BatchEventData implements BatchSDK.BatchEventData {
 
   public put(
     key: string,
-    value: string | number | boolean | Date
+    value: string | number | boolean | Date | URL
   ): BatchEventData {
     if (!isString(key)) {
       writeBatchLog(false, "BatchEventData - Key must be a string");
@@ -93,6 +94,11 @@ export class BatchEventData implements BatchSDK.BatchEventData {
       typedAttrValue = {
         type: TypedEventAttributeType.Date,
         value: value.getTime(),
+      };
+    } else if (value instanceof URL) {
+      typedAttrValue = {
+        type: TypedEventAttributeType.URL,
+        value: URL.prototype.toString.call(value),
       };
     } else if (isString(value)) {
       typedAttrValue = {

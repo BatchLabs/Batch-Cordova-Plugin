@@ -46,4 +46,11 @@ export class BatchUserAttribute implements BatchSDK.BatchUserAttribute {
     }
     return undefined;
   }
+
+  getURLValue(): URL | undefined {
+    if (this._type == BatchUserAttributeType.URL) {
+      return new URL(URL.prototype.toString.call(this._value as URL));
+    }
+    return undefined;
+  }
 }
