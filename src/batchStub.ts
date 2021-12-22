@@ -102,7 +102,7 @@ class BatchEventDataStub implements BatchSDK.BatchEventData {
     return this;
   }
 
-  public put(_key: unknown, _value: string | number | boolean | Date) {
+  public put(_key: unknown, _value: string | number | boolean | Date | URL) {
     return this;
   }
 }
@@ -117,7 +117,10 @@ class BatchUserDataEditorStub implements BatchSDK.BatchUserDataEditor {
   public setIdentifier(_identifier: string | null) {
     return this;
   }
-  public setAttribute(_key: string, _value: string | number | boolean | Date) {
+  public setAttribute(
+    _key: string,
+    _value: string | number | boolean | Date | URL
+  ) {
     return this;
   }
   public removeAttribute(_key: string) {
