@@ -19,7 +19,7 @@
     
     <platform name="android">
 
-        <preference name="BATCHSDK_ANDROID_VERSION" default="1.18.+"/>
+        <preference name="BATCHSDK_ANDROID_VERSION" default="1.19.+"/>
 
         <!-- This should be 1.0.0 forever, we leave it configurable just in case another version needs to be used in an app -->
         <preference name="BATCHSDK_ANDROID_LOCALBROADCAST_VERSION" default="1.0.0"/>
@@ -78,7 +78,7 @@
 
     <platform name="ios">
 
-        <preference name="BATCHSDK_IOS_VERSION" default="~> 1.18"/>
+        <preference name="BATCHSDK_IOS_VERSION" default="~> 1.19"/>
 
         <config-file target="config.xml" parent="/*">
             <feature name="Batch">
