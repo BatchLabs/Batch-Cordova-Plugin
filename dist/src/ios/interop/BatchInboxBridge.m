@@ -99,9 +99,14 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
 
 - (NSDictionary*)serializeNotificationContent:(BatchInboxNotificationContent*)content
 {
+    // TODO: make this configurable
+    if (content.message == nil) {
+        return nil;
+    }
+
     NSMutableDictionary *json = [NSMutableDictionary new];
     json[@"id"] = content.identifier;
-    json[@"body"] = content.body;
+    json[@"body"] = content.message.body;
     json[@"isUnread"] = @(content.isUnread);
     json[@"date"] = @(floor([content.date timeIntervalSince1970] * 1000));
     json[@"payload"] = content.payload;
@@ -123,8 +128,8 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
     }
     json[@"source"] = @(source);
     
-    if ([content.title length] > 0) {
-        json[@"title"] = content.title;
+    if ([content.message.title length] > 0) {
+        json[@"title"] = content.message.title;
     }
     
     return json;
@@ -133,7 +138,10 @@ typedef NS_ENUM(NSInteger, BatchInboxBridgeErrorCause) {
 - (NSArray<NSDictionary*>*)serializeNotificationContents:(nonnull NSArray<BatchInboxNotificationContent*>*)notifications {
     NSMutableArray<NSDictionary*>* serializedNotifications = [NSMutableArray arrayWithCapacity:notifications.count];
     for (BatchInboxNotificationContent *notification in notifications) {
-        [serializedNotifications addObject:[self serializeNotificationContent:notification]];
+        NSDictionary *serializedNotification = [self serializeNotificationContent:notification];
+        if (serializedNotification != nil) {
+            [serializedNotifications addObject:serializedNotification];
+        }
     }
     return serializedNotifications;
 }
