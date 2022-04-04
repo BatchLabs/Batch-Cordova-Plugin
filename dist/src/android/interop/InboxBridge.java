@@ -248,6 +248,10 @@ class InboxBridge {
         List<Map<String, Object>> serializedNotifications = new ArrayList<>(nativeNotifications.size());
 
         for (BatchInboxNotificationContent nativeNotification : nativeNotifications) {
+            //TODO: implement support for silent notifications
+            if (nativeNotification.isSilent()) {
+                continue;
+            }
             Map<String, Object> serializedNotification = new HashMap<>();
             serializedNotification.put("id", nativeNotification.getNotificationIdentifier());
 
