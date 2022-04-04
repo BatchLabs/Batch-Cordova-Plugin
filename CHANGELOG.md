@@ -1,5 +1,17 @@
 Batch Cordova Plugin
 
+## 5.2.0
+
+**Plugin**
+
+- Updated Batch native SDKs to 1.19.2.
+  Android requires SDK 32 to compile.
+  Xcode 13.3 is required if you use bitcode.
+
+**Inbox**
+
+- Silent notifications are now filtered from the inbox on both platforms.
+
 ## 5.1.0
 
 **Plugin**
