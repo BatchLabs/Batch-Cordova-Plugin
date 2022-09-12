@@ -26,7 +26,7 @@ public enum Action
     PUSH_SET_ANDROIDNOTIF_TYPES("push.setAndroidNotifTypes"),
     PUSH_SET_IOSSHOW_FOREGROUND("push.setIOSShowForegroundNotifications"),
     PUSH_IOS_REFRESH_TOKEN("push.iOS.refreshToken"),
-    PUSH_IOS_REQUEST_AUTHORIZATION("push.iOS.requestAuthorization"),
+    PUSH_REQUEST_AUTHORIZATION("push.requestAuthorization"),
     PUSH_IOS_REQUEST_PROVISIONAL_AUTH("push.iOS.requestProvisionalAuthorization"),
 	USER_EDIT("user.edit"),
 	USER_TRACK_EVENT("user.track.event"),
