@@ -15,7 +15,7 @@ export enum Push {
   DismissNotifications = "push.dismissNotifications",
   ClearBadge = "push.clearBadge",
   RefreshToken = "push.iOS.refreshToken",
-  RequestAuthorization = "push.iOS.requestAuthorization",
+  RequestAuthorization = "push.requestAuthorization",
   RequestProvisionalAuthorization = "push.iOS.requestProvisionalAuthorization",
 }
 
