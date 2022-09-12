@@ -155,9 +155,9 @@ public class Bridge
 			case PUSH_IOS_REFRESH_TOKEN:
 				// iOS only, do nothing
 				return null;
-			case PUSH_IOS_REQUEST_AUTHORIZATION:
-				// iOS only, do nothing
-				return null;
+			case PUSH_REQUEST_AUTHORIZATION:
+				requestAuthorization(activity);
+				break;
 			case PUSH_IOS_REQUEST_PROVISIONAL_AUTH:
 				// iOS only, do nothing
 				return null;
@@ -354,6 +354,12 @@ public class Bridge
         EnumSet<PushNotificationType> pushTypes =  PushNotificationType.fromValue(types.intValue());
         Batch.Push.setNotificationsType(pushTypes);
     }
+
+	private static void requestAuthorization(Activity activity) 
+	{
+		// Ask for android 13 notification permission
+		Batch.Push.requestNotificationPermission(activity);
+	}
 
 //region User Data
 
