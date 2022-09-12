@@ -1,10 +1,16 @@
 Batch Cordova Plugin
 
+## INCOMING
+
+**Push**
+
+* Added Android implementation of the `batch.push.requestNotificationAuthorization()` API. This allows you to request for the [new notification permission introduced](https://developer.android.com/about/versions/13/changes/notification-permission) in Android 13. See the documentation for more info.
+
 ## 5.2.0
 
 **Plugin**
 
-- Updated Batch native SDKs to 1.19.2.
+- Updated Batch native SDKs to 1.19.1.
   Android requires SDK 32 to compile.
   Xcode 13.3 is required if you use bitcode.
 
