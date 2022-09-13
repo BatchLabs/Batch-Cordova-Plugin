@@ -1,6 +1,10 @@
 Batch Cordova Plugin
 
-## INCOMING
+## 5.3.0
+
+**Plugin**
+
+Updated Batch to 1.19.2. Bumping your Android project's compileSdkVersion to 33 might be required. Xcode 13.3 required if your project uses bitcode.
 
 **Push**
 
