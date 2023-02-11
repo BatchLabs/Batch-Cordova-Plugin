@@ -22,7 +22,9 @@ static BOOL _batBridgeNotifDelegateShouldAutomaticallyRegister = true;
 }
 
 + (void)applicationFinishedLaunching:(NSNotification*)notification {
-    [BatchBridgeNotificationCenterDelegate registerAsDelegate];
+    if ([BatchBridgeNotificationCenterDelegate automaticallyRegister]) {
+        [BatchBridgeNotificationCenterDelegate registerAsDelegate];
+    }
 }
 
 + (BatchBridgeNotificationCenterDelegate *)sharedInstance
