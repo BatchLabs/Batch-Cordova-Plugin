@@ -7,8 +7,11 @@
 
 #import "BatchCordovaPlugin.h"
 
+#import <UserNotifications/UserNotifications.h>
+
 #import "BACSimplePromise.h"
 #import "BatchBridgeShared.h"
+#import "BatchBridgeNotificationCenterDelegate.h"
 
 @implementation BatchCordovaPlugin
 
@@ -87,6 +90,21 @@
     
     [Batch setLoggerDelegate:self];
     [BatchMessaging setDelegate:self];
+
+    // Ionic Capacitor 4.5+'s Swift NotificationRouter registers itself later than it used to be.
+    // As of writing (2022/02/11, Capacitor 4.6), Cordova plugins are initialized _after_ their
+    // notification delegate is set, so pluginInitialize looks like a good place to do it.
+    // If allowed to do so and there is no other delegate, replace their delegate with ours,
+    // which will automatically wrap theirs and should keep compatibility with everything.
+    if ([BatchBridgeNotificationCenterDelegate automaticallyRegister]) {
+        id notificationDelegate = [UNUserNotificationCenter currentNotificationCenter].delegate;
+        NSString *notificationDelegateClass = NSStringFromClass([notificationDelegate class]);
+        // Name from https://github.com/ionic-team/capacitor/blob/4768085414768bb2c013afcc6c645664893cd297/ios/Capacitor/Capacitor/NotificationRouter.swift#L3
+        if ([@"CAPNotificationRouter" isEqual:notificationDelegateClass]) {
+            NSLog(@"[Batch] DEBUG - Wrapping Capacitor's UNUserNotificationCenterDelegate");
+            [BatchBridgeNotificationCenterDelegate registerAsDelegate];
+        }
+    }
 }
 
 
