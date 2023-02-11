@@ -1,5 +1,12 @@
 Batch Cordova Plugin
 
+## Upcoming
+
+**iOS**
+
+* Fix `BatchBridgeNotificationCenterDelegate.automaticallyRegister` not being honored.
+* Add compatibility for Capacitor 4.6: Batch's delegate now tries to register itself at a later time to keep compatibility with Capacitor's push plugins and Batch's features at the same time.
+
 ## 5.3.0
 
 **Plugin**
