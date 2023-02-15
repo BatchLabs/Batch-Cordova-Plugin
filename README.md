@@ -2,7 +2,7 @@
 
 # Batch Cordova Plugin
 
-[![npm version](https://badge.fury.io/js/com.batch.cordova.svg)](https://badge.fury.io/js/com.batch.cordova)
+[![npm version](https://badge.fury.io/js/@batch.com%2Fcordova-plugin.svg)](https://badge.fury.io/js/@batch.com%2Fcordova-plugin)
 
 Welcome to Batch's Cordova Plugin!
 
