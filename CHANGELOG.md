@@ -1,6 +1,6 @@
 Batch Cordova Plugin
 
-## Upcoming
+## 5.3.1
 
 **iOS**
 
