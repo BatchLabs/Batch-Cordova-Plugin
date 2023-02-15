@@ -11,7 +11,7 @@
 #import "BatchBridge.h"
 #import "BatchBridgeCallback.h"
 
-#define PluginVersion "Cordova/5.3.0"
+#define PluginVersion "Cordova/5.3.1"
 
 @interface BatchCordovaPlugin : CDVPlugin <BatchBridgeCallback, BatchLoggerDelegate, BatchMessagingDelegate>
 
