@@ -10,6 +10,7 @@
 {
     BOOL _isBatchReady;
     NSMutableArray<UNNotificationResponse*>* _enqueuedNotificationResponses;
+    __weak __nullable id<UNUserNotificationCenterDelegate> _previousDelegate;
 }
 
 static BOOL _batBridgeNotifDelegateShouldAutomaticallyRegister = true;
@@ -54,6 +55,22 @@ static BOOL _batBridgeNotifDelegateShouldAutomaticallyRegister = true;
 + (void)setAutomaticallyRegister:(BOOL)automaticallyRegister
 {
     _batBridgeNotifDelegateShouldAutomaticallyRegister = automaticallyRegister;
+}
+
+- (nullable id<UNUserNotificationCenterDelegate>)previousDelegate
+{
+    return _previousDelegate;
+}
+
+- (void)setPreviousDelegate:(nullable id<UNUserNotificationCenterDelegate>)delegate
+{
+    // Do not register ourserlves as previous delegate to avoid
+    // an infinite loop
+    if (delegate == self || [delegate isKindOfClass:[self class]]) {
+        _previousDelegate = nil;
+    } else {
+        _previousDelegate = delegate;
+    }
 }
 
 - (instancetype)init

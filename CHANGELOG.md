@@ -1,5 +1,11 @@
 Batch Cordova Plugin
 
+## 5.3.2
+
+**iOS**
+
+* Fix an issue where `BatchBridgeNotificationCenterDelegate`'s automatic setup might result in an infinite loop on notification open.
+
 ## 5.3.1
 
 **iOS**
