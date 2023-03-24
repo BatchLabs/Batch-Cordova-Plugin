@@ -88,10 +88,8 @@ Once the Javascript side of the plugin called the native once, a two way communi
 Before changing anything, you will have to install the required modules by running:
 
 ```
-npm i
+npm ci
 ```
-
-> Note: `npm install` could also be used, but not advised as this plugin uses yarn.
 
 Files are formatted using Prettier, and linted with ESLint.  
 While you should install these plugins for your favorite code editor, you can manually lint the plugin:
