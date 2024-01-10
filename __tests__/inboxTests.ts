@@ -204,6 +204,7 @@ const fakeNotifications = [
     isUnread: true,
     date: 1520352788000,
     source: NotificationSource.CAMPAIGN,
+    hasLandingMessage: false,
   },
   // Full notification
   {
@@ -213,6 +214,7 @@ const fakeNotifications = [
     isUnread: false,
     date: 1520352788001,
     source: NotificationSource.TRANSACTIONAL,
+    hasLandingMessage: false,
     payload: {
       foo: "bar",
     },
