@@ -615,6 +615,33 @@ export declare namespace BatchSDK {
     setIdentifier(identifier: string | null): BatchUserDataEditor;
 
     /**
+     * Set the user attribution identifier
+     *
+     * Since automatic collection of the advertising ID has been removed
+     * from native SDKs, you can now collect it from your side and pass it to Batch.
+     * @param identifier A valid IDFA or GAID uuid. Null to erase.
+     */
+    setAttributionIdentifier(identifier: string | null): BatchUserDataEditor;
+
+    /**
+     * Set the user email address.
+     *
+     * This requires to have a custom user ID registered
+     * or to call the `setIdentifier` method on the editor instance beforehand.
+     * @param email A valid email address. Null to erase.
+     */
+    setEmail(email: string | null): BatchUserDataEditor;
+
+    /**
+     * Set the user email marketing subscription state
+     *
+     * @param state The state of the marketing email subscription. Must be "subscribed" or "unsubscribed".
+     */
+    setEmailMarketingSubscriptionState(
+      state: "subscribed" | "unsubscribed"
+    ): BatchUserDataEditor;
+
+    /**
      * Set an attribute for a key
      * @param key Attribute key. Cannot be null, empty or undefined. It should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
      * @param value Attribute value. Accepted types are numbers, booleans, Date objects and strings. Strings must not be empty or longer than 64 characters.

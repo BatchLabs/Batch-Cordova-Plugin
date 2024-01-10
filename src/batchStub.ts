@@ -117,6 +117,17 @@ class BatchUserDataEditorStub implements BatchSDK.BatchUserDataEditor {
   public setIdentifier(_identifier: string | null) {
     return this;
   }
+  public setAttributionIdentifier(_identifier: string | null) {
+    return this;
+  }
+  public setEmail(_email: string | null) {
+    return this;
+  }
+  public setEmailMarketingSubscriptionState(
+    _state: "subscribed" | "unsubscribed"
+  ) {
+    return this;
+  }
   public setAttribute(
     _key: string,
     _value: string | number | boolean | Date | URL
@@ -168,7 +179,7 @@ export class BatchStub implements BatchSDK.Batch {
   public setConfig(_config: BatchSDK.Config): void {}
   public start(): void {
     if (console && console.log) {
-      console.log("Batch is not supported in this environement");
+      console.log("Batch is not supported in this environment");
     }
   }
   public optIn(): void {}

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.batch.android.Batch;
 import com.batch.android.BatchAttributesFetchListener;
+import com.batch.android.BatchEmailSubscriptionState;
 import com.batch.android.BatchEventData;
 import com.batch.android.BatchMessage;
 import com.batch.android.BatchTagCollectionsFetchListener;
@@ -420,6 +421,46 @@ public class Bridge
 					}
 
 					editor.setIdentifier((String) value);
+				}
+				else if ("SET_ATTRIBUTION_ID".equals(operationName))
+				{
+					Object value = operationDescription.get("value");
+
+					if (value != null && !(value instanceof String)) {
+						Log.e("Batch Bridge", "Invalid SET_ATTRIBUTION_ID value: it can only be a string or null");
+						// Invalid value, continue. NULL is allowed though
+						continue;
+					}
+					editor.setAttributionIdentifier((String) value);
+				}
+				else if ("SET_EMAIL".equals(operationName))
+				{
+					Object value = operationDescription.get("value");
+
+					if (value != null && !(value instanceof String)) {
+						Log.e("Batch Bridge", "Invalid SET_EMAIL value: it can only be a string or null");
+						// Invalid value, continue. NULL is allowed though
+						continue;
+					}
+					editor.setEmail((String) value);
+				}
+				else if ("SET_EMAIL_MARKETING_SUB".equals(operationName))
+				{
+					Object value = operationDescription.get("value");
+
+					if (value == null || !(value instanceof String)) {
+						Log.e("Batch Bridge", "Invalid SET_EMAIL_MARKETING_SUB value: it can only be a string");
+						// Invalid value, continue.
+						continue;
+					}
+
+					if ("subscribed".equals(value)) {
+						editor.setEmailMarketingSubscriptionState(BatchEmailSubscriptionState.SUBSCRIBED);
+					} else if ("unsubscribed".equals(value)) {
+						editor.setEmailMarketingSubscriptionState(BatchEmailSubscriptionState.UNSUBSCRIBED);
+					} else {
+						Log.e("Batch Bridge", "Invalid SET_EMAIL_MARKETING_SUBSCRIPTION value: it can only be `subscribed` or `unsubscribed`.");
+					}
 				}
 				else if ("SET_ATTRIBUTE".equals(operationName))
 				{

@@ -34,7 +34,7 @@ static dispatch_once_t onceToken;
 @interface BatchBridge ()
 {
     id<BatchBridgeCallback> _callback;
-    
+
     NSDictionary        *_userInfo;
 }
 
@@ -48,13 +48,13 @@ static dispatch_once_t onceToken;
 - (id)initWithCallback:(id<BatchBridgeCallback>)callback userInfos:(NSDictionary *)info
 {
     self = [super init];
-    
+
     if (self != nil)
     {
         _callback = callback;
         _userInfo = info;
     }
-    
+
     return self;
 }
 
@@ -91,7 +91,7 @@ static dispatch_once_t onceToken;
         }
         result = [BACSimplePromise resolved:@""];
     }
-    
+
     return result;
 }
 
@@ -111,18 +111,18 @@ static dispatch_once_t onceToken;
     {
         [NSException raise:INVALID_PARAMETER format:@"Empty or null action: %@",action];
     }
-    
+
     // startWithCallback:
     if ([action caseInsensitiveCompare:START] == NSOrderedSame)
     {
         [BatchBridge startWithCallback:callback];
-        
+
         if (!batchStartCalled && queuedURL)
         {
             [BatchBridge handleURL:queuedURL];
             queuedURL = nil;
         }
-        
+
         batchStartCalled = true;
     }
 
@@ -147,7 +147,7 @@ static dispatch_once_t onceToken;
     {
         [Batch optOutAndWipeData];
     }
-    
+
     // setConfigWithApiKey:andUseIDFA:
     else if ([action caseInsensitiveCompare:SET_CONFIG] == NSOrderedSame)
     {
@@ -155,23 +155,23 @@ static dispatch_once_t onceToken;
         {
             [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action %@.", action];
         }
-        
+
         NSString *APIKey = [parameters objectForKey:@"APIKey"];
         if (!APIKey)
         {
             [NSException raise:INVALID_PARAMETER format:@"Missing parameter 'APIKey' for action %@.", action];
         }
-        
+
         NSNumber *useIDFA = [parameters objectForKey:@"useIDFA"];
-        
+
         [BatchBridge setConfigWithApiKey:APIKey andUseIDFA:useIDFA];
     }
-    
+
     else if ([action caseInsensitiveCompare:PUSH_GET_LAST_KNOWN_TOKEN] == NSOrderedSame)
     {
         return [BACSimplePromise resolved:[BatchBridge lastKnownPushToken]];
     }
-    
+
     else if ([action caseInsensitiveCompare:PUSH_REFRESH_TOKEN] == NSOrderedSame)
     {
         [BatchPush refreshToken];
@@ -192,14 +192,14 @@ static dispatch_once_t onceToken;
     {
         // Do nothing
     }
-    
+
     else if ([action caseInsensitiveCompare:SET_IOS_SHOW_FOREGROUND_NOTIFS] == NSOrderedSame)
     {
         if (!parameters || [parameters count]==0)
         {
             [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action %@.", action];
         }
-        
+
         NSNumber *showForeground = [parameters objectForKey:@"showForeground"];
         if (!showForeground)
         {
@@ -215,7 +215,7 @@ static dispatch_once_t onceToken;
         {
             [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action %@.", action];
         }
-        
+
         NSNumber *notifTypes = [parameters objectForKey:@"notifTypes"];
         if (!notifTypes)
         {
@@ -235,42 +235,42 @@ static dispatch_once_t onceToken;
     {
         [BatchBridge registerForRemoteNotifications];
     }
-    
+
     else if ([action caseInsensitiveCompare:DISMISS_NOTIFS] == NSOrderedSame)
     {
         [BatchBridge dismissNotifications];
     }
-    
+
     else if ([action caseInsensitiveCompare:CLEAR_BADGE] == NSOrderedSame)
     {
         [BatchBridge clearBadge];
     }
-    
+
     else if ([action caseInsensitiveCompare:USER_GET_LANGUAGE] == NSOrderedSame)
     {
         return [BACSimplePromise resolved:[BatchBridge user_getLanguage]];
     }
-    
+
     else if ([action caseInsensitiveCompare:USER_GET_REGION] == NSOrderedSame)
     {
         return [BACSimplePromise resolved:[BatchBridge user_getRegion]];
     }
-    
+
     else if ([action caseInsensitiveCompare:USER_GET_IDENTIFIER] == NSOrderedSame)
     {
         return [BACSimplePromise resolved:[BatchBridge user_getIdentifier]];
     }
-    
+
     else if ([action caseInsensitiveCompare:USER_EDIT] == NSOrderedSame)
     {
         if (!parameters || [parameters count]==0)
         {
             [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action %@.", action];
         }
-        
+
         [BatchBridge userDataEdit:parameters];
     }
-    
+
     else if ([action caseInsensitiveCompare:USER_TRACK_EVENT] == NSOrderedSame)
     {
         [BatchBridge trackEvent:parameters];
@@ -279,8 +279,8 @@ static dispatch_once_t onceToken;
     {
         [BatchBridge trackLegacyEvent:parameters];
     }
-    
-    
+
+
     else if ([action caseInsensitiveCompare:USER_TRACK_TRANSACTION] == NSOrderedSame)
     {
         [BatchBridge trackTransaction:parameters];
@@ -325,13 +325,13 @@ static dispatch_once_t onceToken;
             [NSException raise:INVALID_PARAMETER format:@"Unknown inbox action: %@", action];
         }
     }
-    
+
     else
     {
         // Unknown method.
         [NSException raise:INVALID_PARAMETER format:@"Unknown action: %@", action];
     }
-    
+
     return [BACSimplePromise resolved:@""];
 }
 
@@ -345,11 +345,11 @@ static dispatch_once_t onceToken;
     if (sourcePromise == nil) {
         return nil;
     }
-    
+
     // Promise that holds the output, will be resolved by a "sub promise" (as we can't chain simple promises yet)
     // that convers NSDictionaries to NSStrings and catches errors.
     BACSimplePromise<NSString*> *responsePromise = [BACSimplePromise new];
-    
+
     [sourcePromise then:^(NSObject * _Nullable value) {
         // No NSNumber/NSArray support. NSNumber might be fine anyway.
         if ([value isKindOfClass:[NSDictionary class]]) {
@@ -364,7 +364,7 @@ static dispatch_once_t onceToken;
             [responsePromise resolve:(id)value];
         }
     }];
-    
+
     [sourcePromise catch:^(NSError * _Nullable error) {
         NSString *jsonError;
         NSString *description = [error localizedDescription];
@@ -374,14 +374,14 @@ static dispatch_once_t onceToken;
                      @"code": @(error.code),
                      }];
         }
-        
+
         if (jsonError == nil) {
             jsonError = @"{'error':'Internal native error (-1200)', 'code': -1200}";
         }
-        
+
         [responsePromise resolve:jsonError];
     }];
-    
+
     return responsePromise;
 }
 
@@ -412,7 +412,7 @@ static dispatch_once_t onceToken;
     {
         [NSException raise:INVALID_PARAMETER format:@"Cannot build a NSURL from the url string: %@",urlString];
     }
-    
+
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wunused-result"
     [Batch handleURL:url];
@@ -495,29 +495,29 @@ static dispatch_once_t onceToken;
 + (void)userDataEdit:(NSDictionary*)params
 {
     NSArray *operations = [params objectForKey:@"operations"];
-    
+
     if (!operations)
     {
         [NSException raise:INVALID_PARAMETER format:@"Couldn't find operations for user.edit"];
         return;
     }
-    
+
     BatchUserDataEditor *editor = [BatchUser editor];
-    
+
     for (NSDictionary *operationDescription in operations)
     {
         if (![operationDescription isKindOfClass:[NSDictionary class]])
         {
             continue;
         }
-        
+
         NSString *operationName = [operationDescription objectForKey:@"operation"];
-        
+
         if (![operationName isKindOfClass:[NSString class]])
         {
             continue;
         }
-        
+
         if ([@"SET_LANGUAGE" isEqualToString:operationName])
         {
             [editor setLanguage:[operationDescription objectForKey:@"value"]];
@@ -530,6 +530,24 @@ static dispatch_once_t onceToken;
         {
             [editor setIdentifier:[operationDescription objectForKey:@"value"]];
         }
+        else if ([@"SET_ATTRIBUTION_ID" isEqualToString:operationName])
+        {
+            [editor setAttributionIdentifier:[operationDescription objectForKey:@"value"]];
+        }
+        else if([@"SET_EMAIL" isEqualToString:operationName])
+        {
+            [editor setEmail:[operationDescription objectForKey:@"value"] error:nil];
+        }
+        else if([@"SET_EMAIL_MARKETING_SUB" isEqualToString:operationName]) {
+            NSString* value = [operationDescription objectForKey:@"value"];
+            if([value isEqualToString:@"SUBSCRIBED"]) {
+                [editor setEmailMarketingSubscriptionState:BatchEmailSubscriptionStateSubscribed];
+            } else if ([value isEqualToString:@"UNSUBSCRIBED"]) {
+                [editor setEmailMarketingSubscriptionState: BatchEmailSubscriptionStateUnsubscribed];
+            } else {
+                NSLog(@"Batch Bridge - Invalid value for email marketing subscription state. Must be `subscribed` or `unsubscribed`.");
+            }
+        }
         else if ([@"SET_ATTRIBUTE" isEqualToString:operationName])
         {
             NSString *type = operationDescription[@"type"];
@@ -537,9 +555,9 @@ static dispatch_once_t onceToken;
             {
                 continue;
             }
-            
+
             NSString *key = operationDescription[@"key"];
-            
+
             if ([@"string" isEqualToString:type])
             {
                 [editor setAttribute:operationDescription[@"value"] forKey:operationDescription[@"key"]];
@@ -566,13 +584,13 @@ static dispatch_once_t onceToken;
             else if ([@"integer" isEqualToString:type] || [@"float" isEqualToString:type] || [@"boolean" isEqualToString:type])
             {
                 NSNumber *numberValue = operationDescription[@"value"];
-                
+
                 if (!numberValue)
                 {
                     // NaN or Infinity
                     continue;
                 }
-                
+
                 if ([numberValue isKindOfClass:[NSNumber class]] || [numberValue isKindOfClass:[NSString class]])
                 {
                     NSNumber *sdkValue;
@@ -626,7 +644,7 @@ static dispatch_once_t onceToken;
             [editor clearTagCollection:operationDescription[@"collection"]];
         }
     }
-    
+
     [editor save];
 }
 
@@ -636,27 +654,27 @@ static dispatch_once_t onceToken;
     {
         [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for user.track.event"];
     }
-    
+
     NSString *name = params[@"name"];
     NSString *label = params[@"label"];
     NSDictionary *data = params[@"event_data"];
-    
+
     if (![name isKindOfClass:[NSString class]])
     {
         [NSException raise:INVALID_PARAMETER format:@"name should be a string"];
     }
-    
+
     if (label && ![label isKindOfClass:[NSString class]])
     {
         [NSException raise:INVALID_PARAMETER format:@"label should be a string or null"];
     }
-    
+
     BatchEventData *batchEventData = nil;
 
     if (data)
     {
         batchEventData = [BatchEventData new];
-        
+
         if (![data isKindOfClass:[NSDictionary class]])
         {
             [NSException raise:INVALID_PARAMETER format:@"event_data should be an object or null"];
@@ -740,7 +758,7 @@ static dispatch_once_t onceToken;
             }
         }
     }
-    
+
     [BatchUser trackEvent:name withLabel:label associatedData:batchEventData];
 }
 
@@ -750,26 +768,26 @@ static dispatch_once_t onceToken;
     {
         [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for user.track.legacy_event"];
     }
-    
+
     NSString *name = params[@"name"];
     NSString *label = params[@"label"];
     NSDictionary *data = params[@"data"];
-    
+
     if (![name isKindOfClass:[NSString class]])
     {
         [NSException raise:INVALID_PARAMETER format:@"name should be a string"];
     }
-    
+
     if (label && ![label isKindOfClass:[NSString class]])
     {
         [NSException raise:INVALID_PARAMETER format:@"label should be a string or null"];
     }
-    
+
     if (data && ![data isKindOfClass:[NSDictionary class]])
     {
         [NSException raise:INVALID_PARAMETER format:@"data should be an object or null"];
     }
-    
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     [BatchUser trackEvent:name withLabel:label data:data];
@@ -782,20 +800,20 @@ static dispatch_once_t onceToken;
     {
         [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action user.track.transaction"];
     }
-    
+
     NSNumber *amount = params[@"amount"];
     NSDictionary *data = params[@"data"];
-    
+
     if (![amount isKindOfClass:[NSNumber class]])
     {
         [NSException raise:INVALID_PARAMETER format:@"name should be a string"];
     }
-    
+
     if (data && ![data isKindOfClass:[NSDictionary class]])
     {
         [NSException raise:INVALID_PARAMETER format:@"data should be an object or null"];
     }
-    
+
     [BatchUser trackTransactionWithAmount:[amount doubleValue] data:data];
 }
 
@@ -805,12 +823,12 @@ static dispatch_once_t onceToken;
     {
         [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action user.track.location"];
     }
-    
+
     NSNumber *latitude = params[@"latitude"];
     NSNumber *longitude = params[@"longitude"];
     NSNumber *date = params[@"date"]; // MS
     NSNumber *precision = params[@"precision"];
-    
+
     if (![latitude isKindOfClass:[NSNumber class]])
     {
         [NSException raise:INVALID_PARAMETER format:@"latitude should be a string"];
@@ -820,7 +838,7 @@ static dispatch_once_t onceToken;
     {
         [NSException raise:INVALID_PARAMETER format:@"longitude should be a string"];
     }
-    
+
     NSTimeInterval ts = 0;
 
     if (date)
@@ -843,11 +861,11 @@ static dispatch_once_t onceToken;
             [NSException raise:INVALID_PARAMETER format:@"precision should be an object or undefined"];
         }
     }
-    
+
     [BatchUser trackLocation:[[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake([latitude doubleValue], [longitude doubleValue])
                                                            altitude:0
                                                  horizontalAccuracy:parsedPrecision
-                                                   verticalAccuracy:-1 
+                                                   verticalAccuracy:-1
                                                              course:0
                                                               speed:0
                                                           timestamp:parsedDate]];

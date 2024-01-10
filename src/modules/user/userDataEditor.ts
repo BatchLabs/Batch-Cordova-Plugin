@@ -68,6 +68,50 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
     return this;
   }
 
+  public setAttributionIdentifier(identifier: string | null): this {
+    if (typeof identifier !== "string" && identifier !== null) {
+      writeBatchLog(
+        false,
+        "BatchUserDataEditor - Attribution identifier must be a string or null"
+      );
+      return this;
+    }
+    this._enqueueOperation(UserDataOperation.SetAttributionId, {
+      value: identifier,
+    });
+    return this;
+  }
+
+  public setEmail(email: string | null): this {
+    if (typeof email !== "string" && email !== null) {
+      writeBatchLog(
+        false,
+        "BatchUserDataEditor - Email must be a string or null"
+      );
+      return this;
+    }
+    this._enqueueOperation(UserDataOperation.SetEmail, {
+      value: email,
+    });
+    return this;
+  }
+
+  public setEmailMarketingSubscriptionState(
+    state: "subscribed" | "unsubscribed"
+  ): this {
+    if (typeof state !== "string" || (state !== "subscribed" && state !== "unsubscribed")) {
+      writeBatchLog(
+        false,
+        "BatchUserDataEditor - Email marketing subscription state must be `subscribed` or `unsubscribed`."
+      );
+      return this;
+    }
+    this._enqueueOperation(UserDataOperation.SetEmailMarketingSubscription, {
+      value: state,
+    });
+    return this;
+  }
+
   public setAttribute(
     key: string,
     value: string | number | boolean | Date | URL
