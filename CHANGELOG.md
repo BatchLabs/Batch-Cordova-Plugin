@@ -1,5 +1,24 @@
 Batch Cordova Plugin
 
+## 5.4.0
+
+**Plugin**
+
+* Updated Batch 1.21.
+* Batch requires iOS 12.0 or higher.
+* Batch now compiles with and targets SDK 34 (Android 14).
+
+**User**
+
+* Removed automatic collection of the advertising id. You need to collect it from your side and pass it to Batch via the added `batch.user.getEditor().setAttributionIdentifier(id)` method.
+* Added `setEmail` method to `BatchUserDataEditor`. This requires to have a user identifier registered or to call the `setIdentifier` method on the editor instance beforehand.
+* Added `setEmailMarketingSubscriptionState` method to `BatchUserDataEditor`.
+
+**Inbox**
+
+* Added `hasLandingMessage` property to `InboxNotification`.
+* Added `displayNotificationLandingMessage` method to `InboxFetcher`.
+
 ## 5.3.2
 
 **iOS**
