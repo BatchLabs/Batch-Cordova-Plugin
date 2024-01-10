@@ -54,3 +54,4 @@ if (error == NULL) {\
 #define INBOX_MARK_AS_READ                   @"inbox.markAsRead"
 #define INBOX_MARK_ALL_AS_READ               @"inbox.markAllAsRead"
 #define INBOX_MARK_AS_DELETED                @"inbox.markAsDeleted"
+#define INBOX_DISPLAY_LANDING_MESSAGE        @"inbox.displayLandingMessage"

@@ -33,6 +33,7 @@ export enum Inbox {
   MarkAsRead = "inbox.markAsRead",
   MarkAllAsRead = "inbox.markAllAsRead",
   MarkAsDeleted = "inbox.markAsDeleted",
+  DisplayLandingMessage = "inbox.displayLandingMessage",
   ReleaseFetcher = "inbox.releaseFetcher",
 }
 

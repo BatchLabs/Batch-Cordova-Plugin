@@ -40,7 +40,6 @@ public enum Action
     USER_GET_IDENTIFIER("user.getIdentifier"),
     USER_FETCH_ATTRIBUTES("user.fetch.attributes"),
     USER_FETCH_TAGS("user.fetch.tags"),
-
     INBOX_CREATE_INSTALLATION_FETCHER("inbox.createInstallationFetcher"),
     INBOX_CREATE_USER_FETCHER("inbox.createUserFetcher"),
     INBOX_RELEASE_FETCHER("inbox.releaseFetcher"),
@@ -49,7 +48,8 @@ public enum Action
     INBOX_GET_FETCHED_NOTIFICATIONS("inbox.getFetchedNotifications"),
     INBOX_MARK_AS_READ("inbox.markAsRead"),
     INBOX_MARK_ALL_AS_READ("inbox.markAllAsRead"),
-    INBOX_MARK_AS_DELETED("inbox.markAsDeleted");
+    INBOX_MARK_AS_DELETED("inbox.markAsDeleted"),
+    INBOX_DISPLAY_LANDING_MESSAGE("inbox.displayLandingMessage");
 
     /**
      * Action name, the one passed as a paremeter in {@link com.batch.android.interop.Bridge}

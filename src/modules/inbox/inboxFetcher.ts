@@ -115,6 +115,16 @@ abstract class BatchInboxFetcherBaseImplementation
     await invokeModernBridge(InboxAction.MarkAsDeleted, parameters);
   }
 
+  async displayNotificationLandingMessage(
+    notification: BatchSDK.InboxNotification
+  ): Promise<void> {
+    await this._throwIfDisposed();
+
+    const parameters = this._makeBaseBridgeParameters();
+    parameters["notifID"] = notification.identifier;
+    await invokeModernBridge(InboxAction.DisplayLandingMessage, parameters);
+  }
+
   dispose(): void {
     this._disposed = true;
     if (this._fetcherID !== undefined) {
@@ -206,6 +216,10 @@ abstract class BatchInboxFetcherBaseImplementation
     ) {
       source = InboxNotificationSource.UNKNOWN;
     }
+    const hasLandingMessage = notif.hasLandingMessage;
+    if (typeof hasLandingMessage !== "boolean") {
+      throw new Error("An Inbox Notification must at least have a hasLandingMessage flag");
+    }
 
     const parsedNotif: BatchSDK.InboxNotification = {
       body,
@@ -214,6 +228,7 @@ abstract class BatchInboxFetcherBaseImplementation
       isUnread,
       payload: {},
       source: source as InboxModule["NotificationSource"],
+      hasLandingMessage,
     };
 
     // TODO: make sure it's uniform with batchPushReceived

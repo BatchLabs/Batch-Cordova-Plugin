@@ -553,6 +553,15 @@ export declare namespace BatchSDK {
     markNotificationAsDeleted(notification: InboxNotification): Promise<void>;
 
     /**
+     * Display the landing message attached to the notification.
+     *
+     * Does nothing when no landing message is attached.
+     */
+    displayNotificationLandingMessage(
+      notification: InboxNotification
+    ): Promise<void>;
+
+    /**
      * Call this once you're finished with this fetcher to release the native
      * object and free all memory. Usually, this should be called
      * in your State's dispose.
@@ -695,6 +704,11 @@ export declare namespace BatchSDK {
      * The push notification's source, indicating what made Batch send it. It can come from a push campaign via the API or the dashboard, or from the transactional API, for example.
      */
     source: InboxModule["NotificationSource"];
+
+    /**
+     * Flag indicating whether this notification has a landing message attached.
+     */
+    hasLandingMessage: boolean;
   }
 
   /**
