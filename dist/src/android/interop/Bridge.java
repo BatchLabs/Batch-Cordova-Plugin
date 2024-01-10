@@ -200,6 +200,7 @@ public class Bridge
 			case INBOX_MARK_AS_READ:
 			case INBOX_MARK_ALL_AS_READ:
 			case INBOX_MARK_AS_DELETED:
+			case INBOX_DISPLAY_LANDING_MESSAGE:
 				return inboxBridge.compatDoAction(action, parameters, activity);
 			default:
 				throw new BridgeException(INVALID_PARAMETER + " : Action '" + actionName + "' is known, but not implemented");
@@ -355,7 +356,7 @@ public class Bridge
         Batch.Push.setNotificationsType(pushTypes);
     }
 
-	private static void requestAuthorization(Activity activity) 
+	private static void requestAuthorization(Activity activity)
 	{
 		// Ask for android 13 notification permission
 		Batch.Push.requestNotificationPermission(activity);
@@ -592,7 +593,7 @@ public class Bridge
 				String entryStringKey = (String)entryKey;
 				Map<String, Object> entryMapValue = (Map<String, Object>)entryValue;
 				String type = getTypedParameter(entryMapValue, "type", String.class);
-				
+
 				if ("d".equals(type)) {
 					batchEventData.put(entryStringKey, new Date(getTypedParameter(entryMapValue, "value", Number.class).longValue()));
 				} else if ("s".equals(type)) {
@@ -615,7 +616,7 @@ public class Bridge
 				}
 			}
 		}
-		
+
 		Batch.User.trackEvent(name, label, batchEventData);
 	}
 
@@ -705,7 +706,7 @@ public class Bridge
 		Location location = new Location("com.batch.android.cordova.bridge");
 		location.setLatitude(latitude);
 		location.setLongitude(longitude);
-		
+
 		if (precision != null) {
 			location.setAccuracy(precision.floatValue());
 		}
