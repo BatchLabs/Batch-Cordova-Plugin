@@ -99,7 +99,10 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
   public setEmailMarketingSubscriptionState(
     state: "subscribed" | "unsubscribed"
   ): this {
-    if (typeof state !== "string" || (state !== "subscribed" && state !== "unsubscribed")) {
+    if (
+      typeof state !== "string" ||
+      (state !== "subscribed" && state !== "unsubscribed")
+    ) {
       writeBatchLog(
         false,
         "BatchUserDataEditor - Email marketing subscription state must be `subscribed` or `unsubscribed`."
