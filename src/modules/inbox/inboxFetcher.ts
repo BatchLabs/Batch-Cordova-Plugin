@@ -218,7 +218,9 @@ abstract class BatchInboxFetcherBaseImplementation
     }
     const hasLandingMessage = notif.hasLandingMessage;
     if (typeof hasLandingMessage !== "boolean") {
-      throw new Error("An Inbox Notification must at least have a hasLandingMessage flag");
+      throw new Error(
+        "An Inbox Notification must at least have a hasLandingMessage flag"
+      );
     }
 
     const parsedNotif: BatchSDK.InboxNotification = {
