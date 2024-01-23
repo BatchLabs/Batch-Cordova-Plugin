@@ -39,7 +39,7 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
 
     private static final String PLUGIN_VERSION_ENVIRONEMENT_VAR = "batch.plugin.version";
 
-    private static final String PLUGIN_VERSION = "Cordova/5.3.2";
+    private static final String PLUGIN_VERSION = "Cordova/5.4.0";
 
     /**
      * Key used to add extra to an intent to prevent it to be used more than once to compute opens
@@ -93,7 +93,7 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
                         if (parametersList != null && parametersList.size() > 0)
                         {
                             final Object firstItem = parametersList.get(0);
-    
+
                             try
                             {
                                 parametersMap = (Map<String, Object>) firstItem;
@@ -170,7 +170,7 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
                     public void run(String value)
                     {
                         // Don't use NO_RESULT, it is bugged
-                        webView.sendPluginResult(new PluginResult(PluginResult.Status.OK, value), callbackContext.getCallbackId());  
+                        webView.sendPluginResult(new PluginResult(PluginResult.Status.OK, value), callbackContext.getCallbackId());
                     }
                 });
             }
