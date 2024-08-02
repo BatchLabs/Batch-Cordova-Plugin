@@ -19,7 +19,7 @@
 
     <platform name="android">
 
-        <preference name="BATCHSDK_ANDROID_VERSION" default="1.21.+"/>
+        <preference name="BATCHSDK_ANDROID_VERSION" default="2.0.+"/>
 
         <!-- This should be 1.0.0 forever, we leave it configurable just in case another version needs to be used in an app -->
         <preference name="BATCHSDK_ANDROID_LOCALBROADCAST_VERSION" default="1.0.0"/>
@@ -38,6 +38,7 @@
         <source-file src="src/android/interop/Action.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
         <source-file src="src/android/interop/BatchBridgeNotImplementedException.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
         <source-file src="src/android/interop/Bridge.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
+        <source-file src="src/android/interop/BridgeUtils.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
         <source-file src="src/android/interop/BridgeException.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
         <source-file src="src/android/interop/Callback.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
         <source-file src="src/android/interop/InboxBridge.java" target-dir="app/src/main/java/com/batch/cordova/android/interop" />
@@ -78,7 +79,7 @@
 
     <platform name="ios">
 
-        <preference name="BATCHSDK_IOS_VERSION" default="~> 1.21"/>
+        <preference name="BATCHSDK_IOS_VERSION" default="~> 2.0"/>
 
         <config-file target="config.xml" parent="/*">
             <feature name="Batch">
