@@ -266,7 +266,7 @@ static dispatch_once_t onceToken;
     }
     else if ([action caseInsensitiveCompare:PROFILE_TRACK_EVENT] == NSOrderedSame)
     {
-        [BatchProfileBridge trackEvent:parameters];
+        return [BACSimplePromise resolved:[BatchProfileBridge trackEvent:parameters]];
     }
     else if ([action caseInsensitiveCompare:PROFILE_TRACK_LOCATION] == NSOrderedSame)
     {

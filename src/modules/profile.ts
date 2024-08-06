@@ -1,7 +1,7 @@
 import {Profile} from "../actions";
 import {
     isString,
-    sendToBridge,
+    sendToBridge, sendToBridgePromise,
     writeBatchLog,
 } from "../helpers";
 
@@ -25,15 +25,13 @@ export class ProfileModule implements BatchSDK.ProfileModule {
     public trackEvent(
         name: string,
         data?: BatchSDK.BatchEventAttributes
-    ): void {
+    ): Promise<string | undefined> {
         const parameters: {
             name: string;
             event_data?: unknown;
         } = { name };
         parameters.event_data = data instanceof BatchEventAttributes ? data._toInternalRepresentation() : null;
-        sendToBridge(null, Profile.TrackEvent, [parameters]);
-
-        return;
+        return sendToBridgePromise(Profile.TrackEvent, [parameters]);
     }
 
     public trackLocation(location: BatchSDK.Location): void {

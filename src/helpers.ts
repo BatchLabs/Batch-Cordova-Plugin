@@ -94,6 +94,7 @@ export async function sendToBridgePromise(
     | Actions.Messaging
     | Actions.Inbox
     | Actions.User
+    | Actions.Profile
     | Actions.UserDataOperation
     | Actions.Internal,
   args: unknown[] | null

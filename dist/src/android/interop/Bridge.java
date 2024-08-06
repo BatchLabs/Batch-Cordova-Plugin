@@ -154,8 +154,7 @@ public class Bridge {
                 userDataEdit(parameters);
                 break;
             case PROFILE_TRACK_EVENT:
-                trackEvent(parameters);
-                break;
+                return convertModernPromiseToLegacy(trackEvent(parameters));
             case PROFILE_TRACK_LOCATION:
                 trackLocation(parameters);
                 break;
@@ -441,6 +440,7 @@ public class Bridge {
                         Batch.Profile.trackEvent(name, batchEventAttributes);
                         promise.resolve(null);
                     } else {
+                        Log.w("Batch Bridge", "Invalid event attributes: " + errors);
                         promise.reject(new BridgeException("Invalid event attributes: " + errors));
                     }
                 } catch (BridgeException e) {

@@ -43,7 +43,9 @@ class ProfileStub implements BatchSDK.ProfileModule {
     public getEditor(): BatchSDK.BatchProfileAttributeEditor {
         return new BatchUserDataEditorStub();
     }
-    public trackEvent(_name: string, _data?: BatchEventDataStub) {}
+    public trackEvent(_name: string, _data?: BatchEventDataStub): Promise<string | undefined> {
+        return Promise.resolve("")
+    }
     public trackTransaction(
         _amount: number,
         _data?: { [key: string]: unknown }
