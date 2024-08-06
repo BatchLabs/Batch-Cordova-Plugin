@@ -218,7 +218,7 @@ export declare namespace BatchSDK {
          * @param name The event name. Must be a string.
          * @param data The event data (optional). Must be an object.
          */
-        trackEvent(name: string, data?: BatchEventAttributes): void;
+        trackEvent(name: string, data?: BatchEventAttributes): Promise<string | undefined>;
 
         /**
          * Track a geolocation update

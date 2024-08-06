@@ -5,7 +5,7 @@
 @interface BatchProfileBridge : NSObject
 
 + (void)editAttributes:(NSDictionary*)params;
-+ (void)trackEvent:(NSDictionary*)params;
++ (NSString*)trackEvent:(NSDictionary*)params;
 + (void)trackLocation:(NSDictionary*)params;
 
 @end

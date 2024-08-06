@@ -184,8 +184,9 @@
     [editor save];
 }
 
-+ (void)trackEvent:(NSDictionary*)params
++ (NSString*)trackEvent:(NSDictionary*)params
 {
+    BACSimplePromise<NSObject*>* result = [BACSimplePromise new];
     if (!params || [params count]==0)
     {
         [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for user.track.event"];
@@ -208,14 +209,14 @@
         [batchEventAttributes validateWithError:&err];
         if (batchEventAttributes != nil && err == nil) {
             [BatchProfile trackEventWithName:name attributes:batchEventAttributes];
-            //resolve([NSNull null]);
+            return nil;
         } else {
-            [NSException raise:INVALID_PARAMETER format:@"Event attributes validation failed"];
-            //reject(@"BatchBridgeError", @"Event attributes validation failed:", err);
+            NSLog(@"Batch Bridge - Event attributes validation failed with errors: %@", err);
+            return err.description;
         }
-        return;
     }
     [BatchProfile trackEventWithName:name attributes:batchEventAttributes];
+    return nil;
 }
 
 + (void)trackLocation:(NSDictionary*)params
