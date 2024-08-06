@@ -29,7 +29,7 @@
 {
     NSString *selector = NSStringFromSelector(anInvocation.selector);
     //NSLog(@"Got selector %@", selector);
-    
+
     if ([selector hasPrefix:@"BA_"])
     {
         @try
@@ -43,10 +43,10 @@
         {
             NSLog(@"Error while getting the CDVInvokedUrlCommand");
         }
-        
+
         return;
     }
-    
+
     [super forwardInvocation:anInvocation];
 }
 
@@ -54,7 +54,7 @@
 {
     //NSLog(@"Reponds to selector %@", NSStringFromSelector(aSelector));
     NSString *selector = NSStringFromSelector(aSelector);
-    
+
     if ([selector hasPrefix:@"BA_"])
     {
         return true;
@@ -74,7 +74,7 @@
 // Empty method used for faking the signature for bridge method instances
 - (void)batchFakeAction:(CDVInvokedUrlCommand*)command
 {
-    
+
 }
 
 #pragma mark Cordova Plugin methods
@@ -83,12 +83,12 @@
 {
     //NSLog(@"[Batch] DEBUG - PluginInitialize");
     setenv("BATCH_PLUGIN_VERSION", PluginVersion, 1);
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_batchPushReceived:) name:BatchPushOpenedNotification object:nil];
-    
+
     //[self.commandDelegate evalJs:@"batch._setupCallback()"];
-    
-    [Batch setLoggerDelegate:self];
+
+    [BatchSDK setLoggerDelegate:self];
     [BatchMessaging setDelegate:self];
 
     // Ionic Capacitor 4.5+'s Swift NotificationRouter registers itself later than it used to be.
@@ -165,11 +165,11 @@
 {
     // Remove "BA_" from the action
     NSString *cleanAction = [cdvCommand.methodName substringFromIndex:3];
-    
+
     // Allows us to conditionally forward calls to the bridge. Useful so that we don't setup the modules or start Batch multiple times.
     // Not that it matters, but the logs are annoying.
     bool skipBridgeCall = NO;
-    
+
     static bool batchStarted = NO;
     if ([START isEqualToString:cleanAction])
     {
@@ -179,7 +179,7 @@
         }
         batchStarted = YES;
     }
-    
+
     //NSLog(@"[BatchCordova] DEBUG: Sending to bridge %@ %@ %@ %@", cleanAction, cdvCommand.className, cdvCommand.methodName, cdvCommand.arguments);
     BACSimplePromise *bridgeResult = nil;
     if (!skipBridgeCall)
@@ -190,11 +190,11 @@
     {
         bridgeResult = [BACSimplePromise resolved:@""];
     }
-    
+
     [bridgeResult then:^(NSObject * _Nullable value) {
         // Thought using NO_RESULT was a good idea? Think again https://github.com/don/cordova-plugin-ble-central/issues/32
         CDVPluginResult *cdvResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:value ? (NSString*)value : @""];
-        
+
         [self.commandDelegate sendPluginResult:cdvResult callbackId:cdvCommand.callbackId];
     }];
 }
@@ -207,7 +207,7 @@
     {
         CDVPluginResult *cdvResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"action":@"_log", @"message":message}];
         [cdvResult setKeepCallbackAsBool:YES];
-    
+
         [self.commandDelegate sendPluginResult:cdvResult callbackId:self.genericCallbackId];
     }
 }
@@ -233,12 +233,12 @@
         payload[@"lifecycleEvent"] = event;
         if (messageIdentifier != nil)
         {
-            payload[@"messageIdentifier"] = messageIdentifier;   
+            payload[@"messageIdentifier"] = messageIdentifier;
         }
 
         CDVPluginResult *cdvResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:payload];
         [cdvResult setKeepCallbackAsBool:YES];
-    
+
         [self.commandDelegate sendPluginResult:cdvResult callbackId:self.genericCallbackId];
     }
 }
@@ -246,18 +246,18 @@
 #pragma mark Batch Callback
 - (void)call:(NSString *)actionString withResult:(id<NSSecureCoding, NSObject>)result
 {
-    
+
     //NSLog(@"[BatchCordovaCallback] DEBUG: Sending action %@ to Cordova", actionString);
-    
+
     if (![result isKindOfClass:[NSDictionary class]])
     {
         NSLog(@"[BatchCordovaCallback] Bridge's result is not a NSDictionary, aborting. (action: %@)", actionString);
         return;
     }
-    
+
     CDVPluginResult *cdvResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"action": actionString, @"result":(NSDictionary*)result}];
     [cdvResult setKeepCallbackAsBool:YES];
-    
+
     if (!self.genericCallbackId)
     {
         NSLog(@"[BatchCordovaCallback] Not sending callback to Batch, _setupCallback doesn't seem to have been called. Something bad happened.");

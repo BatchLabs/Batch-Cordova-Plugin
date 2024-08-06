@@ -28,12 +28,10 @@ if (error == NULL) {\
 #define DISMISS_NOTIFS                  @"push.dismissNotifications"
 #define CLEAR_BADGE                     @"push.clearBadge"
 
-#define USER_EDIT                       @"user.edit"
-#define USER_TRACK_EVENT                @"user.track.event"
-#define USER_TRACK_LEGACY_EVENT         @"user.track.legacy_event"
-#define USER_TRACK_TRANSACTION          @"user.track.transaction"
-#define USER_TRACK_LOCATION             @"user.track.location"
-#define USER_DATA_DEBUG                 @"user.data.debug"
+#define PROFILE_EDIT                    @"profile.edit"
+#define PROFILE_TRACK_EVENT             @"profile.track.event"
+#define PROFILE_TRACK_LOCATION          @"profile.track.location"
+
 #define USER_GET_INSTALLATION_ID        @"user.getInstallationID"
 #define USER_GET_REGION                 @"user.getRegion"
 #define USER_GET_LANGUAGE               @"user.getLanguage"

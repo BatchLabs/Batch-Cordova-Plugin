@@ -1,8 +1,8 @@
 package com.batch.cordova.android.interop;
 
-import static com.batch.cordova.android.interop.Bridge.convertModernPromiseToLegacy;
-import static com.batch.cordova.android.interop.Bridge.getOptionalTypedParameter;
-import static com.batch.cordova.android.interop.Bridge.getTypedParameter;
+import static com.batch.cordova.android.interop.BridgeUtils.convertModernPromiseToLegacy;
+import static com.batch.cordova.android.interop.BridgeUtils.getOptionalTypedParameter;
+import static com.batch.cordova.android.interop.BridgeUtils.getTypedParameter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -133,7 +133,7 @@ class InboxBridge {
 
         if (fetcher == null) {
             throw new BridgeException("The native inbox fetcher backing this object could not be found." +
-                            "Did you call 'dispose()' on this BatchInboxFetcher and attempted to use it afterwards?",
+                    "Did you call 'dispose()' on this BatchInboxFetcher and attempted to use it afterwards?",
                     null);
         }
 
@@ -289,20 +289,13 @@ class InboxBridge {
             }
 
             serializedNotification.put("isUnread", nativeNotification.isUnread());
-            serializedNotification.put("isDeleted", nativeNotification.isDeleted());
             serializedNotification.put("date", nativeNotification.getDate().getTime());
-            int source = 0; // UNKNOWN
-            switch (nativeNotification.getSource()) {
-                case CAMPAIGN:
-                    source = 1;
-                    break;
-                case TRANSACTIONAL:
-                    source = 2;
-                    break;
-                case TRIGGER:
-                    source = 3;
-                    break;
-            }
+            int source = switch (nativeNotification.getSource()) {
+                case CAMPAIGN -> 1;
+                case TRANSACTIONAL -> 2;
+                case TRIGGER -> 3;
+                default -> 0; // UNKNOWN
+            };
             serializedNotification.put("source", source);
             serializedNotification.put("payload", pushPayloadToJSON(nativeNotification.getRawPayload()));
             serializedNotification.put("hasLandingMessage", nativeNotification.hasLandingMessage());

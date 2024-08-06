@@ -1,5 +1,6 @@
 import * as Actions from "./actions";
 import { Consts } from "./consts";
+import {BatchEventAttributes} from "./modules/profile/batchEventAttributes";
 
 export function writeBatchLog(debug: boolean, ...message: unknown[]): void {
   const args = (["[Batch]"] as unknown[]).concat(message);
@@ -64,6 +65,7 @@ export function sendToBridge(
     | Actions.Messaging
     | Actions.Inbox
     | Actions.User
+    | Actions.Profile
     | Actions.UserDataOperation
     | Actions.Internal,
   args: unknown[] | null
@@ -122,4 +124,20 @@ export function isNumber(value: any): value is number {
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
 export function isBoolean(value: any): value is boolean {
   return value instanceof Boolean || typeof value === "boolean";
+}
+
+export const isObject = (value: unknown): value is BatchEventAttributes => {
+    return value instanceof BatchEventAttributes;
+};
+
+export function isArray(value: unknown): value is unknown[] {
+    return Array.isArray(value);
+}
+
+export function isStringArray(value: unknown): value is string[] {
+    return isArray(value) && value.every(it => isString(it));
+}
+
+export function isObjectArray(value: unknown): value is BatchEventAttributes[] {
+    return isArray(value) && value.every(it => isObject(it));
 }

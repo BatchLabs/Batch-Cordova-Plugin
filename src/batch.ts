@@ -7,9 +7,11 @@ import { MessagingModule } from "./modules/messaging";
 import { PushModule } from "./modules/push";
 import { UserModule } from "./modules/user";
 import Platform from "./platform";
+import {ProfileModule} from "./modules/profile";
 
 export class Batch implements BatchSDK.Batch {
   public push: PushModule;
+  public profile: ProfileModule;
   public user: UserModule;
   public messaging: MessagingModule;
   public inbox: InboxModule;
@@ -19,6 +21,7 @@ export class Batch implements BatchSDK.Batch {
 
   constructor() {
     this.push = new PushModule();
+    this.profile = new ProfileModule();
     this.user = new UserModule();
     this.messaging = new MessagingModule();
     this.inbox = new InboxModule();

@@ -13,13 +13,13 @@
 
 #import <Batch/Batch.h>
 #import <Batch/BatchUser.h>
-#import <Batch/BatchUserProfile.h>
 #import <Batch/BatchPush.h>
 
 #import "BatchBridgeShared.h"
 #import "BatchInboxBridge.h"
 #import "BatchBridgeNotificationCenterDelegate.h"
 #import "BatchUserBridge.h"
+#import "BatchBridgeUtils.h"
 
 #define INVALID_PARAMETER   @"Invalid parameter."
 
@@ -129,23 +129,23 @@ static dispatch_once_t onceToken;
     // optIn:
     else if ([action caseInsensitiveCompare:OPT_IN] == NSOrderedSame)
     {
-        [Batch optIn];
+        [BatchSDK optIn];
         if ([currentAPIKey length] > 0)
         {
-            [Batch startWithAPIKey:currentAPIKey];
+            [BatchSDK startWithAPIKey:currentAPIKey];
         }
     }
 
     // optOut:
     else if ([action caseInsensitiveCompare:OPT_OUT] == NSOrderedSame)
     {
-        [Batch optOut];
+        [BatchSDK optOut];
     }
 
     // optOutAndWipeData:
     else if ([action caseInsensitiveCompare:OPT_OUT_AND_WIPE_DATA] == NSOrderedSame)
     {
-        [Batch optOutAndWipeData];
+        [BatchSDK optOutAndWipeData];
     }
 
     // setConfigWithApiKey:andUseIDFA:
@@ -230,38 +230,31 @@ static dispatch_once_t onceToken;
     {
         // Do nothing
     }
-
     else if ([action caseInsensitiveCompare:REGISTER_NOTIFS] == NSOrderedSame)
     {
         [BatchBridge registerForRemoteNotifications];
     }
-
     else if ([action caseInsensitiveCompare:DISMISS_NOTIFS] == NSOrderedSame)
     {
         [BatchBridge dismissNotifications];
     }
-
     else if ([action caseInsensitiveCompare:CLEAR_BADGE] == NSOrderedSame)
     {
         [BatchBridge clearBadge];
     }
-
     else if ([action caseInsensitiveCompare:USER_GET_LANGUAGE] == NSOrderedSame)
     {
         return [BACSimplePromise resolved:[BatchBridge user_getLanguage]];
     }
-
     else if ([action caseInsensitiveCompare:USER_GET_REGION] == NSOrderedSame)
     {
         return [BACSimplePromise resolved:[BatchBridge user_getRegion]];
     }
-
     else if ([action caseInsensitiveCompare:USER_GET_IDENTIFIER] == NSOrderedSame)
     {
         return [BACSimplePromise resolved:[BatchBridge user_getIdentifier]];
     }
-
-    else if ([action caseInsensitiveCompare:USER_EDIT] == NSOrderedSame)
+    else if ([action caseInsensitiveCompare:PROFILE_EDIT] == NSOrderedSame)
     {
         if (!parameters || [parameters count]==0)
         {
@@ -270,28 +263,13 @@ static dispatch_once_t onceToken;
 
         [BatchBridge userDataEdit:parameters];
     }
-
-    else if ([action caseInsensitiveCompare:USER_TRACK_EVENT] == NSOrderedSame)
+    else if ([action caseInsensitiveCompare:PROFILE_TRACK_EVENT] == NSOrderedSame)
     {
         [BatchBridge trackEvent:parameters];
     }
-    else if ([action caseInsensitiveCompare:USER_TRACK_LEGACY_EVENT] == NSOrderedSame)
-    {
-        [BatchBridge trackLegacyEvent:parameters];
-    }
-
-
-    else if ([action caseInsensitiveCompare:USER_TRACK_TRANSACTION] == NSOrderedSame)
-    {
-        [BatchBridge trackTransaction:parameters];
-    }
-    else if ([action caseInsensitiveCompare:USER_TRACK_LOCATION] == NSOrderedSame)
+    else if ([action caseInsensitiveCompare:PROFILE_TRACK_LOCATION] == NSOrderedSame)
     {
         [BatchBridge trackLocation:parameters];
-    }
-    else if ([action caseInsensitiveCompare:USER_DATA_DEBUG] == NSOrderedSame)
-    {
-        [BatchUser printDebugInformation];
     }
     else if ([action caseInsensitiveCompare:USER_GET_INSTALLATION_ID] == NSOrderedSame)
     {
@@ -305,7 +283,6 @@ static dispatch_once_t onceToken;
     {
         return [self convertPromiseToLegacyBridge:[BatchUserBridge fetchTags]];
     }
-
     else if ([action caseInsensitiveCompare:MESSAGING_SET_DND_ENABLED] == NSOrderedSame)
     {
         [BatchBridge setMessagingDoNotDisturbEnabled:parameters];
@@ -401,7 +378,7 @@ static dispatch_once_t onceToken;
 
 + (void)startWithCallback:(id<BatchBridgeCallback>)callback
 {
-    [Batch startWithAPIKey:currentAPIKey];
+    [BatchSDK startWithAPIKey:currentAPIKey];
     [BatchBridgeNotificationCenterDelegate sharedInstance].isBatchReady = true;
 }
 
@@ -415,21 +392,17 @@ static dispatch_once_t onceToken;
 
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Wunused-result"
-    [Batch handleURL:url];
+    //[Batch handleURL:url];
     #pragma clang diagnostic pop
 }
 
-+ (NSString *)isRunningInDevelopmentMode
-{
-    return [Batch isRunningInDevelopmentMode]?@"true":@"false";
-}
 
 + (void)setConfigWithApiKey:(NSString*)APIKey andUseIDFA:(NSNumber*)useIDFA
 {
-    if (useIDFA)
-    {
-        [Batch setUseIDFA:[useIDFA boolValue]];
-    }
+//    if (useIDFA)
+//    {
+//        [Batch setUseIDFA:[useIDFA boolValue]];
+//    }
     currentAPIKey = APIKey;
 }
 
@@ -502,7 +475,7 @@ static dispatch_once_t onceToken;
         return;
     }
 
-    BatchUserDataEditor *editor = [BatchUser editor];
+    BatchProfileEditor *editor = [BatchProfile editor];
 
     for (NSDictionary *operationDescription in operations)
     {
@@ -520,29 +493,21 @@ static dispatch_once_t onceToken;
 
         if ([@"SET_LANGUAGE" isEqualToString:operationName])
         {
-            [editor setLanguage:[operationDescription objectForKey:@"value"]];
+            [editor setLanguage:[operationDescription objectForKey:@"value"] error:nil];
         }
         else if ([@"SET_REGION" isEqualToString:operationName])
         {
-            [editor setRegion:[operationDescription objectForKey:@"value"]];
+            [editor setRegion:[operationDescription objectForKey:@"value"] error:nil];
         }
-        else if ([@"SET_IDENTIFIER" isEqualToString:operationName])
+        else if([@"SET_EMAIL_ADDRESS" isEqualToString:operationName])
         {
-            [editor setIdentifier:[operationDescription objectForKey:@"value"]];
-        }
-        else if ([@"SET_ATTRIBUTION_ID" isEqualToString:operationName])
-        {
-            [editor setAttributionIdentifier:[operationDescription objectForKey:@"value"]];
-        }
-        else if([@"SET_EMAIL" isEqualToString:operationName])
-        {
-            [editor setEmail:[operationDescription objectForKey:@"value"] error:nil];
+            [editor setEmailAddress:[operationDescription objectForKey:@"value"] error:nil];
         }
         else if([@"SET_EMAIL_MARKETING_SUB" isEqualToString:operationName]) {
             NSString* value = [operationDescription objectForKey:@"value"];
-            if([value isEqualToString:@"SUBSCRIBED"]) {
+            if([[value uppercaseString] isEqualToString:@"SUBSCRIBED"]) {
                 [editor setEmailMarketingSubscriptionState:BatchEmailSubscriptionStateSubscribed];
-            } else if ([value isEqualToString:@"UNSUBSCRIBED"]) {
+            } else if ([[value uppercaseString] isEqualToString:@"UNSUBSCRIBED"]) {
                 [editor setEmailMarketingSubscriptionState: BatchEmailSubscriptionStateUnsubscribed];
             } else {
                 NSLog(@"Batch Bridge - Invalid value for email marketing subscription state. Must be `subscribed` or `unsubscribed`.");
@@ -560,7 +525,7 @@ static dispatch_once_t onceToken;
 
             if ([@"string" isEqualToString:type])
             {
-                [editor setAttribute:operationDescription[@"value"] forKey:operationDescription[@"key"]];
+                [editor setStringAttribute:operationDescription[@"value"] forKey:key error:nil];
             }
             else if ([@"url" isEqualToString:type])
             {
@@ -579,7 +544,7 @@ static dispatch_once_t onceToken;
             else if ([@"date" isEqualToString:type])
             {
                 double dateValue = [operationDescription[@"value"] doubleValue]/1000;
-                [editor setAttribute:[NSDate dateWithTimeIntervalSince1970:dateValue] forKey:operationDescription[@"key"]];
+                [editor setDateAttribute:[NSDate dateWithTimeIntervalSince1970:dateValue] forKey:key error:nil];
             }
             else if ([@"integer" isEqualToString:type] || [@"float" isEqualToString:type] || [@"boolean" isEqualToString:type])
             {
@@ -593,26 +558,30 @@ static dispatch_once_t onceToken;
 
                 if ([numberValue isKindOfClass:[NSNumber class]] || [numberValue isKindOfClass:[NSString class]])
                 {
-                    NSNumber *sdkValue;
                     if ([@"float" isEqualToString:type])
                     {
-                        sdkValue = @([numberValue doubleValue]);
+                        [editor setFloatAttribute:[numberValue doubleValue] forKey:key error:nil];
+
                     }
                     else if ([@"boolean" isEqualToString:type])
                     {
-                        sdkValue = @([numberValue boolValue]);
+                        [editor setBooleanAttribute:[numberValue boolValue] forKey:key error:nil];
+
                     }
                     else
                     {
-                        sdkValue = @([numberValue longLongValue]);
+                        [editor setLongLongAttribute:[numberValue longLongValue] forKey:key error:nil];
                     }
-                    [editor setAttribute:sdkValue forKey:operationDescription[@"key"]];
                 }
                 else
                 {
                     NSLog(@"Batch Bridge - %@", @"Error while reading SET_ATTRIBUTE integer value: must be a string or a number");
                     continue;
                 }
+            }
+            else if ([@"array" isEqualToString:type])
+            {
+                [editor setStringArrayAttribute:operationDescription[@"value"] forKey:key error:nil];
             }
             else
             {
@@ -621,27 +590,32 @@ static dispatch_once_t onceToken;
         }
         else if ([@"REMOVE_ATTRIBUTE" isEqualToString:operationName])
         {
-            [editor removeAttributeForKey:operationDescription[@"key"]];
+            [editor removeAttributeForKey:operationDescription[@"key"] error:nil];
         }
-        else if ([@"CLEAR_ATTRIBUTES" isEqualToString:operationName])
+
+        else if ([@"ADD_TO_ARRAY" isEqualToString:operationName])
         {
-            [editor clearAttributes];
+            NSString* key = operationDescription[@"key"] ;
+            id value = operationDescription[@"value"];
+            if ([value isKindOfClass:[NSString class]]) {
+                [editor addItemToStringArrayAttribute:value forKey:key error:nil];
+            } else if ([value isKindOfClass:[NSArray class]]) {
+                for (NSString *item in value) {
+                    [editor addItemToStringArrayAttribute:item forKey:key error:nil];
+                }
+            }
         }
-        else if ([@"ADD_TAG" isEqualToString:operationName])
+        else if ([@"REMOVE_FROM_ARRAY" isEqualToString:operationName])
         {
-            [editor addTag:operationDescription[@"tag"] inCollection:operationDescription[@"collection"]];
-        }
-        else if ([@"REMOVE_TAG" isEqualToString:operationName])
-        {
-            [editor removeTag:operationDescription[@"tag"] fromCollection:operationDescription[@"collection"]];
-        }
-        else if ([@"CLEAR_TAGS" isEqualToString:operationName])
-        {
-            [editor clearTags];
-        }
-        else if ([@"CLEAR_TAG_COLLECTION" isEqualToString:operationName])
-        {
-            [editor clearTagCollection:operationDescription[@"collection"]];
+            NSString* key = operationDescription[@"key"] ;
+            id value = operationDescription[@"value"];
+            if ([value isKindOfClass:[NSString class]]) {
+                [editor removeItemFromStringArrayAttribute:value forKey:key error:nil];
+            } else if ([value isKindOfClass:[NSArray class]]) {
+                for (NSString *item in value) {
+                    [editor removeItemFromStringArrayAttribute:item forKey:key error:nil];
+                }
+            }
         }
     }
 
@@ -656,7 +630,6 @@ static dispatch_once_t onceToken;
     }
 
     NSString *name = params[@"name"];
-    NSString *label = params[@"label"];
     NSDictionary *data = params[@"event_data"];
 
     if (![name isKindOfClass:[NSString class]])
@@ -664,158 +637,25 @@ static dispatch_once_t onceToken;
         [NSException raise:INVALID_PARAMETER format:@"name should be a string"];
     }
 
-    if (label && ![label isKindOfClass:[NSString class]])
-    {
-        [NSException raise:INVALID_PARAMETER format:@"label should be a string or null"];
+    BatchEventAttributes *batchEventAttributes = nil;
+
+    if ([data isKindOfClass:[NSDictionary class]]) {
+        batchEventAttributes = [BatchBridgeUtils convertSerializedEventDataToEventAttributes:data];
+
+        NSError *err;
+        [batchEventAttributes validateWithError:&err];
+        if (batchEventAttributes != nil && err == nil) {
+            [BatchProfile trackEventWithName:name attributes:batchEventAttributes];
+            //resolve([NSNull null]);
+        } else {
+            [NSException raise:INVALID_PARAMETER format:@"Event attributes validation failed"];
+            //reject(@"BatchBridgeError", @"Event attributes validation failed:", err);
+        }
+        return;
     }
-
-    BatchEventData *batchEventData = nil;
-
-    if (data)
-    {
-        batchEventData = [BatchEventData new];
-
-        if (![data isKindOfClass:[NSDictionary class]])
-        {
-            [NSException raise:INVALID_PARAMETER format:@"event_data should be an object or null"];
-        }
-
-        NSArray<NSString*>* tags = data[@"tags"];
-        NSDictionary<NSString*, NSDictionary*>* attributes = data[@"attributes"];
-
-        if (![tags isKindOfClass:[NSArray class]])
-        {
-            [NSException raise:INVALID_PARAMETER format:@"event_data.tags should be an array"];
-        }
-        if (![attributes isKindOfClass:[NSDictionary class]])
-        {
-            [NSException raise:INVALID_PARAMETER format:@"event_data.attributes should be a dictionnary"];
-        }
-
-        for (NSString *tag in tags)
-        {
-            if (![tag isKindOfClass:[NSString class]])
-            {
-                [NSException raise:INVALID_PARAMETER format:@"event_data.tag childrens should all be strings"];
-            }
-            [batchEventData addTag:tag];
-        }
-
-        for (NSString *key in attributes.allKeys)
-        {
-            NSDictionary *typedAttribute = attributes[key];
-            if (![typedAttribute isKindOfClass:[NSDictionary class]])
-            {
-                [NSException raise:INVALID_PARAMETER format:@"event_data.attributes childrens should all be String/Dictionary tuples"];
-            }
-
-            NSString *type = typedAttribute[@"type"];
-            NSObject *value = typedAttribute[@"value"];
-
-            if ([@"d" isEqualToString:type]) {
-                if (![value isKindOfClass:[NSNumber class]])
-                {
-                    [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: expected number (date) value, got something else"];
-                }
-                double dateValue = [((NSNumber*)value) doubleValue]/1000;
-                [batchEventData putDate:[NSDate dateWithTimeIntervalSince1970:dateValue] forKey:key];
-            } else if ([@"s" isEqualToString:type]) {
-                if (![value isKindOfClass:[NSString class]])
-                {
-                    [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: expected string value, got something else"];
-                }
-                [batchEventData putString:(NSString*)value forKey:key];
-            } else if ([@"b" isEqualToString:type]) {
-                if (![value isKindOfClass:[NSNumber class]])
-                {
-                    [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: expected number (boolean) value, got something else"];
-                }
-                [batchEventData putBool:[(NSNumber*)value boolValue] forKey:key];
-            } else if ([@"i" isEqualToString:type]) {
-                if (![value isKindOfClass:[NSNumber class]])
-                {
-                    [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: expected number (integer) value, got something else"];
-                }
-                [batchEventData putInteger:[(NSNumber*)value integerValue] forKey:key];
-            } else if ([@"f" isEqualToString:type]) {
-                if (![value isKindOfClass:[NSNumber class]])
-                {
-                    [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: expected number (float) value, got something else"];
-                }
-                [batchEventData putDouble:[(NSNumber*)value doubleValue] forKey:key];
-            } else if ([@"u" isEqualToString:type]) {
-                if (![value isKindOfClass:[NSString class]])
-                {
-                    [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: expected url (string) value, got something else"];
-                }
-                NSURL *urlValue = [NSURL URLWithString:(NSString*)value];
-                if (urlValue == nil) {
-                    [NSException raise:INVALID_PARAMETER format:@"event_data.attributes: invalid URL"];
-                }
-                [batchEventData putURL:urlValue forKey:key];
-            } else {
-                [NSException raise:INVALID_PARAMETER format:@"Unknown event_data.attributes type"];
-            }
-        }
-    }
-
-    [BatchUser trackEvent:name withLabel:label associatedData:batchEventData];
+    [BatchProfile trackEventWithName:name attributes:batchEventAttributes];
 }
 
-+ (void)trackLegacyEvent:(NSDictionary*)params
-{
-    if (!params || [params count]==0)
-    {
-        [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for user.track.legacy_event"];
-    }
-
-    NSString *name = params[@"name"];
-    NSString *label = params[@"label"];
-    NSDictionary *data = params[@"data"];
-
-    if (![name isKindOfClass:[NSString class]])
-    {
-        [NSException raise:INVALID_PARAMETER format:@"name should be a string"];
-    }
-
-    if (label && ![label isKindOfClass:[NSString class]])
-    {
-        [NSException raise:INVALID_PARAMETER format:@"label should be a string or null"];
-    }
-
-    if (data && ![data isKindOfClass:[NSDictionary class]])
-    {
-        [NSException raise:INVALID_PARAMETER format:@"data should be an object or null"];
-    }
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    [BatchUser trackEvent:name withLabel:label data:data];
-#pragma clang diagnostic pop
-}
-
-+ (void)trackTransaction:(NSDictionary*)params
-{
-    if (!params || [params count]==0)
-    {
-        [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action user.track.transaction"];
-    }
-
-    NSNumber *amount = params[@"amount"];
-    NSDictionary *data = params[@"data"];
-
-    if (![amount isKindOfClass:[NSNumber class]])
-    {
-        [NSException raise:INVALID_PARAMETER format:@"name should be a string"];
-    }
-
-    if (data && ![data isKindOfClass:[NSDictionary class]])
-    {
-        [NSException raise:INVALID_PARAMETER format:@"data should be an object or null"];
-    }
-
-    [BatchUser trackTransactionWithAmount:[amount doubleValue] data:data];
-}
 
 + (void)trackLocation:(NSDictionary*)params
 {
@@ -862,7 +702,7 @@ static dispatch_once_t onceToken;
         }
     }
 
-    [BatchUser trackLocation:[[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake([latitude doubleValue], [longitude doubleValue])
+    [BatchProfile trackLocation:[[CLLocation alloc] initWithCoordinate:CLLocationCoordinate2DMake([latitude doubleValue], [longitude doubleValue])
                                                            altitude:0
                                                  horizontalAccuracy:parsedPrecision
                                                    verticalAccuracy:-1
@@ -890,5 +730,4 @@ static dispatch_once_t onceToken;
 
     BatchMessaging.doNotDisturb = [enabled boolValue];
 }
-
 @end

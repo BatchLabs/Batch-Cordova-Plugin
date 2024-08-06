@@ -104,6 +104,8 @@
         <source-file src="src/ios/interop/BatchUserBridge.m" />
         <header-file src="src/ios/interop/BatchJSONHelper.h" />
         <source-file src="src/ios/interop/BatchJSONHelper.m" />
+        <header-file src="src/ios/interop/BatchBridgeUtils.h" />
+        <source-file src="src/ios/interop/BatchBridgeUtils.m" />
 
         <config-file target="*-Info.plist" parent="UIBackgroundModes">
             <array>
