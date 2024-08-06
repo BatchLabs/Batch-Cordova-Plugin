@@ -38,12 +38,7 @@ export enum Inbox {
 }
 
 export enum User {
-  Edit = "user.edit",
-  TrackEvent = "user.track.event",
-  TrackLegacyEvent = "user.track.legacy_event",
-  TrackTransaction = "user.track.transaction",
-  TrackLocation = "user.track.location",
-  DataDebug = "user.data.debug",
+
   GetInstallationID = "user.getInstallationID",
   GetLanguage = "user.getLanguage",
   GetRegion = "user.getRegion",
@@ -52,20 +47,21 @@ export enum User {
   FetchTags = "user.fetch.tags",
 }
 
+export enum Profile {
+    Edit = "profile.edit",
+    TrackEvent = "profile.track.event",
+    TrackLocation = "profile.track.location",
+}
+
 export enum UserDataOperation {
   SetLanguage = "SET_LANGUAGE",
   SetRegion = "SET_REGION",
-  SetIdentifier = "SET_IDENTIFIER",
-  SetAttributionId = "SET_ATTRIBUTION_ID",
-  SetEmail = "SET_EMAIL",
+  SetEmail = "SET_EMAIL_ADDRESS",
   SetEmailMarketingSubscription = "SET_EMAIL_MARKETING_SUB",
   SetAttribute = "SET_ATTRIBUTE",
   RemoveAttribute = "REMOVE_ATTRIBUTE",
-  ClearAttribute = "CLEAR_ATTRIBUTES",
-  AddTag = "ADD_TAG",
-  RemoveTag = "REMOVE_TAG",
-  ClearTags = "CLEAR_TAGS",
-  ClearTagCollection = "CLEAR_TAG_COLLECTION",
+  AddToArray = "ADD_TO_ARRAY",
+  RemoveFromArray = "REMOVE_FROM_ARRAY",
 }
 
 export enum Internal {

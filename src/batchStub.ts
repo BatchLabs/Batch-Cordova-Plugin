@@ -33,12 +33,28 @@ class PushStub implements BatchSDK.PushModule {
   }
 }
 
+class ProfileStub implements BatchSDK.ProfileModule {
+    public eventData: typeof BatchSDK.BatchEventAttributes;
+
+    constructor() {
+        this.eventData = BatchEventDataStub;
+    }
+
+    public getEditor(): BatchSDK.BatchUserDataEditor {
+        return new BatchUserDataEditorStub();
+    }
+    public trackEvent(_name: string, _data?: BatchEventDataStub) {}
+    public trackTransaction(
+        _amount: number,
+        _data?: { [key: string]: unknown }
+    ) {}
+    public trackLocation(_location: BatchSDK.Location): void {}
+}
+
 class UserStub implements BatchSDK.UserModule {
-  public eventData: typeof BatchSDK.BatchEventData;
   public BatchUserAttributeType: typeof BatchSDK.BatchUserAttributeType;
 
   constructor() {
-    this.eventData = BatchEventDataStub;
     this.BatchUserAttributeType = BatchUserAttributeType;
   }
 
@@ -62,16 +78,6 @@ class UserStub implements BatchSDK.UserModule {
   public getTagCollections(): Promise<{ [key: string]: string[] }> {
     return Promise.resolve({});
   }
-  public getEditor(): BatchSDK.BatchUserDataEditor {
-    return new BatchUserDataEditorStub();
-  }
-  public printDebugInformation() {}
-  public trackEvent(_name: string, _label?: string, _data?: unknown) {}
-  public trackTransaction(
-    _amount: number,
-    _data?: { [key: string]: unknown }
-  ) {}
-  public trackLocation(_location: BatchSDK.Location): void {}
 }
 
 class InboxStub implements BatchSDK.InboxModule {
@@ -97,12 +103,9 @@ class InboxStub implements BatchSDK.InboxModule {
   }
 }
 
-class BatchEventDataStub implements BatchSDK.BatchEventData {
-  public addTag(_tag: string): BatchSDK.BatchEventData {
-    return this;
-  }
+class BatchEventDataStub implements BatchSDK.BatchEventAttributes {
 
-  public put(_key: unknown, _value: string | number | boolean | Date | URL) {
+  public put(_key: unknown, _value:string | number | boolean | Date | URL |  Array<String> | BatchSDK.BatchEventAttributes | Array<BatchSDK.BatchEventAttributes>)  {
     return this;
   }
 }
@@ -114,16 +117,11 @@ class BatchUserDataEditorStub implements BatchSDK.BatchUserDataEditor {
   public setRegion(_region: string | null) {
     return this;
   }
-  public setIdentifier(_identifier: string | null) {
+
+  public setEmailAddress(_email: string | null) {
     return this;
   }
-  public setAttributionIdentifier(_identifier: string | null) {
-    return this;
-  }
-  public setEmail(_email: string | null) {
-    return this;
-  }
-  public setEmailMarketingSubscriptionState(
+  public setEmailMarketingSubscription(
     _state: "subscribed" | "unsubscribed"
   ) {
     return this;
@@ -137,19 +135,10 @@ class BatchUserDataEditorStub implements BatchSDK.BatchUserDataEditor {
   public removeAttribute(_key: string) {
     return this;
   }
-  public clearAttributes() {
+  public addToArray(_key: string, _value: string) {
     return this;
   }
-  public addTag(_collection: string, _tag: string) {
-    return this;
-  }
-  public removeTag(_collection: string, _tag: string) {
-    return this;
-  }
-  public clearTags() {
-    return this;
-  }
-  public clearTagCollection(_collection: string) {
+  public removeFromArray(_key: string, _value: string) {
     return this;
   }
   public save() {
@@ -159,11 +148,13 @@ class BatchUserDataEditorStub implements BatchSDK.BatchUserDataEditor {
 
 export class BatchStub implements BatchSDK.Batch {
   public push: BatchSDK.PushModule;
+  public profile: BatchSDK.ProfileModule;
   public user: BatchSDK.UserModule;
   public messaging: BatchSDK.MessagingModule;
   public inbox: BatchSDK.InboxModule;
   constructor() {
     this.push = new PushStub();
+    this.profile = new ProfileStub();
     this.user = new UserStub();
     this.messaging = new MessagingStub();
     this.inbox = new InboxStub();
