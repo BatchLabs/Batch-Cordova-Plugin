@@ -1,5 +1,5 @@
 import {BatchSDK} from "../../../types";
-import {Profile, User as UserAction, UserDataOperation} from "../../actions";
+import {Profile, UserDataOperation} from "../../actions";
 import Consts from "../../consts";
 import {isNumber, isString, isStringArray, sendToBridge, writeBatchLog} from "../../helpers";
 
@@ -9,8 +9,8 @@ interface IOperation {
     [key: string]: unknown;
 }
 
-export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
-    private _operationQueue: IOperation[]; // tslint:disable-line
+export class BatchProfileAttributeEditor implements BatchSDK.BatchProfileAttributeEditor {
+    private _operationQueue: IOperation[];
 
     constructor(fromSdk: boolean) {
         if (fromSdk !== true) {
@@ -58,7 +58,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
         if (typeof email !== "string" && email !== null) {
             writeBatchLog(
                 false,
-                "BatchUserDataEditor - Email must be a string or null"
+                "BatchProfileAttributeEditor - Email must be a string or null"
             );
             return this;
         }
@@ -77,7 +77,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
         ) {
             writeBatchLog(
                 false,
-                "BatchUserDataEditor - Email marketing subscription state must be `subscribed` or `unsubscribed`."
+                "BatchProfileAttributeEditor - Email marketing subscription state must be `subscribed` or `unsubscribed`."
             );
             return this;
         }
@@ -94,7 +94,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
         if (!Consts.AttributeKeyRegexp.test(key || "")) {
             writeBatchLog(
                 false,
-                "BatchUserDataEditor - Invalid key. Please make sure that the key is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring attribute '" +
+                "BatchProfileAttributeEditor - Invalid key. Please make sure that the key is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring attribute '" +
                 key +
                 "'"
             );
@@ -104,13 +104,13 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
         if (typeof key === "undefined" || key === null) {
             writeBatchLog(
                 false,
-                "BatchUserDataEditor - Value argument cannot be undefined or null"
+                "BatchProfileAttributeEditor - Value argument cannot be undefined or null"
             );
             return this;
         }
 
         if (typeof value === "undefined") {
-            writeBatchLog(false, "BatchUserDataEditor - A value is required");
+            writeBatchLog(false, "BatchProfileAttributeEditor - A value is required");
             return this;
         }
 
@@ -125,7 +125,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
             operationData.value = URL.prototype.toString.call(value);
             operationData.type = "url";
         } else if (typeof value === "number" && isNaN(value)) {
-            writeBatchLog(false, "BatchUserDataEditor - Value cannot be NaN");
+            writeBatchLog(false, "BatchProfileAttributeEditor - Value cannot be NaN");
             return this;
         } else if (isNumber(value)) {
             operationData.type = (value as number) % 1 === 0 ? "integer" : "float";
@@ -136,7 +136,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
             ) {
                 writeBatchLog(
                     false,
-                    "BatchUserDataEditor - String attributes can't be empty or longer than " +
+                    "BatchProfileAttributeEditor - String attributes can't be empty or longer than " +
                     Consts.AttributeStringMaxLength +
                     " characters. Ignoring attribute '" +
                     key +
@@ -152,7 +152,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
             ) {
                 writeBatchLog(
                     false,
-                    "BatchUserDataEditor - String Array attributes can't be empty or longer than " +
+                    "BatchProfileAttributeEditor - String Array attributes can't be empty or longer than " +
                     Consts.AttributeStringArrayMaxSize +
                     " characters. Ignoring attribute '" +
                     key +
@@ -167,7 +167,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
         } else {
             writeBatchLog(
                 false,
-                "BatchUserDataEditor - Value argument must be one of these types: number, string, boolean, date, array"
+                "BatchProfileAttributeEditor - Value argument must be one of these types: number, string, boolean, date, array"
             );
             return this;
         }
@@ -181,7 +181,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
         if (!Consts.AttributeKeyRegexp.test(key || "")) {
             writeBatchLog(
                 false,
-                "BatchUserDataEditor - Invalid key. Please make sure that the key is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring attribute '" +
+                "BatchProfileAttributeEditor - Invalid key. Please make sure that the key is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring attribute '" +
                 key +
                 "'"
             );
@@ -200,7 +200,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
         if (!isString(key)) {
             writeBatchLog(
                 false,
-                "BatchUserDataEditor - Key argument must be a string"
+                "BatchProfileAttributeEditor - Key argument must be a string"
             );
             return this;
         }
@@ -208,7 +208,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
         if (!Consts.AttributeKeyRegexp.test(key || "")) {
             writeBatchLog(
                 false,
-                "BatchUserDataEditor - Invalid Key. Please make sure that the key is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring key '" +
+                "BatchProfileAttributeEditor - Invalid Key. Please make sure that the key is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring key '" +
                 key +
                 "'"
             );
@@ -216,7 +216,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
         }
 
         if (typeof value === "undefined") {
-            writeBatchLog(false, "BatchUserDataEditor - A value is required");
+            writeBatchLog(false, "BatchProfileAttributeEditor - A value is required");
             return this;
         }
 
@@ -224,9 +224,9 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
             if (value.length === 0 || value.length > Consts.AttributeStringMaxLength) {
                 writeBatchLog(
                     false,
-                    "BatchUserDataEditor - Tags can't be empty or longer than " +
+                    "BatchProfileAttributeEditor - String item can't be empty or longer than " +
                     Consts.AttributeStringMaxLength +
-                    " characters. Ignoring tag '" +
+                    " characters. Ignoring item '" +
                     value +
                     "'."
                 );
@@ -236,7 +236,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
             if (value.length === 0 || value.length > Consts.AttributeStringArrayMaxSize) {
                 writeBatchLog(
                     false,
-                    "BatchUserDataEditor - String Array attribute can't be empty or longer than " +
+                    "BatchProfileAttributeEditor - String Array attribute can't be empty or longer than " +
                     Consts.AttributeStringMaxLength
                     + "'."
                 );
@@ -245,7 +245,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
         } else {
             writeBatchLog(
                 false,
-                "BatchUserDataEditor - Value argument must be a string or an array of string"
+                "BatchProfileAttributeEditor - Value argument must be a string or an array of string"
             );
         }
 
@@ -262,7 +262,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
         ) {
             writeBatchLog(
                 false,
-                "BatchUserDataEditor - Key argument must be a string"
+                "BatchProfileAttributeEditor - Key argument must be a string"
             );
             return this;
         }
@@ -270,7 +270,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
         if (!Consts.AttributeKeyRegexp.test(key || "")) {
             writeBatchLog(
                 false,
-                "BatchUserDataEditor - Invalid key. Please make sure that the key is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring key '" +
+                "BatchProfileAttributeEditor - Invalid key. Please make sure that the key is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring key '" +
                 key +
                 "'"
             );
@@ -278,7 +278,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
         }
 
         if (typeof value === "undefined") {
-            writeBatchLog(false, "BatchUserDataEditor - A tag is required");
+            writeBatchLog(false, "BatchProfileAttributeEditor - A value is required");
             return this;
         }
 
@@ -286,9 +286,9 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
             if (value.length === 0 || value.length > Consts.AttributeStringMaxLength) {
                 writeBatchLog(
                     false,
-                    "BatchUserDataEditor - Tags can't be empty or longer than " +
+                    "BatchProfileAttributeEditor - Array item can't be empty or longer than " +
                     Consts.AttributeStringMaxLength +
-                    " characters. Ignoring tag '" +
+                    " characters. Ignoring item '" +
                     value +
                     "'."
                 );
@@ -298,7 +298,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
             if (value.length === 0 || value.length > Consts.AttributeStringArrayMaxSize) {
                 writeBatchLog(
                     false,
-                    "BatchUserDataEditor - String Array attribute can't be empty or longer than " +
+                    "BatchProfileAttributeEditor - String Array attribute can't be empty or longer than " +
                     Consts.AttributeStringMaxLength
                     + "'."
                 );
@@ -307,7 +307,7 @@ export class BatchUserDataEditor implements BatchSDK.BatchUserDataEditor {
         } else {
             writeBatchLog(
                 false,
-                "BatchUserDataEditor - Value argument must be a string or an array of string"
+                "BatchProfileAttributeEditor - Value argument must be a string or an array of string"
             );
         }
         this._enqueueOperation(UserDataOperation.RemoveFromArray, {key, value});

@@ -40,7 +40,7 @@ class ProfileStub implements BatchSDK.ProfileModule {
         this.eventData = BatchEventDataStub;
     }
 
-    public getEditor(): BatchSDK.BatchUserDataEditor {
+    public getEditor(): BatchSDK.BatchProfileAttributeEditor {
         return new BatchUserDataEditorStub();
     }
     public trackEvent(_name: string, _data?: BatchEventDataStub) {}
@@ -110,7 +110,7 @@ class BatchEventDataStub implements BatchSDK.BatchEventAttributes {
   }
 }
 
-class BatchUserDataEditorStub implements BatchSDK.BatchUserDataEditor {
+class BatchUserDataEditorStub implements BatchSDK.BatchProfileAttributeEditor {
   public setLanguage(_language: string | null) {
     return this;
   }

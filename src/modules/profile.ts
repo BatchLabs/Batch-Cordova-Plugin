@@ -7,7 +7,7 @@ import {
 
 import Consts from "../consts";
 import { BatchEventAttributes } from "./profile/batchEventAttributes";
-import { BatchUserDataEditor } from "./profile/userDataEditor";
+import { BatchProfileAttributeEditor } from "./profile/profileAttributeEditor";
 import { BatchSDK } from "../../types";
 
 
@@ -18,8 +18,8 @@ export class ProfileModule implements BatchSDK.ProfileModule {
         this.eventData = BatchEventAttributes;
     }
 
-    public getEditor(): BatchUserDataEditor {
-        return new BatchUserDataEditor(true);
+    public getEditor(): BatchProfileAttributeEditor {
+        return new BatchProfileAttributeEditor(true);
     }
 
     public trackEvent(
