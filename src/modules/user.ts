@@ -10,7 +10,7 @@ import {
 
 import Consts from "../consts";
 import { BatchEventAttributes } from "./profile/batchEventAttributes";
-import { BatchUserDataEditor } from "./profile/userDataEditor";
+import { BatchProfileAttributeEditor } from "./profile/profileAttributeEditor";
 import { BatchSDK } from "../../types";
 import { BatchUserAttribute } from "./user/userAttributes";
 

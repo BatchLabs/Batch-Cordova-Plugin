@@ -211,7 +211,7 @@ export declare namespace BatchSDK {
          * Get the user data editor. Don't forget to call save when you're done.
          * @return Batch user data editor
          */
-        getEditor(): BatchUserDataEditor;
+        getEditor(): BatchProfileAttributeEditor;
 
         /**
          * Track an event. Batch must be started at some point, or events won't be sent to the server.
@@ -577,20 +577,20 @@ export declare namespace BatchSDK {
     /**
      * User data editor
      */
-    interface BatchUserDataEditor {
+    interface BatchProfileAttributeEditor {
         /**
          * Set the application language. Overrides Batch's automatically detected language.
          * Send null to let Batch autodetect it again.
          * @param language Language code. 2 chars minimum, or null
          */
-        setLanguage(language: string | null): BatchUserDataEditor;
+        setLanguage(language: string | null): BatchProfileAttributeEditor;
 
         /**
          * Set the application region. Overrides Batch's automatically detected region.
          * Send "null" to let Batch autodetect it again.
          * @param region Region code. 2 chars minimum, or null
          */
-        setRegion(region: string | null): BatchUserDataEditor;
+        setRegion(region: string | null): BatchProfileAttributeEditor;
 
 
         /**
@@ -600,7 +600,7 @@ export declare namespace BatchSDK {
          * or to call the `setIdentifier` method on the editor instance beforehand.
          * @param email A valid email address. Null to erase.
          */
-        setEmailAddress(email: string | null): BatchUserDataEditor;
+        setEmailAddress(email: string | null): BatchProfileAttributeEditor;
 
         /**
          * Set the user email marketing subscription state
@@ -609,7 +609,7 @@ export declare namespace BatchSDK {
          */
         setEmailMarketingSubscription(
             state: "subscribed" | "unsubscribed"
-        ): BatchUserDataEditor;
+        ): BatchProfileAttributeEditor;
 
         /**
          * Set an attribute for a key
@@ -619,13 +619,13 @@ export declare namespace BatchSDK {
         setAttribute(
             key: string,
             value: string | number | boolean | Date | URL | Array<string>
-        ): BatchUserDataEditor;
+        ): BatchProfileAttributeEditor;
 
         /**
          * Remove an attribute
          * @param key The key of the attribute to remove
          */
-        removeAttribute(key: string): BatchUserDataEditor;
+        removeAttribute(key: string): BatchProfileAttributeEditor;
 
 
         /**
@@ -633,19 +633,19 @@ export declare namespace BatchSDK {
          * @param key Attribute key. Cannot be null, empty or undefined. It should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
          * @param value The value to add. Cannot be null, undefined or empty. Must be an array of string or a string no longer than 64 characters.
          */
-        addToArray(key: string, value: string | Array<string>): BatchUserDataEditor;
+        addToArray(key: string, value: string | Array<string>): BatchProfileAttributeEditor;
 
         /**
          * Remove a value from an array attribute.
          * @param key Attribute key. Cannot be null, empty or undefined. It should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
          * @param value The value to remove. Can be a String or an Array of String. Cannot be null, empty or undefined.
          */
-        removeFromArray(key: string, value: string | Array<string>): BatchUserDataEditor;
+        removeFromArray(key: string, value: string | Array<string>): BatchProfileAttributeEditor;
 
         /**
          * Save all the pending changes made in that editor. This action cannot be undone.
          */
-        save(): BatchUserDataEditor;
+        save(): BatchProfileAttributeEditor;
     }
 
     /**

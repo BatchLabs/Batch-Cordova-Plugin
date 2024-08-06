@@ -11,14 +11,14 @@ jest.doMock("../src/helpers", () => {
   };
 });
 
-import { BatchUserDataEditor } from "../src/modules/profile/userDataEditor";
+import { BatchProfileAttributeEditor } from "../src/modules/profile/profileAttributeEditor";
 
 beforeAll(() => {
   mockSendToBridge.mockClear();
 });
 
 describe("it enqueues operations correctly", () => {
-  const editor = new BatchUserDataEditor(true);
+  const editor = new BatchProfileAttributeEditor(true);
   const enqueueMock = jest.fn();
   (editor as any)._enqueueOperation = enqueueMock;
 
@@ -187,7 +187,7 @@ describe("it enqueues operations correctly", () => {
 });
 
 test("can save operations", () => {
-  new BatchUserDataEditor(true)
+  new BatchProfileAttributeEditor(true)
     .addTag("foo", "bar")
     .setAttribute("foo", "bar")
     .save();
