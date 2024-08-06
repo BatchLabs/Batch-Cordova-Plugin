@@ -102,6 +102,8 @@
         <source-file src="src/ios/interop/BatchInboxBridge.m" />
         <header-file src="src/ios/interop/BatchUserBridge.h" />
         <source-file src="src/ios/interop/BatchUserBridge.m" />
+        <header-file src="src/ios/interop/BatchProfileBridge.h" />
+        <source-file src="src/ios/interop/BatchProfileBridge.m" />
         <header-file src="src/ios/interop/BatchJSONHelper.h" />
         <source-file src="src/ios/interop/BatchJSONHelper.m" />
         <header-file src="src/ios/interop/BatchBridgeUtils.h" />
