@@ -35,15 +35,36 @@
 
         if ([@"SET_LANGUAGE" isEqualToString:operationName])
         {
-            [editor setLanguage:[operationDescription objectForKey:@"value"] error:nil];
+            id value = [operationDescription objectForKey:@"value"];
+            if ([value isKindOfClass:NSNull.class]) {
+                [editor setLanguage:nil error:nil];
+            } else if([value isKindOfClass:NSString.class]) {
+                [editor setLanguage:value error:nil];
+            } else {
+                NSLog(@"Batch Bridge - Invalid value for language. Must be string or nil.");
+            }
         }
         else if ([@"SET_REGION" isEqualToString:operationName])
         {
-            [editor setRegion:[operationDescription objectForKey:@"value"] error:nil];
+            id value = [operationDescription objectForKey:@"value"];
+            if ([value isKindOfClass:NSNull.class]) {
+                [editor setRegion:nil error:nil];
+            } else if([value isKindOfClass:NSString.class]) {
+                [editor setRegion:value error:nil];
+            } else {
+                NSLog(@"Batch Bridge - Invalid value for region. Must be string or nil.");
+            }
         }
         else if([@"SET_EMAIL_ADDRESS" isEqualToString:operationName])
         {
-            [editor setEmailAddress:[operationDescription objectForKey:@"value"] error:nil];
+            id value = [operationDescription objectForKey:@"value"];
+            if ([value isKindOfClass:NSNull.class]) {
+                [editor setEmailAddress:nil error:nil];
+            } else if([value isKindOfClass:NSString.class]) {
+                [editor setEmailAddress:value error:nil];
+            } else {
+                NSLog(@"Batch Bridge - Invalid value for email. Must be string or nil.");
+            }
         }
         else if([@"SET_EMAIL_MARKETING_SUB" isEqualToString:operationName]) {
             NSString* value = [operationDescription objectForKey:@"value"];
