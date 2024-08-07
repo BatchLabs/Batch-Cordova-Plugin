@@ -27,8 +27,6 @@
 #define BridgeVersion               @"2.0"
 
 static NSString *currentAPIKey = @"";
-static BOOL batchStartCalled = false;
-static NSString *queuedURL = nil;
 static BatchBridge *sharedInstance = nil;
 static dispatch_once_t onceToken;
 
@@ -117,14 +115,6 @@ static dispatch_once_t onceToken;
     if ([action caseInsensitiveCompare:START] == NSOrderedSame)
     {
         [BatchBridge startWithCallback:callback];
-
-        if (!batchStartCalled && queuedURL)
-        {
-            [BatchBridge handleURL:queuedURL];
-            queuedURL = nil;
-        }
-
-        batchStartCalled = true;
     }
 
     // optIn:
@@ -381,20 +371,6 @@ static dispatch_once_t onceToken;
 {
     [BatchSDK startWithAPIKey:currentAPIKey];
     [BatchBridgeNotificationCenterDelegate sharedInstance].isBatchReady = true;
-}
-
-+ (void)handleURL:(NSString *)urlString
-{
-    NSURL *url = [NSURL URLWithString:urlString];
-    if (url == nil)
-    {
-        [NSException raise:INVALID_PARAMETER format:@"Cannot build a NSURL from the url string: %@",urlString];
-    }
-
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wunused-result"
-    //[Batch handleURL:url];
-    #pragma clang diagnostic pop
 }
 
 
