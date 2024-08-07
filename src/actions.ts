@@ -53,7 +53,7 @@ export enum Profile {
     TrackLocation = "profile.track.location",
 }
 
-export enum UserDataOperation {
+export enum ProfileAttributeOperation {
   SetLanguage = "SET_LANGUAGE",
   SetRegion = "SET_REGION",
   SetEmail = "SET_EMAIL_ADDRESS",

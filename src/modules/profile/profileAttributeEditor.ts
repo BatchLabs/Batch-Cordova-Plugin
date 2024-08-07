@@ -1,10 +1,10 @@
 import {BatchSDK} from "../../../types";
-import {Profile, UserDataOperation} from "../../actions";
+import {Profile, ProfileAttributeOperation} from "../../actions";
 import Consts from "../../consts";
 import {isNumber, isString, isStringArray, sendToBridge, writeBatchLog} from "../../helpers";
 
 interface IOperation {
-    operation: UserDataOperation;
+    operation: ProfileAttributeOperation;
 
     [key: string]: unknown;
 }
@@ -30,7 +30,7 @@ export class BatchProfileAttributeEditor implements BatchSDK.BatchProfileAttribu
             return this;
         }
 
-        this._enqueueOperation(UserDataOperation.SetLanguage, {
+        this._enqueueOperation(ProfileAttributeOperation.SetLanguage, {
             value: language,
         });
 
@@ -46,7 +46,7 @@ export class BatchProfileAttributeEditor implements BatchSDK.BatchProfileAttribu
             return this;
         }
 
-        this._enqueueOperation(UserDataOperation.SetRegion, {
+        this._enqueueOperation(ProfileAttributeOperation.SetRegion, {
             value: region,
         });
 
@@ -62,7 +62,7 @@ export class BatchProfileAttributeEditor implements BatchSDK.BatchProfileAttribu
             );
             return this;
         }
-        this._enqueueOperation(UserDataOperation.SetEmail, {
+        this._enqueueOperation(ProfileAttributeOperation.SetEmail, {
             value: email,
         });
         return this;
@@ -81,7 +81,7 @@ export class BatchProfileAttributeEditor implements BatchSDK.BatchProfileAttribu
             );
             return this;
         }
-        this._enqueueOperation(UserDataOperation.SetEmailMarketingSubscription, {
+        this._enqueueOperation(ProfileAttributeOperation.SetEmailMarketingSubscription, {
             value: state,
         });
         return this;
@@ -172,7 +172,7 @@ export class BatchProfileAttributeEditor implements BatchSDK.BatchProfileAttribu
             return this;
         }
 
-        this._enqueueOperation(UserDataOperation.SetAttribute, operationData);
+        this._enqueueOperation(ProfileAttributeOperation.SetAttribute, operationData);
 
         return this;
     }
@@ -188,7 +188,7 @@ export class BatchProfileAttributeEditor implements BatchSDK.BatchProfileAttribu
             return this;
         }
 
-        this._enqueueOperation(UserDataOperation.RemoveAttribute, {
+        this._enqueueOperation(ProfileAttributeOperation.RemoveAttribute, {
             key,
         });
 
@@ -249,7 +249,7 @@ export class BatchProfileAttributeEditor implements BatchSDK.BatchProfileAttribu
             );
         }
 
-        this._enqueueOperation(UserDataOperation.AddToArray, {
+        this._enqueueOperation(ProfileAttributeOperation.AddToArray, {
             key,
             value,
         });
@@ -310,7 +310,7 @@ export class BatchProfileAttributeEditor implements BatchSDK.BatchProfileAttribu
                 "BatchProfileAttributeEditor - Value argument must be a string or an array of string"
             );
         }
-        this._enqueueOperation(UserDataOperation.RemoveFromArray, {key, value});
+        this._enqueueOperation(ProfileAttributeOperation.RemoveFromArray, {key, value});
         return this;
     }
 
@@ -334,7 +334,7 @@ export class BatchProfileAttributeEditor implements BatchSDK.BatchProfileAttribu
      * @param args Operation arguments object
      */
     private _enqueueOperation(
-        operation: UserDataOperation,
+        operation: ProfileAttributeOperation,
         args: { [key: string]: unknown }
     ) {
         const operationObject = {
