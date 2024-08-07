@@ -9,14 +9,7 @@
 
 + (void)identify:(NSDictionary*)params
 {
-    id identifier = [params objectForKey:@"custom_user_id"];
-    if ([identifier isKindOfClass:NSNull.class]) {
-        [BatchProfile identify:nil];
-    } else if([identifier isKindOfClass:NSString.class]) {
-        [BatchProfile identify:identifier];
-    } else {
-        NSLog(@"Batch Bridge - Calling identify method with invalid identifier, must be a string or nil.");
-    }
+    [BatchProfile identify:[BatchBridgeUtils nullableString:params forKey:@"custom_user_id"]];
 }
 
 + (void)editAttributes:(NSDictionary*)params
@@ -47,36 +40,15 @@
 
         if ([@"SET_LANGUAGE" isEqualToString:operationName])
         {
-            id value = [operationDescription objectForKey:@"value"];
-            if ([value isKindOfClass:NSNull.class]) {
-                [editor setLanguage:nil error:nil];
-            } else if([value isKindOfClass:NSString.class]) {
-                [editor setLanguage:value error:nil];
-            } else {
-                NSLog(@"Batch Bridge - Invalid value for language. Must be string or nil.");
-            }
+            [editor setLanguage:[BatchBridgeUtils nullableString:operationDescription forKey:@"value"] error:nil];
         }
         else if ([@"SET_REGION" isEqualToString:operationName])
         {
-            id value = [operationDescription objectForKey:@"value"];
-            if ([value isKindOfClass:NSNull.class]) {
-                [editor setRegion:nil error:nil];
-            } else if([value isKindOfClass:NSString.class]) {
-                [editor setRegion:value error:nil];
-            } else {
-                NSLog(@"Batch Bridge - Invalid value for region. Must be string or nil.");
-            }
+            [editor setRegion:[BatchBridgeUtils nullableString:operationDescription forKey:@"value"] error:nil];
         }
         else if([@"SET_EMAIL_ADDRESS" isEqualToString:operationName])
         {
-            id value = [operationDescription objectForKey:@"value"];
-            if ([value isKindOfClass:NSNull.class]) {
-                [editor setEmailAddress:nil error:nil];
-            } else if([value isKindOfClass:NSString.class]) {
-                [editor setEmailAddress:value error:nil];
-            } else {
-                NSLog(@"Batch Bridge - Invalid value for email. Must be string or nil.");
-            }
+            [editor setEmailAddress:[BatchBridgeUtils nullableString:operationDescription forKey:@"value"] error:nil];
         }
         else if([@"SET_EMAIL_MARKETING_SUB" isEqualToString:operationName]) {
             NSString* value = [operationDescription objectForKey:@"value"];

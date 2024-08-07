@@ -113,4 +113,16 @@
     return eventAttributes;
 }
 
++ (nullable NSString*)nullableString:(nonnull NSDictionary *)parameters forKey:(nonnull NSString *)key {
+    id value = [parameters objectForKey:key];
+    if (value == nil || [value isKindOfClass:NSNull.class]) {
+        return nil;
+    } else if([value isKindOfClass:NSString.class]) {
+        return (NSString *) value;
+    } else {
+        [NSException raise:INVALID_PARAMETER format:@"Expected an NSString or nil value but got something else for key: %@", key];
+    }
+    return nil;
+}
+
 @end

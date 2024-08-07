@@ -24,4 +24,12 @@
  */
 + (BatchEventAttributes*)convertSerializedEventDataToEventAttributes:(NSDictionary *)serializedAttributes;
 
+/*!
+ @method getNullableString:
+ @abstract Get an NSString from an NSDictionary or a nil value since cordova bridge return an NSNull instance.
+ @param parameters: The dictionary from cordova bridge.
+ @return The NSString or nil.
+ */
++ (nullable NSString*)nullableString:(nonnull NSDictionary *)parameters forKey:(nonnull NSString *)key;
+
 @end
