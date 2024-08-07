@@ -1,7 +1,7 @@
 import { BatchSDK } from "../types";
-import { Core as CoreActions } from "./actions";
+import {Core as CoreActions} from "./actions";
 import { EventEmitter } from "./eventEmitter";
-import { sendToBridge, writeBatchLog } from "./helpers";
+import {invokeModernBridge, sendToBridge, writeBatchLog} from "./helpers";
 import { InboxModule } from "./modules/inbox";
 import { MessagingModule } from "./modules/messaging";
 import { PushModule } from "./modules/push";
@@ -103,6 +103,11 @@ export class Batch implements BatchSDK.Batch {
 
   public optOutAndWipeData(): void {
     sendToBridge(null, CoreActions.OptOutWipeData, null);
+  }
+
+  public async isOptedOut(): Promise<boolean> {
+     const {isOptedOut} = await invokeModernBridge(CoreActions.IsOptedOut) as { isOptedOut: boolean; };
+     return isOptedOut
   }
 
   private log(debug: boolean, ...args: unknown[]) {

@@ -15,6 +15,7 @@ public enum Action
     OPT_IN("optIn"),
     OPT_OUT("optOut"),
     OPT_OUT_AND_WIPE_DATA("optOutAndWipeData"),
+    IS_OPTED_OUT("isOptedOut"),
     MESSAGING_SET_DO_NOT_DISTURB_ENABLED("messaging.setDoNotDisturbEnabled"),
     MESSAGING_SHOW_PENDING_MESSAGE("messaging.showPendingMessage"),
     PUSH_GET_LAST_KNOWN_TOKEN("push.getLastKnownPushToken"),

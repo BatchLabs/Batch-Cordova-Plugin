@@ -4,6 +4,7 @@ export enum Core {
   OptIn = "optIn",
   OptOut = "optOut",
   OptOutWipeData = "optOutAndWipeData",
+  IsOptedOut = "isOptedOut",
 }
 
 export enum Push {
