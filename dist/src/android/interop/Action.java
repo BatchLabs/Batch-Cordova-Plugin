@@ -29,6 +29,7 @@ public enum Action
     PUSH_REQUEST_AUTHORIZATION("push.requestAuthorization"),
     PUSH_IOS_REQUEST_PROVISIONAL_AUTH("push.iOS.requestProvisionalAuthorization"),
 	PROFILE_EDIT("profile.edit"),
+	PROFILE_IDENTIFY("profile.identify"),
 	PROFILE_TRACK_EVENT("profile.track.event"),
     PROFILE_TRACK_LOCATION("profile.track.location"),
 	USER_DATA_DEBUG("user.data.debug"),// TODO: replace with showDebugActivity

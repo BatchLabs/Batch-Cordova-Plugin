@@ -7,6 +7,18 @@
 
 @implementation BatchProfileBridge
 
++ (void)identify:(NSDictionary*)params
+{
+    id identifier = [params objectForKey:@"custom_user_id"];
+    if ([identifier isKindOfClass:NSNull.class]) {
+        [BatchProfile identify:nil];
+    } else if([identifier isKindOfClass:NSString.class]) {
+        [BatchProfile identify:identifier];
+    } else {
+        NSLog(@"Batch Bridge - Calling identify method with invalid identifier, must be a string or nil.");
+    }
+}
+
 + (void)editAttributes:(NSDictionary*)params
 {
     NSArray *operations = [params objectForKey:@"operations"];

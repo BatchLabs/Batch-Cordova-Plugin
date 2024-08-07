@@ -245,13 +245,20 @@ static dispatch_once_t onceToken;
     {
         return [BACSimplePromise resolved:[BatchBridge user_getIdentifier]];
     }
+    else if ([action caseInsensitiveCompare:PROFILE_IDENTIFY] == NSOrderedSame)
+    {
+        if (!parameters || [parameters count]==0)
+        {
+            [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action %@.", action];
+        }
+        [BatchProfileBridge identify:parameters];
+    }
     else if ([action caseInsensitiveCompare:PROFILE_EDIT] == NSOrderedSame)
     {
         if (!parameters || [parameters count]==0)
         {
             [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action %@.", action];
         }
-
         [BatchProfileBridge editAttributes:parameters];
     }
     else if ([action caseInsensitiveCompare:PROFILE_TRACK_EVENT] == NSOrderedSame)

@@ -51,6 +51,9 @@ class ProfileStub implements BatchSDK.ProfileModule {
         _data?: { [key: string]: unknown }
     ) {}
     public trackLocation(_location: BatchSDK.Location): void {}
+
+    identify(identifier: string | null): void {
+    }
 }
 
 class UserStub implements BatchSDK.UserModule {

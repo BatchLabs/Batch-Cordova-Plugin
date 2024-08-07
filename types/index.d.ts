@@ -208,6 +208,13 @@ export declare namespace BatchSDK {
         eventData: typeof BatchEventAttributes;
 
         /**
+         * Identifies this device with a profile using a Custom User ID.
+         * If a profile already exists, this device will be attached to it. Must not be longer than 1024 characters.
+         * @param {string | null} identifier - Custom user ID of the profile you want to identify against. Null to remove.
+         */
+        identify(identifier: string | null): void ;
+
+        /**
          * Get the user data editor. Don't forget to call save when you're done.
          * @return Batch user data editor
          */

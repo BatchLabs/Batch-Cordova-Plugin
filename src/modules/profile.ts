@@ -1,14 +1,12 @@
 import {Profile} from "../actions";
 import {
-    isString,
     sendToBridge, sendToBridgePromise,
     writeBatchLog,
 } from "../helpers";
 
-import Consts from "../consts";
-import { BatchEventAttributes } from "./profile/batchEventAttributes";
-import { BatchProfileAttributeEditor } from "./profile/profileAttributeEditor";
-import { BatchSDK } from "../../types";
+import {BatchEventAttributes} from "./profile/batchEventAttributes";
+import {BatchProfileAttributeEditor} from "./profile/profileAttributeEditor";
+import {BatchSDK} from "../../types";
 
 
 export class ProfileModule implements BatchSDK.ProfileModule {
@@ -16,6 +14,10 @@ export class ProfileModule implements BatchSDK.ProfileModule {
 
     constructor() {
         this.eventData = BatchEventAttributes;
+    }
+
+    identify(identifier: string | null): void {
+        sendToBridge(null, Profile.Identify, [{custom_user_id: identifier}]);
     }
 
     public getEditor(): BatchProfileAttributeEditor {
@@ -29,7 +31,7 @@ export class ProfileModule implements BatchSDK.ProfileModule {
         const parameters: {
             name: string;
             event_data?: unknown;
-        } = { name };
+        } = {name};
         parameters.event_data = data instanceof BatchEventAttributes ? data._toInternalRepresentation() : null;
         return sendToBridgePromise(Profile.TrackEvent, [parameters]);
     }
