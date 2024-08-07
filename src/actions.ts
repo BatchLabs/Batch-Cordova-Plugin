@@ -38,7 +38,6 @@ export enum Inbox {
 }
 
 export enum User {
-
   GetInstallationID = "user.getInstallationID",
   GetLanguage = "user.getLanguage",
   GetRegion = "user.getRegion",
@@ -49,6 +48,7 @@ export enum User {
 
 export enum Profile {
     Edit = "profile.edit",
+    Identify = "profile.identify",
     TrackEvent = "profile.track.event",
     TrackLocation = "profile.track.location",
 }

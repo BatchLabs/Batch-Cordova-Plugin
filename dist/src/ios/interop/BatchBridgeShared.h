@@ -29,6 +29,7 @@ if (error == NULL) {\
 #define CLEAR_BADGE                     @"push.clearBadge"
 
 #define PROFILE_EDIT                    @"profile.edit"
+#define PROFILE_IDENTIFY                @"profile.identify"
 #define PROFILE_TRACK_EVENT             @"profile.track.event"
 #define PROFILE_TRACK_LOCATION          @"profile.track.location"
 

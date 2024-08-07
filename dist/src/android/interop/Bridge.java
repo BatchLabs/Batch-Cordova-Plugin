@@ -150,8 +150,11 @@ public class Bridge {
             case PUSH_IOS_REQUEST_PROVISIONAL_AUTH:
                 // iOS only, do nothing
                 return null;
+            case PROFILE_IDENTIFY:
+                identify(parameters);
+                break;
             case PROFILE_EDIT:
-                userDataEdit(parameters);
+                editProfileAttributes(parameters);
                 break;
             case PROFILE_TRACK_EVENT:
                 return convertModernPromiseToLegacy(trackEvent(parameters));
@@ -198,6 +201,8 @@ public class Bridge {
 
         return errorMap;
     }
+
+    // region Core Module
 
     private static void setConfig(Map<String, Object> parameters) throws BridgeException {
         LoggerDelegate loggerDelegate = null;
@@ -248,6 +253,9 @@ public class Bridge {
         return registration != null ? registration.getToken() : "";
     }
 
+    // endregion
+    // region Push Module
+
     private static void dismissNotifications() {
         Batch.Push.dismissNotifications();
     }
@@ -263,10 +271,26 @@ public class Bridge {
         Batch.Push.requestNotificationPermission(activity);
     }
 
-//region User Data
+    // endregion
+    //region Messaging Module
+
+    private static void showPendingMessage(Activity activity) {
+        BatchMessage msg = Batch.Messaging.popPendingMessage();
+        if (msg != null) {
+            Batch.Messaging.show(activity, msg);
+        }
+    }
+
+    //endregion
+    // region Profile Module
+
+    private static void identify(Map<String, Object> parameters) {
+        String identifier = getOptionalTypedParameter(parameters, "custom_user_id", String.class, null);
+        Batch.Profile.identify(identifier);
+    }
 
     @SuppressWarnings({"unchecked", "ConstantConditions"})
-    private static void userDataEdit(Map<String, Object> parameters) throws BridgeException {
+    private static void editProfileAttributes(Map<String, Object> parameters) throws BridgeException {
         try {
             //noinspection unchecked
             List<Map<String, Object>> operations = getTypedParameter(parameters, "operations", List.class);
@@ -484,6 +508,9 @@ public class Bridge {
         Batch.Profile.trackLocation(location);
     }
 
+    //endregion
+    //region User Module
+
     private static SimplePromise<Object> userFetchAttributes(Activity activity) {
         return new SimplePromise<>(promise -> {
             Batch.User.fetchAttributes(activity, new BatchAttributesFetchListener() {
@@ -577,11 +604,6 @@ public class Bridge {
         });
     }
 
-    private static void showPendingMessage(Activity activity) {
-        BatchMessage msg = Batch.Messaging.popPendingMessage();
-        if (msg != null) {
-            Batch.Messaging.show(activity, msg);
-        }
-    }
-//endregion
+    //endregion
+
 }
