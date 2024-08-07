@@ -139,6 +139,14 @@ static dispatch_once_t onceToken;
         [BatchSDK optOutAndWipeData];
     }
 
+    // isOptedOut:
+    else if ([action caseInsensitiveCompare:IS_OPTED_OUT] == NSOrderedSame)
+    {
+        return [self convertPromiseToLegacyBridge:[BACSimplePromise resolved:@{
+            @"isOptedOut": [NSNumber numberWithBool:BatchSDK.isOptedOut]
+        }]] ;
+    }
+
     // setConfigWithApiKey:andUseIDFA:
     else if ([action caseInsensitiveCompare:SET_CONFIG] == NSOrderedSame)
     {

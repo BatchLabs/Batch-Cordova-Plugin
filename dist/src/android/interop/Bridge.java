@@ -30,6 +30,7 @@ import com.batch.android.json.JSONObject;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -115,6 +116,8 @@ public class Bridge {
             case OPT_OUT_AND_WIPE_DATA:
                 optOut(activity, true);
                 break;
+            case IS_OPTED_OUT:
+                return convertModernPromiseToLegacy(isOptedOut(activity));
             case MESSAGING_SET_DO_NOT_DISTURB_ENABLED:
                 Batch.Messaging.setDoNotDisturbEnabled(getTypedParameter(parameters, "enabled", Boolean.class));
                 break;
@@ -246,6 +249,10 @@ public class Bridge {
         } else {
             Batch.optOut(activity);
         }
+    }
+
+    private static SimplePromise<Object> isOptedOut(Activity activity) {
+        return SimplePromise.resolved(Collections.singletonMap("isOptedOut", Batch.isOptedOut(activity)));
     }
 
     private static String getLastKnownPushToken() {

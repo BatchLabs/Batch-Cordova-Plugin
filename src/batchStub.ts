@@ -181,4 +181,7 @@ export class BatchStub implements BatchSDK.Batch {
   public optIn(): void {}
   public optOut(): void {}
   public optOutAndWipeData(): void {}
+  public isOptedOut(): Promise<boolean> {
+      return Promise.resolve(false);
+  }
 }
