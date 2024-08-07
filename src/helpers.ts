@@ -24,7 +24,7 @@ export async function invokeModernBridge(
     | Actions.Messaging
     | Actions.Inbox
     | Actions.User
-    | Actions.UserDataOperation
+    | Actions.ProfileAttributeOperation
     | Actions.Internal,
   args?: unknown | null
 ): Promise<{ [key: string]: unknown } | void> {
@@ -66,7 +66,7 @@ export function sendToBridge(
     | Actions.Inbox
     | Actions.User
     | Actions.Profile
-    | Actions.UserDataOperation
+    | Actions.ProfileAttributeOperation
     | Actions.Internal,
   args: unknown[] | null
 ): void {
@@ -95,7 +95,7 @@ export async function sendToBridgePromise(
     | Actions.Inbox
     | Actions.User
     | Actions.Profile
-    | Actions.UserDataOperation
+    | Actions.ProfileAttributeOperation
     | Actions.Internal,
   args: unknown[] | null
 ): Promise<undefined | string> {

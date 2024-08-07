@@ -1,4 +1,4 @@
-import { User as UserAction, UserDataOperation } from "../src/actions";
+import { User as UserAction, ProfileAttributeOperation } from "../src/actions";
 
 const mockSendToBridge = jest.fn();
 
@@ -42,10 +42,10 @@ describe("it enqueues operations correctly", () => {
     editor.setLanguage(null);
 
     expect(enqueueMock.mock.calls.length).toBe(2);
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.SetLanguage, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetLanguage, {
       value: "en",
     });
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.SetLanguage, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetLanguage, {
       value: null,
     });
   });
@@ -56,10 +56,10 @@ describe("it enqueues operations correctly", () => {
     editor.setRegion(null);
 
     expect(enqueueMock.mock.calls.length).toBe(2);
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.SetRegion, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetRegion, {
       value: "en",
     });
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.SetRegion, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetRegion, {
       value: null,
     });
   });
@@ -70,10 +70,10 @@ describe("it enqueues operations correctly", () => {
     editor.setIdentifier(null);
 
     expect(enqueueMock.mock.calls.length).toBe(2);
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.SetIdentifier, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetIdentifier, {
       value: "foo",
     });
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.SetIdentifier, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetIdentifier, {
       value: null,
     });
   });
@@ -90,32 +90,32 @@ describe("it enqueues operations correctly", () => {
     (editor as any).setAttribute("foo", null);
 
     expect(enqueueMock.mock.calls.length).toBe(6);
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.SetAttribute, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetAttribute, {
       key: "foo",
       type: "string",
       value: "bar",
     });
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.SetAttribute, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetAttribute, {
       key: "foo",
       type: "integer",
       value: 2,
     });
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.SetAttribute, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetAttribute, {
       key: "foo",
       type: "float",
       value: 2.5,
     });
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.SetAttribute, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetAttribute, {
       key: "foo",
       type: "boolean",
       value: true,
     });
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.SetAttribute, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetAttribute, {
       key: "foo",
       type: "date",
       value: 1520352788000,
     });
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.SetAttribute, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetAttribute, {
       key: "foo",
       type: "url",
       value: "https://batch.com/",
@@ -127,7 +127,7 @@ describe("it enqueues operations correctly", () => {
     (editor as any).removeAttribute(null);
 
     expect(enqueueMock.mock.calls.length).toBe(1);
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.RemoveAttribute, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.RemoveAttribute, {
       key: "foo",
     });
   });
@@ -141,11 +141,11 @@ describe("it enqueues operations correctly", () => {
     (editor as any).addTag(null, null);
 
     expect(enqueueMock.mock.calls.length).toBe(2);
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.AddTag, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.AddTag, {
       collection: "foo",
       tag: "bar",
     });
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.AddTag, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.AddTag, {
       collection: "foo",
       tag: "bar bar$",
     });
@@ -160,11 +160,11 @@ describe("it enqueues operations correctly", () => {
     (editor as any).removeTag(null, null);
 
     expect(enqueueMock.mock.calls.length).toBe(2);
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.RemoveTag, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.RemoveTag, {
       collection: "foo",
       tag: "bar",
     });
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.RemoveTag, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.RemoveTag, {
       collection: "foo",
       tag: "bar bar$",
     });
@@ -179,10 +179,10 @@ describe("it enqueues operations correctly", () => {
     editor.clearTags();
 
     expect(enqueueMock.mock.calls.length).toBe(2);
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.ClearTagCollection, {
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.ClearTagCollection, {
       collection: "foo",
     });
-    expect(enqueueMock).toBeCalledWith(UserDataOperation.ClearTags, {});
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.ClearTags, {});
   });
 });
 
@@ -196,10 +196,10 @@ test("can save operations", () => {
   expect(mockSendToBridge).toBeCalledWith(null, UserAction.Edit, [
     {
       operations: [
-        { operation: UserDataOperation.AddTag, collection: "foo", tag: "bar" },
+        { operation: ProfileAttributeOperation.AddTag, collection: "foo", tag: "bar" },
         {
           key: "foo",
-          operation: UserDataOperation.SetAttribute,
+          operation: ProfileAttributeOperation.SetAttribute,
           type: "string",
           value: "bar",
         },
