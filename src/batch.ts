@@ -113,6 +113,10 @@ export class Batch implements BatchSDK.Batch {
       sendToBridge(null, CoreActions.SetFindMyInstallationEnabled, [{enabled}]);
   }
 
+  public updateAutomaticDataCollection(dataCollection: BatchSDK.DataCollectionConfig): void {
+      sendToBridge(null, CoreActions.UpdateAutomaticDataCollection, [{dataCollection}]);
+  }
+
   private log(debug: boolean, ...args: unknown[]) {
     writeBatchLog(debug, ...args);
   }
