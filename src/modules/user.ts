@@ -1,16 +1,9 @@
 import { User as UserAction } from "../actions";
 import {
-  invokeModernBridge,
-  isNumber,
-  isString,
-  sendToBridge,
-  sendToBridgePromise,
-  writeBatchLog,
+    invokeModernBridge, sendToBridge,
+    sendToBridgePromise,
 } from "../helpers";
 
-import Consts from "../consts";
-import { BatchEventAttributes } from "./profile/batchEventAttributes";
-import { BatchProfileAttributeEditor } from "./profile/profileAttributeEditor";
 import { BatchSDK } from "../../types";
 import { BatchUserAttribute } from "./user/userAttributes";
 
@@ -115,5 +108,9 @@ export class UserModule implements BatchSDK.UserModule {
     }
 
     return response.tagCollections;
+  }
+
+  public clearInstallationData(): void {
+    sendToBridge(null, UserAction.ClearInstallationData, null)
   }
 }

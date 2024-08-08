@@ -46,6 +46,7 @@ export enum User {
   GetIdentifier = "user.getIdentifier",
   FetchAttributes = "user.fetch.attributes",
   FetchTags = "user.fetch.tags",
+  ClearInstallationData = "user.clearInstallationData",
 }
 
 export enum Profile {

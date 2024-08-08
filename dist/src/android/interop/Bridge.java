@@ -179,6 +179,9 @@ public class Bridge {
                 return convertModernPromiseToLegacy(userFetchAttributes(activity));
             case USER_FETCH_TAGS:
                 return convertModernPromiseToLegacy(userFetchTags(activity));
+            case USER_CLEAR_INSTALL_DATA:
+                Batch.User.clearInstallationData();
+                break;
             case INBOX_CREATE_INSTALLATION_FETCHER:
             case INBOX_CREATE_USER_FETCHER:
             case INBOX_RELEASE_FETCHER:

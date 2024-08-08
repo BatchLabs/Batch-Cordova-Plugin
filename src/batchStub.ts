@@ -83,6 +83,7 @@ class UserStub implements BatchSDK.UserModule {
   public getTagCollections(): Promise<{ [key: string]: string[] }> {
     return Promise.resolve({});
   }
+  public clearInstallationData(): void {}
 }
 
 class InboxStub implements BatchSDK.InboxModule {

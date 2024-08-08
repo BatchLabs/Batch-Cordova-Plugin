@@ -42,6 +42,7 @@ if (error == NULL) {\
 #define USER_GET_IDENTIFIER                 @"user.getIdentifier"
 #define USER_FETCH_ATTRIBUTES               @"user.fetch.attributes"
 #define USER_FETCH_TAGS                     @"user.fetch.tags"
+#define USER_CLEAR_INSTALL_DATA             @"user.clearInstallationData"
 
 #define MESSAGING_SET_DND_ENABLED           @"messaging.setDoNotDisturbEnabled"
 #define MESSAGING_SHOW_PENDING_MSG          @"messaging.showPendingMessage"
