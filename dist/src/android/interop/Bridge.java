@@ -118,6 +118,9 @@ public class Bridge {
                 break;
             case IS_OPTED_OUT:
                 return convertModernPromiseToLegacy(isOptedOut(activity));
+            case SET_FIND_INSTALLATION_ENABLED:
+                Batch.setFindMyInstallationEnabled(getTypedParameter(parameters, "enabled", Boolean.class));
+                break;
             case MESSAGING_SET_DO_NOT_DISTURB_ENABLED:
                 Batch.Messaging.setDoNotDisturbEnabled(getTypedParameter(parameters, "enabled", Boolean.class));
                 break;
