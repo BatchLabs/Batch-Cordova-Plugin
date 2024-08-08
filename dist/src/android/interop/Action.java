@@ -41,6 +41,7 @@ public enum Action
     USER_GET_IDENTIFIER("user.getIdentifier"),
     USER_FETCH_ATTRIBUTES("user.fetch.attributes"),
     USER_FETCH_TAGS("user.fetch.tags"),
+    USER_CLEAR_INSTALL_DATA("user.clearInstallationData"),
     INBOX_CREATE_INSTALLATION_FETCHER("inbox.createInstallationFetcher"),
     INBOX_CREATE_USER_FETCHER("inbox.createUserFetcher"),
     INBOX_RELEASE_FETCHER("inbox.releaseFetcher"),

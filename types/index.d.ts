@@ -294,6 +294,12 @@ export declare namespace BatchSDK {
          * Reading is asynchronous so as not to interfere with saving operations.
          */
         getTagCollections(): Promise<{ [key: string]: string[] }>;
+
+        /**
+         * Clear all tags and attributes set on an installation and their local cache returned by `getAttributes` and `getTagCollections`.
+         * This does not affect data set on profiles using batch.profile.
+         */
+        clearInstallationData(): void;
     }
 
     /**

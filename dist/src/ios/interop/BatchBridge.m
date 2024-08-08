@@ -270,6 +270,10 @@ static dispatch_once_t onceToken;
     {
         return [BACSimplePromise resolved:[BatchBridge user_getIdentifier]];
     }
+    else if ([action caseInsensitiveCompare:USER_CLEAR_INSTALL_DATA] == NSOrderedSame)
+    {
+        [BatchUser clearInstallationData];
+    }
     else if ([action caseInsensitiveCompare:PROFILE_IDENTIFY] == NSOrderedSame)
     {
         if (!parameters || [parameters count]==0)
