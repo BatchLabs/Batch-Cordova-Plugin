@@ -6,6 +6,7 @@ export enum Core {
   OptOutWipeData = "optOutAndWipeData",
   IsOptedOut = "isOptedOut",
   SetFindMyInstallationEnabled = "setFindMyInstallationEnabled",
+  UpdateAutomaticDataCollection = "updateAutomaticDataCollection",
 }
 
 export enum Push {

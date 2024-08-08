@@ -3,6 +3,7 @@ package com.batch.cordova.android.interop;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.batch.android.BatchEventAttributes;
 import com.batch.android.json.JSONException;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 public class BridgeUtils {
 
+    @NonNull
     @SuppressWarnings("unchecked")
     static <T> T getTypedParameter(Map<String, Object> parameters, String parameterName, Class<T> parameterClass) throws BridgeException {
         Object result = null;
@@ -32,10 +34,10 @@ public class BridgeUtils {
         if (!parameterClass.isInstance(result)) {
             throw new BridgeException("Invalid parameter : Required parameter '" + parameterName + "' of wrong type");
         }
-
         return (T) result;
     }
 
+    @Nullable
     @SuppressWarnings("unchecked")
     static <T> T getOptionalTypedParameter(Map<String, Object> parameters, String parameterName, Class<T> parameterClass, T fallback) {
         Object result = null;

@@ -164,6 +164,31 @@ static dispatch_once_t onceToken;
             BatchSDK.enablesFindMyInstallation = [enabled boolValue];
     }
 
+        // updateAutomaticDataCollection:
+        else if ([action caseInsensitiveCompare:UPDATE_AUTOMATIC_DATA_COLLECTION] == NSOrderedSame)
+        {
+               if (!parameters || [parameters count]==0) {
+                    [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action setFindMyInstallationEnabled "];
+                }
+
+                NSDictionary* dataCollectionConfig = [parameters objectForKey:@"dataCollection"];
+                BOOL hasDeviceModel = [dataCollectionConfig objectForKey:@"deviceModel"] != nil;
+                BOOL hasGeoIP = [dataCollectionConfig objectForKey:@"geoIP"] != nil;
+
+                if (hasDeviceModel || hasGeoIP) {
+                    [BatchSDK updateAutomaticDataCollection:^(BatchDataCollectionConfig * _Nonnull batchDataCollectionConfig) {
+                        if (hasDeviceModel) {
+                            batchDataCollectionConfig.deviceModelEnabled = [dataCollectionConfig[@"deviceModel"] boolValue];
+                        }
+                        if (hasGeoIP) {
+                            batchDataCollectionConfig.geoIPEnabled = [dataCollectionConfig[@"geoIP"] boolValue];
+                        }
+                    }];
+                } else {
+                    NSLog(@"BatchBridge - Invalid parameter: Data collection config cannot be empty.");
+                }
+        }
+
     // setConfigWithApiKey:andUseIDFA:
     else if ([action caseInsensitiveCompare:SET_CONFIG] == NSOrderedSame)
     {

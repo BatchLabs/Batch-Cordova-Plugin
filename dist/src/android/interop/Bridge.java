@@ -121,6 +121,9 @@ public class Bridge {
             case SET_FIND_INSTALLATION_ENABLED:
                 Batch.setFindMyInstallationEnabled(getTypedParameter(parameters, "enabled", Boolean.class));
                 break;
+            case UPDATE_AUTOMATIC_DATA_COLLECTION:
+                updateAutomaticDataCollection(parameters);
+                break;
             case MESSAGING_SET_DO_NOT_DISTURB_ENABLED:
                 Batch.Messaging.setDoNotDisturbEnabled(getTypedParameter(parameters, "enabled", Boolean.class));
                 break;
@@ -264,6 +267,25 @@ public class Bridge {
     private static String getLastKnownPushToken() {
         BatchPushRegistration registration = Batch.Push.getRegistration();
         return registration != null ? registration.getToken() : "";
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void updateAutomaticDataCollection(Map<String, Object> parameters) throws BridgeException {
+        Map<String, Object> dataCollectionConfig = getTypedParameter(parameters, "dataCollection", Map.class);
+        Boolean deviceBrand = getOptionalTypedParameter(dataCollectionConfig, "deviceBrand", Boolean.class, null);
+        Boolean deviceModel = getOptionalTypedParameter(dataCollectionConfig, "deviceModel", Boolean.class, null);
+        Boolean geoIP = getOptionalTypedParameter(dataCollectionConfig, "geoIP", Boolean.class, null);
+        Batch.updateAutomaticDataCollection(batchDataCollectionConfig -> {
+            if (deviceBrand != null) {
+                batchDataCollectionConfig.setDeviceBrandEnabled(deviceBrand);
+            }
+            if (deviceModel != null) {
+                batchDataCollectionConfig.setDeviceModelEnabled(deviceModel);
+            }
+            if (geoIP != null) {
+                batchDataCollectionConfig.setGeoIPEnabled(geoIP);
+            }
+        });
     }
 
     // endregion

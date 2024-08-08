@@ -186,4 +186,5 @@ export class BatchStub implements BatchSDK.Batch {
       return Promise.resolve(false);
   }
   public setFindMyInstallationEnabled(enabled: boolean): void {}
+  public updateAutomaticDataCollection(dataCollection: BatchSDK.DataCollectionConfig): void {}
 }

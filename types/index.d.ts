@@ -57,6 +57,27 @@ export declare namespace BatchSDK {
     }
 
     /**
+     * Object holding the configuration parameters for the automatic data collect.
+     */
+    export interface DataCollectionConfig {
+        /**
+         * Whether Batch can send the device brand information. (Android only)
+         * @defaultValue false
+         */
+        deviceBrand?: boolean;
+        /**
+         * Whether Batch can send the device model information.
+         * @defaultValue false
+         */
+        deviceModel?: boolean;
+        /**
+         * Whether Batch can resolve the GeoIP on server side.
+         * @defaultValue false
+         */
+        geoIP?: boolean;
+    }
+
+    /**
      * Batch Cordova Module
      * @version 1.11.0
      * @exports batch
@@ -153,6 +174,23 @@ export declare namespace BatchSDK {
          * @param enabled Whether the feature is enabled or not.
          */
         setFindMyInstallationEnabled(enabled: boolean): void;
+
+        /**
+         * Update the SDK Automatic Data Collection.
+         *
+         * @param {DataCollectionConfig} dataCollection A configuration object to fine-tune the data you authorize to be tracked by Batch.
+         * @see {@link DataCollectionConfig} for more info.
+         * @example
+         * Here's an example:
+         * ```
+         * batch.updateAutomaticDataCollection({
+         *    geoIP: false, // Deny Batch from resolving the user's region from the ip address.
+         *    deviceModel: true // Authorize Batch to use the user's device model information.
+         * });
+         * ```
+         * @remarks Batch will persist the changes, so you can call this method at any time according to user consent.
+         */
+        updateAutomaticDataCollection(dataCollection: DataCollectionConfig): void ;
 
         /**
          * Push module

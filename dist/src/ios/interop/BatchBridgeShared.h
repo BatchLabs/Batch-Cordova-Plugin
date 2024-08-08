@@ -17,6 +17,7 @@ if (error == NULL) {\
 #define OPT_OUT_AND_WIPE_DATA               @"optOutAndWipeData"
 #define IS_OPTED_OUT                        @"isOptedOut"
 #define SET_FIND_MY_INSTALLATION_ENABLED    @"SetFindMyInstallationEnabled"
+#define UPDATE_AUTOMATIC_DATA_COLLECTION    @"updateAutomaticDataCollection"
 
 #define PUSH_GET_LAST_KNOWN_TOKEN           @"push.getLastKnownPushToken"
 #define SET_GCM_SENDER_ID                   @"push.setGCMSenderID"
