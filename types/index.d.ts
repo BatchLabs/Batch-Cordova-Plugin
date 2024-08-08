@@ -146,6 +146,15 @@ export declare namespace BatchSDK {
         isOptedOut(): Promise<boolean>;
 
         /**
+         * Control whether Batch should enable the Find My Installation feature (default = true)
+         *
+         * If enabled Batch will copy the current installation id in the clipboard when the application
+         * is foregrounded 5 times within 12 seconds.
+         * @param enabled Whether the feature is enabled or not.
+         */
+        setFindMyInstallationEnabled(enabled: boolean): void;
+
+        /**
          * Push module
          */
         push: PushModule;

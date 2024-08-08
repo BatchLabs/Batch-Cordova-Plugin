@@ -147,6 +147,23 @@ static dispatch_once_t onceToken;
         }]] ;
     }
 
+    // enablesFindMyInstallation:
+    else if ([action caseInsensitiveCompare:SET_FIND_MY_INSTALLATION_ENABLED] == NSOrderedSame)
+    {
+           if (!parameters || [parameters count]==0)
+            {
+                [NSException raise:INVALID_PARAMETER format:@"Empty or null parameters for action setFindMyInstallationEnabled "];
+            }
+
+            NSNumber *enabled = parameters[@"enabled"];
+
+            if (![enabled isKindOfClass:[NSNumber class]])
+            {
+                [NSException raise:INVALID_PARAMETER format:@"enabled should be a NSNumber"];
+            }
+            BatchSDK.enablesFindMyInstallation = [enabled boolValue];
+    }
+
     // setConfigWithApiKey:andUseIDFA:
     else if ([action caseInsensitiveCompare:SET_CONFIG] == NSOrderedSame)
     {

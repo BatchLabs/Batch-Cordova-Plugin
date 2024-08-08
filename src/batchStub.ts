@@ -184,4 +184,5 @@ export class BatchStub implements BatchSDK.Batch {
   public isOptedOut(): Promise<boolean> {
       return Promise.resolve(false);
   }
+  public setFindMyInstallationEnabled(enabled: boolean): void {}
 }

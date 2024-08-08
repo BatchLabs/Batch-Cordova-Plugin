@@ -109,6 +109,9 @@ export class Batch implements BatchSDK.Batch {
      const {isOptedOut} = await invokeModernBridge(CoreActions.IsOptedOut) as { isOptedOut: boolean; };
      return isOptedOut
   }
+  public setFindMyInstallationEnabled(enabled: boolean): void {
+      sendToBridge(null, CoreActions.SetFindMyInstallationEnabled, [{enabled}]);
+  }
 
   private log(debug: boolean, ...args: unknown[]) {
     writeBatchLog(debug, ...args);
