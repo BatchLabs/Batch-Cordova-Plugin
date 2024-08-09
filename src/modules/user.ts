@@ -1,7 +1,8 @@
 import { User as UserAction } from "../actions";
 import {
-    invokeModernBridge, sendToBridge,
-    sendToBridgePromise,
+  invokeModernBridge,
+  sendToBridge,
+  sendToBridgePromise,
 } from "../helpers";
 
 import { BatchSDK } from "../../types";
@@ -111,6 +112,6 @@ export class UserModule implements BatchSDK.UserModule {
   }
 
   public clearInstallationData(): void {
-    sendToBridge(null, UserAction.ClearInstallationData, null)
+    sendToBridge(null, UserAction.ClearInstallationData, null);
   }
 }

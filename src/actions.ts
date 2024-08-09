@@ -51,10 +51,10 @@ export enum User {
 }
 
 export enum Profile {
-    Edit = "profile.edit",
-    Identify = "profile.identify",
-    TrackEvent = "profile.track.event",
-    TrackLocation = "profile.track.location",
+  Edit = "profile.edit",
+  Identify = "profile.identify",
+  TrackEvent = "profile.track.event",
+  TrackLocation = "profile.track.location",
 }
 
 export enum ProfileAttributeOperation {

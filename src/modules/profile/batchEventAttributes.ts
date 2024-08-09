@@ -1,5 +1,13 @@
 import { BatchSDK } from "../../../types";
-import {isBoolean, isNumber, isObject, isObjectArray, isString, isStringArray, writeBatchLog} from "../../helpers";
+import {
+  isBoolean,
+  isNumber,
+  isObject,
+  isObjectArray,
+  isString,
+  isStringArray,
+  writeBatchLog,
+} from "../../helpers";
 
 export enum TypedEventAttributeType {
   String = "s",
@@ -13,13 +21,19 @@ export enum TypedEventAttributeType {
   StringArray = "sa",
 }
 
-export type TypedEventAttributeValue = string | boolean | number | string[] | TypedEventAttributes | TypedEventAttributes[];
+export type TypedEventAttributeValue =
+  | string
+  | boolean
+  | number
+  | string[]
+  | TypedEventAttributes
+  | TypedEventAttributes[];
 
 export type TypedEventAttributes = { [key: string]: ITypedEventAttribute };
 
 export interface ITypedEventAttribute {
-    type: TypedEventAttributeType;
-    value: TypedEventAttributeValue;
+  type: TypedEventAttributeType;
+  value: TypedEventAttributeValue;
 }
 
 export class BatchEventAttributes implements BatchSDK.BatchEventAttributes {
@@ -31,7 +45,15 @@ export class BatchEventAttributes implements BatchSDK.BatchEventAttributes {
 
   public put(
     key: string,
-    value: string | number | boolean | Date | URL |  Array<String> | BatchSDK.BatchEventAttributes | Array<BatchSDK.BatchEventAttributes>
+    value:
+      | string
+      | number
+      | boolean
+      | Date
+      | URL
+      | Array<string>
+      | BatchSDK.BatchEventAttributes
+      | Array<BatchSDK.BatchEventAttributes>
   ): BatchEventAttributes {
     key = key.toLowerCase();
 
@@ -66,24 +88,24 @@ export class BatchEventAttributes implements BatchSDK.BatchEventAttributes {
         value,
       };
     } else if (isObject(value)) {
-        typedAttrValue = {
-            type: TypedEventAttributeType.Object,
-            value: value._attributes,
-        };
+      typedAttrValue = {
+        type: TypedEventAttributeType.Object,
+        value: value._attributes,
+      };
     } else if (isStringArray(value)) {
-        typedAttrValue = {
-            type: TypedEventAttributeType.StringArray,
-            value,
-        };
+      typedAttrValue = {
+        type: TypedEventAttributeType.StringArray,
+        value,
+      };
     } else if (isObjectArray(value)) {
-        const array:  { [key: string]: ITypedEventAttribute }[]  = [];
-        value.forEach(item => {
-            array.push(item._attributes);
-        });
-        typedAttrValue = {
-            type: TypedEventAttributeType.ObjectArray,
-            value: array,
-        };
+      const array: { [key: string]: ITypedEventAttribute }[] = [];
+      value.forEach((item) => {
+        array.push(item._attributes);
+      });
+      typedAttrValue = {
+        type: TypedEventAttributeType.ObjectArray,
+        value: array,
+      };
     } else {
       writeBatchLog(
         false,
@@ -99,7 +121,7 @@ export class BatchEventAttributes implements BatchSDK.BatchEventAttributes {
     return this;
   }
 
-  public _toInternalRepresentation():  { [key: string]: ITypedEventAttribute } {
+  public _toInternalRepresentation(): { [key: string]: ITypedEventAttribute } {
     return this._attributes;
   }
 }

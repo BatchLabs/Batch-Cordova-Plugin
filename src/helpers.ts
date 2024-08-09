@@ -1,6 +1,6 @@
 import * as Actions from "./actions";
 import { Consts } from "./consts";
-import {BatchEventAttributes} from "./modules/profile/batchEventAttributes";
+import { BatchEventAttributes } from "./modules/profile/batchEventAttributes";
 
 export function writeBatchLog(debug: boolean, ...message: unknown[]): void {
   const args = (["[Batch]"] as unknown[]).concat(message);
@@ -128,17 +128,17 @@ export function isBoolean(value: any): value is boolean {
 }
 
 export const isObject = (value: unknown): value is BatchEventAttributes => {
-    return value instanceof BatchEventAttributes;
+  return value instanceof BatchEventAttributes;
 };
 
 export function isArray(value: unknown): value is unknown[] {
-    return Array.isArray(value);
+  return Array.isArray(value);
 }
 
 export function isStringArray(value: unknown): value is string[] {
-    return isArray(value) && value.every(it => isString(it));
+  return isArray(value) && value.every((it) => isString(it));
 }
 
 export function isObjectArray(value: unknown): value is BatchEventAttributes[] {
-    return isArray(value) && value.every(it => isObject(it));
+  return isArray(value) && value.every((it) => isObject(it));
 }

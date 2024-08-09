@@ -1,13 +1,13 @@
 import { BatchSDK } from "../types";
-import {Core as CoreActions} from "./actions";
+import { Core as CoreActions } from "./actions";
 import { EventEmitter } from "./eventEmitter";
-import {invokeModernBridge, sendToBridge, writeBatchLog} from "./helpers";
+import { invokeModernBridge, sendToBridge, writeBatchLog } from "./helpers";
 import { InboxModule } from "./modules/inbox";
 import { MessagingModule } from "./modules/messaging";
 import { PushModule } from "./modules/push";
 import { UserModule } from "./modules/user";
 import Platform from "./platform";
-import {ProfileModule} from "./modules/profile";
+import { ProfileModule } from "./modules/profile";
 
 export class Batch implements BatchSDK.Batch {
   public push: PushModule;
@@ -105,15 +105,21 @@ export class Batch implements BatchSDK.Batch {
   }
 
   public async isOptedOut(): Promise<boolean> {
-     const {isOptedOut} = await invokeModernBridge(CoreActions.IsOptedOut) as { isOptedOut: boolean; };
-     return isOptedOut
+    const { isOptedOut } = (await invokeModernBridge(
+      CoreActions.IsOptedOut
+    )) as { isOptedOut: boolean };
+    return isOptedOut;
   }
   public setFindMyInstallationEnabled(enabled: boolean): void {
-      sendToBridge(null, CoreActions.SetFindMyInstallationEnabled, [{enabled}]);
+    sendToBridge(null, CoreActions.SetFindMyInstallationEnabled, [{ enabled }]);
   }
 
-  public updateAutomaticDataCollection(dataCollection: BatchSDK.DataCollectionConfig): void {
-      sendToBridge(null, CoreActions.UpdateAutomaticDataCollection, [{dataCollection}]);
+  public updateAutomaticDataCollection(
+    dataCollection: BatchSDK.DataCollectionConfig
+  ): void {
+    sendToBridge(null, CoreActions.UpdateAutomaticDataCollection, [
+      { dataCollection },
+    ]);
   }
 
   private log(debug: boolean, ...args: unknown[]) {
