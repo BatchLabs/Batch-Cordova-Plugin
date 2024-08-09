@@ -4,6 +4,22 @@
  */
 
 export declare namespace BatchSDK {
+
+    interface MigrationConfig {
+
+        /**
+         *   Whether Batch should automatically identify logged-in user when running the SDK for the first time.
+         *   This mean user with a custom_user_id will be automatically attached a to a Profile and could be targeted
+         *   within a Project scope.
+         */
+        profileCustomIdMigrationEnabled?: boolean;
+
+        /**
+         * Whether Batch should automatically attach current installation's data (language/region/customDataAttributes)
+         * to the User's Profile when running the SDK for the first time.
+         */
+        profileCustomDataMigrationEnabled?: boolean;
+    }
     /**
      * Batch Configuration object
      */
@@ -19,11 +35,9 @@ export declare namespace BatchSDK {
         iOSAPIKey?: string | null;
 
         /**
-         * Sets whether the SDK can use the advertising identifier or not (default: true)
-         *
-         * The advertising identifier is also called "IDFA" on iOS.
+         * Profile migrations related configuration
          */
-        canUseAdvertisingIdentifier?: boolean;
+        migrations?: MigrationConfig;
     }
 
     type BatchEventCallback = (

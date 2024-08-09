@@ -47,7 +47,7 @@ export class Batch implements BatchSDK.Batch {
     // Use a base config
     const baseConfig: BatchSDK.Config = {
       androidAPIKey: null,
-      canUseAdvertisingIdentifier: true,
+      migrations: {},
       iOSAPIKey: null,
     };
 
@@ -84,8 +84,7 @@ export class Batch implements BatchSDK.Batch {
     sendToBridge(null, CoreActions.SetConfig, [
       {
         APIKey: apiKey,
-        useAndroidID: false,
-        useIDFA: this._config.canUseAdvertisingIdentifier === true,
+        migrations: this._config.migrations,
       },
     ]);
 
