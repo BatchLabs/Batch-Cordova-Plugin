@@ -34,26 +34,25 @@ class PushStub implements BatchSDK.PushModule {
 }
 
 class ProfileStub implements BatchSDK.ProfileModule {
-    public eventData: typeof BatchSDK.BatchEventAttributes;
+  public eventData: typeof BatchSDK.BatchEventAttributes;
 
-    constructor() {
-        this.eventData = BatchEventDataStub;
-    }
+  constructor() {
+    this.eventData = BatchEventDataStub;
+  }
 
-    public getEditor(): BatchSDK.BatchProfileAttributeEditor {
-        return new BatchUserDataEditorStub();
-    }
-    public trackEvent(_name: string, _data?: BatchEventDataStub): Promise<string | undefined> {
-        return Promise.resolve("")
-    }
-    public trackTransaction(
-        _amount: number,
-        _data?: { [key: string]: unknown }
-    ) {}
-    public trackLocation(_location: BatchSDK.Location): void {}
+  public getEditor(): BatchSDK.BatchProfileAttributeEditor {
+    return new BatchUserDataEditorStub();
+  }
+  public trackEvent(
+    _name: string,
+    _data?: BatchEventDataStub
+  ): Promise<string | undefined> {
+    return Promise.resolve("");
+  }
 
-    identify(identifier: string | null): void {
-    }
+  public trackLocation(_location: BatchSDK.Location): void {}
+
+  public identify(_identifier: string | null): void {}
 }
 
 class UserStub implements BatchSDK.UserModule {
@@ -110,8 +109,18 @@ class InboxStub implements BatchSDK.InboxModule {
 }
 
 class BatchEventDataStub implements BatchSDK.BatchEventAttributes {
-
-  public put(_key: unknown, _value:string | number | boolean | Date | URL |  Array<String> | BatchSDK.BatchEventAttributes | Array<BatchSDK.BatchEventAttributes>)  {
+  public put(
+    _key: unknown,
+    _value:
+      | string
+      | number
+      | boolean
+      | Date
+      | URL
+      | Array<string>
+      | BatchSDK.BatchEventAttributes
+      | Array<BatchSDK.BatchEventAttributes>
+  ) {
     return this;
   }
 }
@@ -127,9 +136,7 @@ class BatchUserDataEditorStub implements BatchSDK.BatchProfileAttributeEditor {
   public setEmailAddress(_email: string | null) {
     return this;
   }
-  public setEmailMarketingSubscription(
-    _state: "subscribed" | "unsubscribed"
-  ) {
+  public setEmailMarketingSubscription(_state: "subscribed" | "unsubscribed") {
     return this;
   }
   public setAttribute(
@@ -183,8 +190,10 @@ export class BatchStub implements BatchSDK.Batch {
   public optOut(): void {}
   public optOutAndWipeData(): void {}
   public isOptedOut(): Promise<boolean> {
-      return Promise.resolve(false);
+    return Promise.resolve(false);
   }
-  public setFindMyInstallationEnabled(enabled: boolean): void {}
-  public updateAutomaticDataCollection(dataCollection: BatchSDK.DataCollectionConfig): void {}
+  public setFindMyInstallationEnabled(_enabled: boolean): void {}
+  public updateAutomaticDataCollection(
+    _dataCollection: BatchSDK.DataCollectionConfig
+  ): void {}
 }
