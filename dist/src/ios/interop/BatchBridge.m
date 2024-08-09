@@ -203,9 +203,12 @@ static dispatch_once_t onceToken;
             [NSException raise:INVALID_PARAMETER format:@"Missing parameter 'APIKey' for action %@.", action];
         }
 
-        NSNumber *useIDFA = [parameters objectForKey:@"useIDFA"];
+        NSDictionary *migrations = [parameters objectForKey:@"migrations"];
+        if (!migrations) {
+            NSLog(@"BatchBridge - Internal bridge error: expected migrations configuration.");
+        }
 
-        [BatchBridge setConfigWithApiKey:APIKey andUseIDFA:useIDFA];
+        [BatchBridge setConfigWithApiKey:APIKey andMigrations:migrations];
     }
 
     else if ([action caseInsensitiveCompare:PUSH_GET_LAST_KNOWN_TOKEN] == NSOrderedSame)
@@ -435,12 +438,23 @@ static dispatch_once_t onceToken;
 }
 
 
-+ (void)setConfigWithApiKey:(NSString*)APIKey andUseIDFA:(NSNumber*)useIDFA
++ (void)setConfigWithApiKey:(NSString*)APIKey andMigrations:(NSDictionary*)migrations
 {
-//    if (useIDFA)
-//    {
-//        [Batch setUseIDFA:[useIDFA boolValue]];
-//    }
+    // Set profile migrations configuration
+    id profileCustomIDMigrationEnabled = [migrations objectForKey:@"profileCustomIdMigrationEnabled"];
+    id profileCustomDataMigrationEnabled = [migrations objectForKey:@"profileCustomDataMigrationEnabled"];
+    BatchMigration disabledMigrations = BatchMigrationNone;
+    if (profileCustomIDMigrationEnabled != nil && [profileCustomIDMigrationEnabled boolValue] == false) {
+        NSLog(@"[BatchBridge] Disabling profile custom id migration");
+        disabledMigrations |= BatchMigrationCustomID;
+    }
+    if (profileCustomDataMigrationEnabled != nil && [profileCustomDataMigrationEnabled boolValue] == false) {
+        NSLog(@"[BatchBridge] Disabling profile custom data migration");
+        disabledMigrations |= BatchMigrationCustomData;
+    }
+    [BatchSDK setDisabledMigrations:disabledMigrations];
+
+    // Set API Key
     currentAPIKey = APIKey;
 }
 

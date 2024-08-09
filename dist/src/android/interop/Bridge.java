@@ -17,6 +17,7 @@ import com.batch.android.BatchAttributesFetchListener;
 import com.batch.android.BatchEmailSubscriptionState;
 import com.batch.android.BatchEventAttributes;
 import com.batch.android.BatchMessage;
+import com.batch.android.BatchMigration;
 import com.batch.android.BatchPushRegistration;
 import com.batch.android.BatchTagCollectionsFetchListener;
 import com.batch.android.BatchUserAttribute;
@@ -63,7 +64,7 @@ public class Bridge {
         try {
             result = doAction(action, parameters, activity);
         } catch (Exception e) {
-            Log.e("Batch Bridge", "Batch bridge raised an exception", e);
+            Log.e(TAG, "Batch bridge raised an exception", e);
             if (callback != null) {
                 final Map<String, Object> failResult = new HashMap<>();
                 failResult.put("action", action);
@@ -217,6 +218,8 @@ public class Bridge {
     // region Core Module
 
     private static void setConfig(Map<String, Object> parameters) throws BridgeException {
+
+        // Set BatchCordovaPlugin class as LoggerDelegate
         LoggerDelegate loggerDelegate = null;
         try {
             loggerDelegate = getTypedParameter(parameters, "logger", LoggerDelegate.class);
@@ -224,10 +227,29 @@ public class Bridge {
             // The parameter is optional, disregard the exception
             // TODO : Maybe improve this if the parameter is here but deserialization failed
         }
-
         if (loggerDelegate != null) {
             Batch.setLoggerDelegate(loggerDelegate);
         }
+
+        // Set profile migrations configuration
+        try {
+            Map<String, Object> migrationsConfig  = getTypedParameter(parameters, "migrations", Map.class);
+            Boolean profileCustomIdMigrationEnabled = getOptionalTypedParameter(migrationsConfig, "profileCustomIdMigrationEnabled", Boolean.class, true);
+            Boolean profileCustomDataMigrationEnabled = getOptionalTypedParameter(migrationsConfig, "profileCustomDataMigrationEnabled", Boolean.class, true);
+            EnumSet<BatchMigration> migrations = EnumSet.noneOf(BatchMigration.class);
+            if (Boolean.FALSE.equals(profileCustomIdMigrationEnabled)) {
+                Log.d(TAG, "Disabling profile custom id migration.");
+                migrations.add(BatchMigration.CUSTOM_ID);
+            }
+            if (Boolean.FALSE.equals(profileCustomDataMigrationEnabled)) {
+                Log.d(TAG, "Disabling profile custom data migration.");
+                migrations.add(BatchMigration.CUSTOM_DATA);
+            }
+            Batch.disableMigration(migrations);
+        } catch (BridgeException e) {
+            Log.d(TAG, "Internal bridge error, expected migrations configuration.");
+        }
+        // Start SDK
         Batch.start(getTypedParameter(parameters, "APIKey", String.class));
     }
 
@@ -343,7 +365,7 @@ public class Bridge {
                     case "SET_LANGUAGE" -> {
                         Object value = operationDescription.get("value");
                         if (value != null && !(value instanceof String)) {
-                            Log.e("Batch Bridge", "Invalid SET_LANGUAGE value: it can only be a string or null");
+                            Log.e(TAG, "Invalid SET_LANGUAGE value: it can only be a string or null");
                             // Invalid value, continue. NULL is allowed though
                             continue;
                         }
@@ -352,7 +374,7 @@ public class Bridge {
                     case "SET_REGION" -> {
                         Object value = operationDescription.get("value");
                         if (value != null && !(value instanceof String)) {
-                            Log.e("Batch Bridge", "Invalid SET_REGION value: it can only be a string or null");
+                            Log.e(TAG, "Invalid SET_REGION value: it can only be a string or null");
                             // Invalid value, continue. NULL is allowed though
                             continue;
                         }
@@ -361,7 +383,7 @@ public class Bridge {
                     case "SET_EMAIL_ADDRESS" -> {
                         Object value = operationDescription.get("value");
                         if (value != null && !(value instanceof String)) {
-                            Log.e("Batch Bridge", "Invalid SET_EMAIL value: it can only be a string or null");
+                            Log.e(TAG, "Invalid SET_EMAIL value: it can only be a string or null");
                             // Invalid value, continue. NULL is allowed though
                             continue;
                         }
@@ -370,7 +392,7 @@ public class Bridge {
                     case "SET_EMAIL_MARKETING_SUB" -> {
                         Object value = operationDescription.get("value");
                         if (value == null || !(value instanceof String)) {
-                            Log.e("Batch Bridge", "Invalid SET_EMAIL_MARKETING_SUB value: it can only be a string");
+                            Log.e(TAG, "Invalid SET_EMAIL_MARKETING_SUB value: it can only be a string");
                             // Invalid value, continue.
                             continue;
                         }
@@ -380,7 +402,7 @@ public class Bridge {
                         } else if ("unsubscribed".equals(value)) {
                             editor.setEmailMarketingSubscription(BatchEmailSubscriptionState.UNSUBSCRIBED);
                         } else {
-                            Log.e("Batch Bridge", "Invalid SET_EMAIL_MARKETING_SUBSCRIPTION value: it can only be `subscribed` or `unsubscribed`.");
+                            Log.e(TAG, "Invalid SET_EMAIL_MARKETING_SUBSCRIPTION value: it can only be `subscribed` or `unsubscribed`.");
                         }
                     }
                     case "SET_ATTRIBUTE" -> {
@@ -394,7 +416,7 @@ public class Bridge {
                                 try {
                                     editor.setAttribute(key, new URI(getTypedParameter(operationDescription, "value", String.class)));
                                 } catch (URISyntaxException e) {
-                                    Log.e("Batch Bridge", "Invalid SET_ATTRIBUTE url value: couldn't parse value", e);
+                                    Log.e(TAG, "Invalid SET_ATTRIBUTE url value: couldn't parse value", e);
                                 }
                             }
                             case "date" ->
@@ -408,7 +430,7 @@ public class Bridge {
                                     try {
                                         editor.setAttribute(key, Long.parseLong((String) rawValue));
                                     } catch (NumberFormatException e) {
-                                        Log.e("Batch Bridge", "Invalid SET_ATTRIBUTE integer value: couldn't parse value", e);
+                                        Log.e(TAG, "Invalid SET_ATTRIBUTE integer value: couldn't parse value", e);
                                     }
                                 }
                             }
@@ -421,7 +443,7 @@ public class Bridge {
                                     try {
                                         editor.setAttribute(key, Double.parseDouble((String) rawValue));
                                     } catch (NumberFormatException e) {
-                                        Log.e("Batch Bridge", "Invalid SET_ATTRIBUTE float value: couldn't parse value", e);
+                                        Log.e(TAG, "Invalid SET_ATTRIBUTE float value: couldn't parse value", e);
                                     }
                                 }
                             }
@@ -434,7 +456,7 @@ public class Bridge {
                                     try {
                                         editor.setAttribute(key, Boolean.parseBoolean((String) rawValue));
                                     } catch (NumberFormatException e) {
-                                        Log.e("Batch Bridge", "Invalid SET_ATTRIBUTE boolean value: couldn't parse value", e);
+                                        Log.e(TAG, "Invalid SET_ATTRIBUTE boolean value: couldn't parse value", e);
                                     }
                                 }
                             }
@@ -499,7 +521,7 @@ public class Bridge {
                         Batch.Profile.trackEvent(name, batchEventAttributes);
                         promise.resolve(null);
                     } else {
-                        Log.w("Batch Bridge", "Invalid event attributes: " + errors);
+                        Log.w(TAG, "Invalid event attributes: " + errors);
                         promise.reject(new BridgeException("Invalid event attributes: " + errors));
                     }
                 } catch (BridgeException e) {
