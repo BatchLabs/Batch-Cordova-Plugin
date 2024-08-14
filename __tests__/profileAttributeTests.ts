@@ -1,4 +1,4 @@
-import { User as UserAction, ProfileAttributeOperation } from "../src/actions";
+import {ProfileAttributeOperation, Profile} from "../src/actions";
 
 const mockSendToBridge = jest.fn();
 
@@ -64,20 +64,6 @@ describe("it enqueues operations correctly", () => {
     });
   });
 
-  it("can set identifier", () => {
-    editor.setIdentifier("foo");
-    (editor as any).setIdentifier(2);
-    editor.setIdentifier(null);
-
-    expect(enqueueMock.mock.calls.length).toBe(2);
-    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetIdentifier, {
-      value: "foo",
-    });
-    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetIdentifier, {
-      value: null,
-    });
-  });
-
   it("can set attribute", () => {
     editor.setAttribute("foo", "bar");
     editor.setAttribute("foo", 2);
@@ -85,11 +71,12 @@ describe("it enqueues operations correctly", () => {
     editor.setAttribute("foo", true);
     editor.setAttribute("foo", new Date(1520352788000));
     editor.setAttribute("foo", new URL("https://batch.com"));
+    editor.setAttribute("foo", ["bar", "baz"]);
     editor.setAttribute("foo", NaN);
     (editor as any).setAttribute(null, null);
     (editor as any).setAttribute("foo", null);
 
-    expect(enqueueMock.mock.calls.length).toBe(6);
+    expect(enqueueMock.mock.calls.length).toBe(7);
     expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetAttribute, {
       key: "foo",
       type: "string",
@@ -120,6 +107,11 @@ describe("it enqueues operations correctly", () => {
       type: "url",
       value: "https://batch.com/",
     });
+    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.SetAttribute, {
+      key: "foo",
+      type: "array",
+      value: ["bar", "baz"],
+      });
   });
 
   it("can remove attribute", () => {
@@ -131,78 +123,25 @@ describe("it enqueues operations correctly", () => {
       key: "foo",
     });
   });
-
-  it("can add tags in collections", () => {
-    editor.addTag("foo", "bar");
-    editor.addTag("foo", "bar bar$");
-    editor.addTag("foo qsd qd", "bar qsdq dq");
-    editor.addTag("foo$", "bar");
-    (editor as any).addTag(2, "bar");
-    (editor as any).addTag(null, null);
-
-    expect(enqueueMock.mock.calls.length).toBe(2);
-    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.AddTag, {
-      collection: "foo",
-      tag: "bar",
-    });
-    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.AddTag, {
-      collection: "foo",
-      tag: "bar bar$",
-    });
-  });
-
-  it("can remove tags from collections", () => {
-    editor.removeTag("foo", "bar");
-    editor.removeTag("foo", "bar bar$");
-    editor.removeTag("foo qsd qd", "bar qsdq dq");
-    editor.removeTag("foo$", "bar");
-    (editor as any).removeTag(2, "bar");
-    (editor as any).removeTag(null, null);
-
-    expect(enqueueMock.mock.calls.length).toBe(2);
-    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.RemoveTag, {
-      collection: "foo",
-      tag: "bar",
-    });
-    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.RemoveTag, {
-      collection: "foo",
-      tag: "bar bar$",
-    });
-  });
-
-  it("can do bulk tag operations", () => {
-    editor.clearTagCollection("foo");
-    editor.clearTagCollection("foo$");
-    (editor as any).clearTagCollection(2);
-    (editor as any).clearTagCollection(null);
-
-    editor.clearTags();
-
-    expect(enqueueMock.mock.calls.length).toBe(2);
-    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.ClearTagCollection, {
-      collection: "foo",
-    });
-    expect(enqueueMock).toBeCalledWith(ProfileAttributeOperation.ClearTags, {});
-  });
 });
 
 test("can save operations", () => {
   new BatchProfileAttributeEditor(true)
-    .addTag("foo", "bar")
     .setAttribute("foo", "bar")
+    .setAttribute("foo2", ["bar"])
     .save();
 
   expect(mockSendToBridge.mock.calls.length).toBe(1);
-  expect(mockSendToBridge).toBeCalledWith(null, UserAction.Edit, [
+  expect(mockSendToBridge).toBeCalledWith(null, Profile.Edit, [
     {
       operations: [
-        { operation: ProfileAttributeOperation.AddTag, collection: "foo", tag: "bar" },
         {
           key: "foo",
           operation: ProfileAttributeOperation.SetAttribute,
           type: "string",
           value: "bar",
         },
+        { operation: ProfileAttributeOperation.SetAttribute, type: "array", key: "foo2", value: ["bar"] },
       ],
     },
   ]);
