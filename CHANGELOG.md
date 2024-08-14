@@ -1,5 +1,45 @@
 Batch Cordova Plugin
 
+## 6.0.0
+
+This is a major release, please see our [migration guide](https://doc.batch.com/cordova/advanced/5x-migration/) for more info on how to update your current Batch implementation.
+
+**Plugin**
+* Updated Batch to 2.0. For more information see the [ios](https://doc.batch.com/ios/sdk-changelog/#2_0_0) and [android](https://doc.batch.com/android/sdk-changelog/#2_0_0) changelog .
+* Batch requires iOS 13.0 or higher.
+* Batch requires a `minSdk` level of 21 or higher.
+
+**Core**
+- Added method `isOptedOut` to checks whether Batch has been opted out from or not.
+- Added method `setFindMyInstallationEnabled` to set whether Batch should enable the FindMyInstallation feature or not.
+- Added method `updateAutomaticDataCollection` to fine-tune the data you authorize to be tracked by Batch.
+- Removed `canUseAdvertisingIdentifier` property from `Config`.
+- Added `migrations` property to `Config` to update the profile migrations related configuration. See our documentation for info.
+
+**User**
+- Removed method `trackTransaction` with no equivalent.
+- Removed method `batch.user.editor` and the related class `BatchUserDataEditor`, you should now use `batch.profile.editor` which return an instance of `BatchProfileAttributeEditor`.
+- Added method `clearInstallationData` which allows you to remove the installation data without modifying the current profile.
+
+**Event**
+
+This version introduced two new types of attribute that can be attached to an event : Array and Object.
+
+- Removed `trackEvent` APIs from the user module. You should now use `batch.profile.trackEvent`.
+- `BatchEventData` has been renamed into `BatchEventAttributes`.
+- Removed `addTag` API from `BatchEventData` You should now use the `$tags` key with `put` method.
+- Removed parameter `label` from `trackEvent` API. You should now use the `$label` key in `BatchEventAttributes` with the `put` method.
+- Added support for values of type: Array and Object to the `put` method.
+
+**Profile**
+
+Introduced `batch.profile`, a new module that enables interacting with profiles. Its functionality replaces most of BatchUser used to do.
+
+- Added `identify` API as replacement of `batch.user.getEditor().setIdentifier`.
+- Added `getEditor` method to get a new instance of a `BatchProfileAttributeEditor` as replacement of `BatchUserEditor`.
+- Added `trackEvent` API as replacement of the `batch.user.trackEvent` methods.
+- Added `trackLocation` API as replacement of the `batch.user.trackLocation` method.
+
 ## 5.4.0
 
 **Plugin**
