@@ -272,7 +272,7 @@ export declare namespace BatchSDK {
    * Batch's profile module
    */
   interface ProfileModule {
-    eventData: typeof BatchEventAttributes;
+    eventAttributes: typeof BatchEventAttributes;
 
     /**
      * Identifies this device with a profile using a Custom User ID.

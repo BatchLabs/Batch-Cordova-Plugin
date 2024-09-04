@@ -6,10 +6,10 @@ import { BatchProfileAttributeEditor } from "./profile/profileAttributeEditor";
 import { BatchSDK } from "../../types";
 
 export class ProfileModule implements BatchSDK.ProfileModule {
-  public eventData: typeof BatchSDK.BatchEventAttributes;
+  public eventAttributes: typeof BatchSDK.BatchEventAttributes;
 
   constructor() {
-    this.eventData = BatchEventAttributes;
+    this.eventAttributes = BatchEventAttributes;
   }
 
   identify(identifier: string | null): void {
