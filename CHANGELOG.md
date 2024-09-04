@@ -15,6 +15,7 @@ This is a major release, please see our [migration guide](https://doc.batch.com/
 - Added method `updateAutomaticDataCollection` to fine-tune the data you authorize to be tracked by Batch.
 - Removed `canUseAdvertisingIdentifier` property from `Config`.
 - Added `migrations` property to `Config` to update the profile migrations related configuration. See our documentation for info.
+- Fixed an issue where opened push with deeplink was not tracked as direct open on a cold start.
 
 **User**
 - Removed method `trackTransaction` with no equivalent.
