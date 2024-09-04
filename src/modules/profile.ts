@@ -13,6 +13,13 @@ export class ProfileModule implements BatchSDK.ProfileModule {
   }
 
   identify(identifier: string | null): void {
+    if (typeof identifier === 'undefined') {
+        writeBatchLog(
+            false,
+            "BatchProfile - Identifier cannot be undefined, please use explicit null if you want to logout. Aborting."
+        );
+      return;
+    }
     sendToBridge(null, Profile.Identify, [{ custom_user_id: identifier }]);
   }
 
@@ -39,18 +46,18 @@ export class ProfileModule implements BatchSDK.ProfileModule {
     if (typeof location !== "object") {
       writeBatchLog(
         false,
-        "BatchUser - Invalid trackLocation argument. Skipping."
+        "BatchProfile - Invalid trackLocation argument. Skipping."
       );
       return;
     }
 
     if (typeof location.latitude !== "number" || isNaN(location.latitude)) {
-      writeBatchLog(false, "BatchUser - Invalid latitude. Skipping.");
+      writeBatchLog(false, "BatchProfile - Invalid latitude. Skipping.");
       return;
     }
 
     if (typeof location.longitude !== "number" || isNaN(location.longitude)) {
-      writeBatchLog(false, "BatchUser - Invalid longitude. Skipping.");
+      writeBatchLog(false, "BatchProfile - Invalid longitude. Skipping.");
       return;
     }
 
@@ -58,12 +65,12 @@ export class ProfileModule implements BatchSDK.ProfileModule {
       location.precision &&
       (typeof location.precision !== "number" || isNaN(location.precision))
     ) {
-      writeBatchLog(false, "BatchUser - Invalid precision. Skipping.");
+      writeBatchLog(false, "BatchProfile - Invalid precision. Skipping.");
       return;
     }
 
     if (location.date && !(location.date instanceof Date)) {
-      writeBatchLog(false, "BatchUser - Invalid date. Skipping.");
+      writeBatchLog(false, "BatchProfile - Invalid date. Skipping.");
       return;
     }
 
