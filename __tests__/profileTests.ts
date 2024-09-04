@@ -64,9 +64,9 @@ afterEach(() => {
 test("it tracks events", () => {
   const profileModule = new ProfileModule();
   profileModule.trackEvent("foo");
-  profileModule.trackEvent("foo_2", new profileModule.eventData().put("$label","fooBAR"));
+  profileModule.trackEvent("foo_2", new profileModule.eventAttributes().put("$label","fooBAR"));
 
-  const eventData = new profileModule.eventData();
+  const eventData = new profileModule.eventAttributes();
   eventData
     .put("$tags", ["foo", "bar"])
     .put("foo", "bar")
@@ -75,8 +75,8 @@ test("it tracks events", () => {
     .put("int", 2)
     .put("date", new Date(1520352788000))
     .put("url", new URL("https://batch.com"))
-    .put("object", new profileModule.eventData().put("foo","bar"))
-    .put("object_array", [new profileModule.eventData().put("foo","bar"), new profileModule.eventData().put("foo","bar") ]);
+    .put("object", new profileModule.eventAttributes().put("foo","bar"))
+    .put("object_array", [new profileModule.eventAttributes().put("foo","bar"), new profileModule.eventAttributes().put("foo","bar") ]);
   profileModule.trackEvent("foo_3", eventData);
 
   expect(mockedTrackEvent.mock.calls.length).toBe(3);

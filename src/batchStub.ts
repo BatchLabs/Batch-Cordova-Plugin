@@ -34,10 +34,10 @@ class PushStub implements BatchSDK.PushModule {
 }
 
 class ProfileStub implements BatchSDK.ProfileModule {
-  public eventData: typeof BatchSDK.BatchEventAttributes;
+  public eventAttributes: typeof BatchSDK.BatchEventAttributes;
 
   constructor() {
-    this.eventData = BatchEventDataStub;
+    this.eventAttributes = BatchEventDataStub;
   }
 
   public getEditor(): BatchSDK.BatchProfileAttributeEditor {
