@@ -6,7 +6,9 @@ import static com.batch.cordova.android.interop.BridgeUtils.getOptionalTypedPara
 import static com.batch.cordova.android.interop.BridgeUtils.getTypedParameter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.util.Log;
 
@@ -24,9 +26,6 @@ import com.batch.android.BatchUserAttribute;
 import com.batch.android.BatchProfileAttributeEditor;
 import com.batch.android.LoggerDelegate;
 import com.batch.android.PushNotificationType;
-
-import com.batch.android.json.JSONException;
-import com.batch.android.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -46,7 +45,7 @@ import java.util.Set;
 public class Bridge {
     private static final String INVALID_PARAMETER = "Invalid parameter";
 
-    private static final String BRIDGE_VERSION_ENVIRONEMENT_VAR = "batch.bridge.version";
+    private static final String BRIDGE_VERSION_ENVIRONMENT_VAR = "batch.bridge.version";
 
     private static final String BRIDGE_VERSION = "Bridge/2.0";
 
@@ -54,8 +53,11 @@ public class Bridge {
 
     private static final String TAG = "BatchBridge";
 
+    public static final String BATCH_SHARED_PREFS_FILE ="batch";
+    public static final String BATCH_API_KEY_SHARED_PREFS_KEY ="batch_api_key";
+
     static {
-        System.setProperty(BRIDGE_VERSION_ENVIRONEMENT_VAR, BRIDGE_VERSION);
+        System.setProperty(BRIDGE_VERSION_ENVIRONMENT_VAR, BRIDGE_VERSION);
     }
 
     @SuppressWarnings("unused")
@@ -94,7 +96,7 @@ public class Bridge {
 
         switch (action) {
             case SET_CONFIG:
-                setConfig(parameters);
+                setConfig(activity, parameters);
                 break;
             case START:
                 start(activity);
@@ -217,7 +219,7 @@ public class Bridge {
 
     // region Core Module
 
-    private static void setConfig(Map<String, Object> parameters) throws BridgeException {
+    private static void setConfig(Context context, Map<String, Object> parameters) throws BridgeException {
 
         // Set BatchCordovaPlugin class as LoggerDelegate
         LoggerDelegate loggerDelegate = null;
@@ -250,7 +252,10 @@ public class Bridge {
             Log.d(TAG, "Internal bridge error, expected migrations configuration.");
         }
         // Start SDK
-        Batch.start(getTypedParameter(parameters, "APIKey", String.class));
+        String apiKey = getTypedParameter(parameters, "APIKey", String.class);
+        SharedPreferences preferences = context.getSharedPreferences(BATCH_SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+        preferences.edit().putString(BATCH_API_KEY_SHARED_PREFS_KEY, apiKey).apply();
+        Batch.start(apiKey);
     }
 
     private static void start(Activity activity) {
@@ -660,7 +665,5 @@ public class Bridge {
             });
         });
     }
-
     //endregion
-
 }
