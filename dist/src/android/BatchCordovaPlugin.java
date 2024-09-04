@@ -50,7 +50,7 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
      * Variable that keeps track of whether the JS called "batch.start()" already.
      * Used for automatic restarting of Batch
      */
-    private static Boolean BATCH_STARTED = false;
+    static Boolean BATCH_STARTED = false;
 
     private static AtomicInteger resumeCount = new AtomicInteger(0);
 

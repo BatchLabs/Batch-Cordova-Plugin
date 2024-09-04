@@ -1,7 +1,11 @@
 package com.batch.cordova.android;
 
+import static com.batch.cordova.android.interop.Bridge.BATCH_API_KEY_SHARED_PREFS_KEY;
+import static com.batch.cordova.android.interop.Bridge.BATCH_SHARED_PREFS_FILE;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -13,9 +17,9 @@ import com.batch.android.Batch;
 import com.batch.android.BatchMessage;
 import com.batch.android.BatchPushPayload;
 import com.batch.android.MessagingActivity;
+import com.batch.cordova.android.interop.Bridge;
 
-public class BatchCordovaPushService extends JobIntentService
-{
+public class BatchCordovaPushService extends JobIntentService {
     private static final String TAG = "BatchCordovaPushService";
 
     /**
@@ -38,9 +42,19 @@ public class BatchCordovaPushService extends JobIntentService
     }
 
     @Override
-    protected void onHandleWork(Intent intent)
-    {
+    protected void onHandleWork(Intent intent) {
         try {
+            if (!BatchCordovaPlugin.BATCH_STARTED) {
+                // Batch is not started since js is not available yet,
+                // we need to start it to track direct open.
+                SharedPreferences preferences = this.getSharedPreferences(BATCH_SHARED_PREFS_FILE, Context.MODE_PRIVATE);
+                String apiKey = preferences.getString(BATCH_API_KEY_SHARED_PREFS_KEY, null);
+                if (apiKey != null) {
+                    Batch.start(apiKey);
+                } else {
+                    Log.w(TAG, "Cannot start batch from push service, direct open may not be tracked correctly");
+                }
+            }
             if (Batch.Push.shouldDisplayPush(this, intent)) {
                 if (isForegroundPushHandlingEnabled() && isAppInForeground()) {
                     BatchPushPayload pushPayload = BatchPushPayload.payloadFromReceiverIntent(intent);
@@ -71,20 +85,14 @@ public class BatchCordovaPushService extends JobIntentService
 
     // Checks if the foreground push is enabled in the manifest
     private boolean isForegroundPushHandlingEnabled() {
-        try
-        {
+        try {
             ApplicationInfo appInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
-            if (appInfo.metaData != null)
-            {
+            if (appInfo.metaData != null) {
                 return appInfo.metaData.getBoolean(METADATA_ENABLE_FOREGROUND_NOTIFICATION_HANDLING, ENABLE_FOREGROUND_NOTIFICATION_HANDLING_DEFAULT);
             }
-        }
-        catch (PackageManager.NameNotFoundException e)
-        {
+        } catch (PackageManager.NameNotFoundException e) {
             // if we can’t find it in the manifest, just return the default (false)
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             Log.e(TAG, "Error while parsing manifest meta data", e);
         }
 
