@@ -13,11 +13,11 @@ export class ProfileModule implements BatchSDK.ProfileModule {
   }
 
   identify(identifier: string | null): void {
-    if (typeof identifier === 'undefined') {
-        writeBatchLog(
-            false,
-            "BatchProfile - Identifier cannot be undefined, please use explicit null if you want to logout. Aborting."
-        );
+    if (typeof identifier === "undefined") {
+      writeBatchLog(
+        false,
+        "BatchProfile - Identifier cannot be undefined, please use explicit null if you want to logout. Aborting."
+      );
       return;
     }
     sendToBridge(null, Profile.Identify, [{ custom_user_id: identifier }]);
