@@ -2,7 +2,7 @@ Batch Cordova Plugin
 
 ## 6.0.0
 
-This is a major release, please see our [migration guide](https://doc.batch.com/cordova/advanced/5x-migration/) for more info on how to update your current Batch implementation.
+This is a major release, please see our [migration guide](https://doc.batch.com/cordova/migrations/5x-migration/) for more info on how to update your current Batch implementation.
 
 **Plugin**
 * Updated Batch to 2.0. For more information see the [ios](https://doc.batch.com/ios/sdk-changelog/#2_0_0) and [android](https://doc.batch.com/android/sdk-changelog/#2_0_0) changelog .
