@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)registerAsDelegate;
 
 /// Should iOS display notifications even if the app is in foreground?
-/// Default: false
+/// Default: true
 @property (assign) BOOL showForegroundNotifications;
 
 /// Should Batch use the chained delegate's completionHandler responses or force its own, while still calling the chained delegate.
