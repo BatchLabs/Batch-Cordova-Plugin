@@ -2,9 +2,16 @@ Batch Cordova Plugin
 
 ## UPCOMING
 
+**Plugin**
+* Updated Batch to 2.1
+* Batch requires to compile with SDK 35 (Android 15) (cordova-android@14).
+
 **iOS**
 * `BatchBridgeNotificationCenterDelegate` now defaults to showing foreground notifications.
 
+**Profile**
+- Added `setPhoneNumber` API to the `BatchProfileAttributeEditor` class. This requires to have a user identifier registered or to call the `identify` method beforehand.
+- Added `setSMSMarketingSubscription` API to the `BatchProfileAttributeEditor` class.
 
 ## 6.0.0
 
