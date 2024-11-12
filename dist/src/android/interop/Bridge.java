@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import com.batch.android.Batch;
 import com.batch.android.BatchAttributesFetchListener;
 import com.batch.android.BatchEmailSubscriptionState;
+import com.batch.android.BatchSMSSubscriptionState;
 import com.batch.android.BatchEventAttributes;
 import com.batch.android.BatchMessage;
 import com.batch.android.BatchMigration;
@@ -408,6 +409,31 @@ public class Bridge {
                             editor.setEmailMarketingSubscription(BatchEmailSubscriptionState.UNSUBSCRIBED);
                         } else {
                             Log.e(TAG, "Invalid SET_EMAIL_MARKETING_SUBSCRIPTION value: it can only be `subscribed` or `unsubscribed`.");
+                        }
+                    }
+                    case "SET_PHONE_NUMBER" -> {
+                        Object value = operationDescription.get("value");
+                        if (value != null && !(value instanceof String)) {
+                            Log.e(TAG, "Invalid SET_PHONE_NUMBER value: it can only be a string or null");
+                            // Invalid value, continue. NULL is allowed though
+                            continue;
+                        }
+                        editor.setPhoneNumber((String) value);
+                    }
+                    case "SET_SMS_MARKETING_SUB" -> {
+                        Object value = operationDescription.get("value");
+                        if (value == null || !(value instanceof String)) {
+                            Log.e(TAG, "Invalid SET_SMS_MARKETING_SUB value: it can only be a string");
+                            // Invalid value, continue.
+                            continue;
+                        }
+
+                        if ("subscribed".equals(value)) {
+                            editor.setSMSMarketingSubscription(BatchSMSSubscriptionState.SUBSCRIBED);
+                        } else if ("unsubscribed".equals(value)) {
+                            editor.setSMSMarketingSubscription(BatchSMSSubscriptionState.UNSUBSCRIBED);
+                        } else {
+                            Log.e(TAG, "Invalid SET_SMS_MARKETING_SUB value: it can only be `subscribed` or `unsubscribed`.");
                         }
                     }
                     case "SET_ATTRIBUTE" -> {

@@ -62,6 +62,8 @@ export enum ProfileAttributeOperation {
   SetRegion = "SET_REGION",
   SetEmail = "SET_EMAIL_ADDRESS",
   SetEmailMarketingSubscription = "SET_EMAIL_MARKETING_SUB",
+  SetPhoneNumber = "SET_PHONE_NUMBER",
+  SetSMSMarketingSubscription = "SET_SMS_MARKETING_SUB",
   SetAttribute = "SET_ATTRIBUTE",
   RemoveAttribute = "REMOVE_ATTRIBUTE",
   AddToArray = "ADD_TO_ARRAY",

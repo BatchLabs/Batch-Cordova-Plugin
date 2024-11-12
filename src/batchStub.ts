@@ -132,11 +132,16 @@ class BatchUserDataEditorStub implements BatchSDK.BatchProfileAttributeEditor {
   public setRegion(_region: string | null) {
     return this;
   }
-
   public setEmailAddress(_email: string | null) {
     return this;
   }
   public setEmailMarketingSubscription(_state: "subscribed" | "unsubscribed") {
+    return this;
+  }
+  public setPhoneNumber(_phoneNumber: string | null) {
+    return this;
+  }
+  public setSMSMarketingSubscription(_state: "subscribed" | "unsubscribed") {
     return this;
   }
   public setAttribute(
