@@ -146,11 +146,11 @@ export declare namespace BatchSDK {
      * - Prevent batch.start()
      * - Disable any network capability from the SDK
      * - Disable all In-App campaigns
-     * - Make the Inbox module return an error immediatly when used
+     * - Make the Inbox module return an error immediately when used
      * - Make the SDK reject any editor calls
-     * - Make the SDK reject calls to batch.user.trackEvent(), batch.user.trackTransaction(), batch.user.trackLocation() and any related methods
+     * - Make the SDK reject calls to batch.profile.trackEvent(), batch.profile.trackLocation() and any related methods
      *
-     * Even if you opt in afterwards, data that has been generated while opted out WILL be lost.
+     * Even if you opt in afterward, data that has been generated while opted out WILL be lost.
      *
      * If you're also looking at deleting user data, please use batch.optOutAndWipeData()
      *
@@ -282,8 +282,8 @@ export declare namespace BatchSDK {
     identify(identifier: string | null): void;
 
     /**
-     * Get the user data editor. Don't forget to call save when you're done.
-     * @return Batch user data editor
+     * Get the profile data editor. Don't forget to call save when you're done.
+     * @return Batch profile data editor
      */
     getEditor(): BatchProfileAttributeEditor;
 
@@ -318,20 +318,20 @@ export declare namespace BatchSDK {
     getInstallationID(): Promise<undefined | string>;
 
     /**
-     * Get the application language override set using BatchUserDataEditor. Batch must be started to read it.
+     * Get the application language override set using BatchProfileAttributeEditor. Batch must be started to read it.
      * The promise will return the language you have previously set, if any, or undefined. Might be null/undefined if Batch isn't started.
      * Might throw if Batch isn't started.
      */
     getLanguage(): Promise<undefined | string>;
 
     /**
-     * Get the application region override set using BatchUserDataEditor. Batch must be started to read it.
+     * Get the application region override set using BatchProfileAttributeEditor. Batch must be started to read it.
      * The promise will return the region you have previously set, if any, or undefined. Might be null/undefined if Batch isn't started.
      */
     getRegion(): Promise<undefined | string>;
 
     /**
-     * Get the user identifier set using BatchUserDataEditor. Batch must be started to read it.
+     * Get the user identifier set using BatchProfileAttributeEditor. Batch must be started to read it.
      * The promise will return the user identifier you have previously set, if any, or undefined. Might be null/undefined if Batch isn't started.
      */
     getIdentifier(): Promise<undefined | string>;
@@ -417,8 +417,8 @@ export declare namespace BatchSDK {
     setiOSNotificationTypes(notifTypes: iOSNotificationTypes): void;
 
     /**
-     * Set whether notifications should be show in the foreground on iOS.
-     * If true, notifications will be shown like if the user was outside of your application and
+     * Set whether notifications should be shown in the foreground on iOS.
+     * If true, notifications will be shown like if the user was outside your application and
      * `batchPushReceived` will only be triggered when the notification is tapped.
      * @param showForegroundNotifications Show foreground notifications?
      */
@@ -658,7 +658,7 @@ export declare namespace BatchSDK {
   }
 
   /**
-   * User data editor
+   * Profile attribute editor
    */
   interface BatchProfileAttributeEditor {
     /**
@@ -676,7 +676,7 @@ export declare namespace BatchSDK {
     setRegion(region: string | null): BatchProfileAttributeEditor;
 
     /**
-     * Set the user email address.
+     * Set the profile email address.
      *
      * This requires to have a custom user ID registered
      * or to call the `setIdentifier` method on the editor instance beforehand.
@@ -685,11 +685,30 @@ export declare namespace BatchSDK {
     setEmailAddress(email: string | null): BatchProfileAttributeEditor;
 
     /**
-     * Set the user email marketing subscription state
+     * Set the profile email marketing subscription state
      *
      * @param state The state of the marketing email subscription. Must be "subscribed" or "unsubscribed".
      */
     setEmailMarketingSubscription(
+      state: "subscribed" | "unsubscribed"
+    ): BatchProfileAttributeEditor;
+
+    /**
+     * Set the profile phone number.
+     *
+     * This requires to have a custom profile ID registered or to call the `identify` method beforehand.
+     * @param phoneNumber  A valid E.164 formatted string. Must start with a `+` and not be longer than 15 digits
+     * without special characters (eg: "+33123456789"). Null to reset.
+     */
+    setPhoneNumber(phoneNumber: string | null): BatchProfileAttributeEditor;
+
+    /**
+     * Set the profile SMS marketing subscription state.
+     *
+     * Note that profile's subscription status is automatically set to unsubscribed when users send a STOP message.
+     * @param state The state of the SMS marketing subscription. Must be "subscribed" or "unsubscribed".
+     */
+    setSMSMarketingSubscription(
       state: "subscribed" | "unsubscribed"
     ): BatchProfileAttributeEditor;
 
