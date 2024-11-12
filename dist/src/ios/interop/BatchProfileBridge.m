@@ -60,6 +60,20 @@
                 NSLog(@"Batch Bridge - Invalid value for email marketing subscription state. Must be `subscribed` or `unsubscribed`.");
             }
         }
+        else if([@"SET_PHONE_NUMBER" isEqualToString:operationName])
+        {
+            [editor setPhoneNumber:[BatchBridgeUtils nullableString:operationDescription forKey:@"value"] error:nil];
+        }
+        else if([@"SET_SMS_MARKETING_SUB" isEqualToString:operationName]) {
+            NSString* value = [operationDescription objectForKey:@"value"];
+            if([[value uppercaseString] isEqualToString:@"SUBSCRIBED"]) {
+                [editor setSMSMarketingSubscriptionState:BatchSMSSubscriptionStateSubscribed];
+            } else if ([[value uppercaseString] isEqualToString:@"UNSUBSCRIBED"]) {
+                [editor setSMSMarketingSubscriptionState: BatchSMSSubscriptionStateUnsubscribed];
+            } else {
+                NSLog(@"Batch Bridge - Invalid value for SMS marketing subscription state. Must be `subscribed` or `unsubscribed`.");
+            }
+        }
         else if ([@"SET_ATTRIBUTE" isEqualToString:operationName])
         {
             NSString *type = operationDescription[@"type"];
