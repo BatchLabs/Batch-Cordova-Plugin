@@ -96,41 +96,41 @@ export class BatchProfileAttributeEditor
     return this;
   }
 
-    public setPhoneNumber(phoneNumber: string | null): this {
-        if (typeof phoneNumber !== "string" && phoneNumber !== null) {
-            writeBatchLog(
-                false,
-                "BatchProfileAttributeEditor - Phone number must be a string or null"
-            );
-            return this;
-        }
-        this._enqueueOperation(ProfileAttributeOperation.SetPhoneNumber, {
-            value: phoneNumber,
-        });
-        return this;
+  public setPhoneNumber(phoneNumber: string | null): this {
+    if (typeof phoneNumber !== "string" && phoneNumber !== null) {
+      writeBatchLog(
+        false,
+        "BatchProfileAttributeEditor - Phone number must be a string or null"
+      );
+      return this;
     }
+    this._enqueueOperation(ProfileAttributeOperation.SetPhoneNumber, {
+      value: phoneNumber,
+    });
+    return this;
+  }
 
-    public setSMSMarketingSubscription(
-        state: "subscribed" | "unsubscribed"
-    ): this {
-        if (
-            typeof state !== "string" ||
-            (state !== "subscribed" && state !== "unsubscribed")
-        ) {
-            writeBatchLog(
-                false,
-                "BatchProfileAttributeEditor - SMS marketing subscription state must be `subscribed` or `unsubscribed`."
-            );
-            return this;
-        }
-        this._enqueueOperation(
-            ProfileAttributeOperation.SetSMSMarketingSubscription,
-            {
-                value: state,
-            }
-        );
-        return this;
+  public setSMSMarketingSubscription(
+    state: "subscribed" | "unsubscribed"
+  ): this {
+    if (
+      typeof state !== "string" ||
+      (state !== "subscribed" && state !== "unsubscribed")
+    ) {
+      writeBatchLog(
+        false,
+        "BatchProfileAttributeEditor - SMS marketing subscription state must be `subscribed` or `unsubscribed`."
+      );
+      return this;
     }
+    this._enqueueOperation(
+      ProfileAttributeOperation.SetSMSMarketingSubscription,
+      {
+        value: state,
+      }
+    );
+    return this;
+  }
 
   public setAttribute(
     key: string,
