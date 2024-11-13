@@ -28,7 +28,6 @@ if (error == NULL) {\
 #define PUSH_REQUEST_AUTHORIZATION          @"push.requestAuthorization"
 #define PUSH_REQUEST_PROVISIONAL_AUTH       @"push.iOS.requestProvisionalAuthorization"
 
-#define REGISTER_NOTIFS                     @"push.register"
 #define DISMISS_NOTIFS                      @"push.dismissNotifications"
 #define CLEAR_BADGE                         @"push.clearBadge"
 

@@ -21,7 +21,6 @@ public enum Action
     MESSAGING_SET_DO_NOT_DISTURB_ENABLED("messaging.setDoNotDisturbEnabled"),
     MESSAGING_SHOW_PENDING_MESSAGE("messaging.showPendingMessage"),
     PUSH_GET_LAST_KNOWN_TOKEN("push.getLastKnownPushToken"),
-    PUSH_REGISTER("push.register"),
     PUSH_SET_GCM_SENDER_ID("push.setGCMSenderID"),
     PUSH_CLEAR_BADGE("push.clearBadge"),
     PUSH_DISMISS_NOTIFICATIONS("push.dismissNotifications"),

@@ -34,10 +34,6 @@ export class PushModule implements BatchSDK.PushModule {
     this.iOSNotificationTypes = iOSNotificationTypes;
   }
 
-  public registerForRemoteNotifications(): void {
-    sendToBridge(null, PushActions.Register, null);
-  }
-
   public refreshToken(): void {
     sendToBridge(null, PushActions.RefreshToken, null);
   }
