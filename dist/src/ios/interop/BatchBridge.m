@@ -274,10 +274,6 @@ static dispatch_once_t onceToken;
     {
         // Do nothing
     }
-    else if ([action caseInsensitiveCompare:REGISTER_NOTIFS] == NSOrderedSame)
-    {
-        [BatchBridge registerForRemoteNotifications];
-    }
     else if ([action caseInsensitiveCompare:DISMISS_NOTIFS] == NSOrderedSame)
     {
         [BatchBridge dismissNotifications];
@@ -481,12 +477,6 @@ static dispatch_once_t onceToken;
 + (void)setNotificationTypes:(BatchNotificationType)type
 {
     [BatchPush setRemoteNotificationTypes:type];
-}
-
-+ (void)registerForRemoteNotifications
-{
-    [BatchPush requestNotificationAuthorization];
-    [BatchPush refreshToken];
 }
 
 + (void)clearBadge

@@ -14,7 +14,6 @@ export enum Push {
   SetIOSShowForegroundNotifications = "push.setIOSShowForegroundNotifications",
   SetIOSNotifTypes = "push.setIOSNotifTypes",
   SetAndroidNotifTypes = "push.setAndroidNotifTypes",
-  Register = "push.register",
   DismissNotifications = "push.dismissNotifications",
   ClearBadge = "push.clearBadge",
   RefreshToken = "push.iOS.refreshToken",
