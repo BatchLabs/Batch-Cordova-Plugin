@@ -150,7 +150,7 @@ export declare namespace BatchSDK {
      * - Make the SDK reject any editor calls
      * - Make the SDK reject calls to batch.profile.trackEvent(), batch.profile.trackLocation() and any related methods
      *
-     * Even if you opt in afterward, data that has been generated while opted out WILL be lost.
+     * Even if you opt in afterwards, data that has been generated while opted out WILL be lost.
      *
      * If you're also looking at deleting user data, please use batch.optOutAndWipeData()
      *
