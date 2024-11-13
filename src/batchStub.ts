@@ -19,7 +19,6 @@ class PushStub implements BatchSDK.PushModule {
     this.iOSNotificationTypes = iOSNotificationTypes;
   }
 
-  public registerForRemoteNotifications() {}
   public refreshToken() {}
   public requestNotificationAuthorization() {}
   public requestProvisionalNotificationAuthorization() {}

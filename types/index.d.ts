@@ -363,13 +363,6 @@ export declare namespace BatchSDK {
     iOSNotificationTypes: typeof iOSNotificationTypes;
 
     /**
-     * Ask iOS users if they want to accept push notifications. Required to be able to push users.
-     * No effect on Android.
-     * @deprecated Use requestNotificationAuthorization/requestProvisionalNotificationAuthorization and refreshToken
-     */
-    registerForRemoteNotifications(): void;
-
-    /**
      * Ask iOS to refresh the push token. If the app didn't prompt the user for consent yet, this will not be done.
      * You should call this at the start of your app, to make sure Batch always gets a valid token after app updates.
      */

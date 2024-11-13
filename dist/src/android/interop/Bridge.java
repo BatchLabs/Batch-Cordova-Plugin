@@ -139,9 +139,6 @@ public class Bridge {
             case PUSH_DISMISS_NOTIFICATIONS:
                 dismissNotifications();
                 break;
-            case PUSH_REGISTER:
-                // iOS only, do nothing
-                return null;
             case PUSH_CLEAR_BADGE:
                 // iOS only, do nothing
                 return null;
