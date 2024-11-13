@@ -13,6 +13,9 @@ Batch Cordova Plugin
 - Added `setPhoneNumber` API to the `BatchProfileAttributeEditor` class. This requires to have a user identifier registered or to call the `identify` method beforehand.
 - Added `setSMSMarketingSubscription` API to the `BatchProfileAttributeEditor` class.
 
+**Push**
+- Removed deprecated API `registerForRemoteNotifications`. Please use `requestNotificationAuthorization` to request permission when needed, and `requestToken` at each app launch.
+
 ## 6.0.0
 
 This is a major release, please see our [migration guide](https://doc.batch.com/cordova/migrations/5x-migration/) for more info on how to update your current Batch implementation.
