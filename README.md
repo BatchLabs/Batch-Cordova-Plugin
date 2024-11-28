@@ -15,7 +15,7 @@ This repository contains the plugin's source code (native code + cordova) and bu
 This plugin is compatible with:
 
 - cordova 9.0.0+
-- cordova-android 9.0.0+
+- cordova-android 14.0.0+
 - cordova-ios 6.0.0+
 
 Subsequent major Cordova and Cordova platform versions are _not_ supported until told otherwise.
