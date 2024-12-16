@@ -9,7 +9,7 @@ import { BatchSDK } from "../../types";
 import { BatchUserAttribute } from "./user/userAttributes";
 
 export enum BatchUserAttributeType {
-  STRING = 1,
+  STRING = 0,
   BOOLEAN = 1,
   INTEGER = 2,
   DOUBLE = 3,

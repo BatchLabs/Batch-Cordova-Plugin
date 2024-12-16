@@ -236,7 +236,7 @@ export declare namespace BatchSDK {
    * This enum's implementation is available on batch.user.BatchUserAttributeType.
    */
   enum BatchUserAttributeType {
-    STRING = 1,
+    STRING = 0,
     BOOLEAN = 1,
     INTEGER = 2,
     DOUBLE = 3,
