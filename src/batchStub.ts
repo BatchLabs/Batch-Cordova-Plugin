@@ -1,6 +1,6 @@
 import { BatchSDK } from "../types";
 import { InboxNotificationSource } from "./modules/inbox";
-import { AndroidNotificationTypes, iOSNotificationTypes } from "./modules/push";
+import { iOSNotificationTypes } from "./modules/push";
 import { BatchUserAttributeType } from "./modules/user";
 
 /* tslint:disable:no-console */
@@ -11,11 +11,9 @@ class MessagingStub implements BatchSDK.MessagingModule {
 }
 
 class PushStub implements BatchSDK.PushModule {
-  public AndroidNotificationTypes: typeof AndroidNotificationTypes;
   public iOSNotificationTypes: typeof iOSNotificationTypes;
 
   constructor() {
-    this.AndroidNotificationTypes = AndroidNotificationTypes;
     this.iOSNotificationTypes = iOSNotificationTypes;
   }
 
@@ -23,7 +21,10 @@ class PushStub implements BatchSDK.PushModule {
   public requestNotificationAuthorization() {}
   public requestProvisionalNotificationAuthorization() {}
   public setiOSShowForegroundNotifications(_showForeground: boolean) {}
-  public setAndroidNotificationTypes(_notifTypes: unknown) {}
+  public setAndroidShowNotifications(_show: boolean) {}
+  public shouldShowAndroidNotifications(): Promise<undefined | boolean> {
+      return Promise.resolve(false);
+  }
   public setiOSNotificationTypes(_notifTypes: unknown) {}
   public clearBadge() {}
   public dismissNotifications() {}
