@@ -3,17 +3,24 @@ Batch Cordova Plugin
 ## 7.0.0
 
 **Plugin**
-* Updated Batch to 2.1
+* Updated Batch to 3.0
 
 **iOS**
 * `BatchBridgeNotificationCenterDelegate` now defaults to showing foreground notifications.
 
 **Profile**
-- Added `setPhoneNumber` API to the `BatchProfileAttributeEditor` class. This requires to have a user identifier registered or to call the `identify` method beforehand.
+- Added `setPhoneNumber` API to the `BatchProfileAttributeEditor` class. This requires having a user identifier registered or to call the `identify` method beforehand.
 - Added `setSMSMarketingSubscription` API to the `BatchProfileAttributeEditor` class.
 
 **Push**
 - Removed deprecated API `registerForRemoteNotifications`. Please use `requestNotificationAuthorization` to request permission when needed, and `requestToken` at each app launch.
+- Added `batch.push.setAndroidShowNotifications` method to control whether android push notifications should be displayed.
+- Added `batch.Push.shouldShowAndroidNotifications` method to check current android notification display settings.
+- Removed `AndroidNotificationTypes` enum and related method `setAndroidNotificationTypes` from Batch.Push. You should now use `setAndroidShowNotifications` to control whether Batch should display notifications or not. Note that Batch still preserves your previous values and `shouldShowAndroidNotifications` will reflect them.
+
+**Messaging**
+- Added support for Mobile Landings with Push v2 which can be created from the drag and drop composer in the Batch Dashboard.
+
 
 ## 6.0.0
 
