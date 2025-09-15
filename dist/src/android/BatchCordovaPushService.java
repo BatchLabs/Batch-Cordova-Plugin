@@ -15,9 +15,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.batch.android.Batch;
 import com.batch.android.BatchMessage;
+import com.batch.android.BatchMessagingView;
 import com.batch.android.BatchPushPayload;
-import com.batch.android.MessagingActivity;
-import com.batch.cordova.android.interop.Bridge;
 
 public class BatchCordovaPushService extends JobIntentService {
     private static final String TAG = "BatchCordovaPushService";
@@ -61,10 +60,8 @@ public class BatchCordovaPushService extends JobIntentService {
                     boolean pushContainsLanding = pushPayload != null && pushPayload.hasLandingMessage();
                     if (pushContainsLanding) {
                         BatchMessage msg = pushPayload.getLandingMessage();
-                        BatchMessage.Format format = msg.getFormat();
-                        if (format == BatchMessage.Format.ALERT) {
-                            MessagingActivity.startActivityForMessage(this, msg);
-                        } else if (format == BatchMessage.Format.BANNER) {
+                        BatchMessagingView messagingView = Batch.Messaging.loadMessagingView(this, msg);
+                        if (messagingView.getKind() == BatchMessagingView.Kind.View) {
                             Bundle b = new Bundle();
                             msg.writeToBundle(b);
                             forwardBannerToForegroundActivity(b);
