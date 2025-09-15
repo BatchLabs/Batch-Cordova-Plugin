@@ -2,18 +2,12 @@
 
 import { BatchSDK } from "../../types";
 import { Push as PushActions } from "../actions";
-import { sendToBridge, sendToBridgePromise, writeBatchLog } from "../helpers";
-
-/**
- * Android Notification Types enum.
- */
-export enum AndroidNotificationTypes {
-  NONE = 0,
-  SOUND = 1 << 0,
-  VIBRATE = 1 << 1,
-  LIGHTS = 1 << 2,
-  ALERT = 1 << 3,
-}
+import {
+  invokeModernBridge,
+  sendToBridge,
+  sendToBridgePromise,
+  writeBatchLog,
+} from "../helpers";
 
 /**
  * iOS Notification Types enum.
@@ -26,11 +20,9 @@ export enum iOSNotificationTypes {
 }
 
 export class PushModule implements BatchSDK.PushModule {
-  public AndroidNotificationTypes: typeof AndroidNotificationTypes;
   public iOSNotificationTypes: typeof iOSNotificationTypes;
 
   constructor() {
-    this.AndroidNotificationTypes = AndroidNotificationTypes;
     this.iOSNotificationTypes = iOSNotificationTypes;
   }
 
@@ -46,17 +38,23 @@ export class PushModule implements BatchSDK.PushModule {
     sendToBridge(null, PushActions.RequestProvisionalAuthorization, null);
   }
 
-  public setAndroidNotificationTypes(
-    notifTypes: AndroidNotificationTypes
-  ): void {
-    if (typeof notifTypes !== "number") {
+  public setAndroidShowNotifications(show: boolean): void {
+    if (typeof show !== "boolean") {
       writeBatchLog(
         false,
-        "notifTypes must be a number (of the AndroidNotificationTypes enum)"
+        "setAndroidShowNotifications expects a boolean argument"
       );
+      return;
     } else {
-      sendToBridge(null, PushActions.SetAndroidNotifTypes, [{ notifTypes }]);
+      sendToBridge(null, PushActions.SetAndroidShowNotifications, [{ show }]);
     }
+  }
+
+  public async shouldShowAndroidNotifications(): Promise<undefined | boolean> {
+    const { shouldShow } = (await invokeModernBridge(
+      PushActions.ShouldShowAndroidNotifications
+    )) as { shouldShow: boolean };
+    return shouldShow;
   }
 
   public setiOSNotificationTypes(notifTypes: iOSNotificationTypes): void {

@@ -19,11 +19,13 @@ if (error == NULL) {\
 #define SET_FIND_MY_INSTALLATION_ENABLED    @"SetFindMyInstallationEnabled"
 #define UPDATE_AUTOMATIC_DATA_COLLECTION    @"updateAutomaticDataCollection"
 
-#define PUSH_GET_LAST_KNOWN_TOKEN           @"push.getLastKnownPushToken"
-#define SET_GCM_SENDER_ID                   @"push.setGCMSenderID"
-#define SET_IOS_SHOW_FOREGROUND_NOTIFS      @"push.setIOSShowForegroundNotifications"
-#define SET_IOSNOTIF_TYPES                  @"push.setIOSNotifTypes"
-#define SET_ANDROIDNOTIF_TYPES              @"push.setAndroidNotifTypes"
+#define PUSH_GET_LAST_KNOWN_TOKEN               @"push.getLastKnownPushToken"
+#define SET_GCM_SENDER_ID                       @"push.setGCMSenderID"
+#define SET_IOS_SHOW_FOREGROUND_NOTIFS          @"push.setIOSShowForegroundNotifications"
+#define SET_IOSNOTIF_TYPES                      @"push.setIOSNotifTypes"
+#define PUSH_SET_ANDROID_SHOW_NOTIFICATIONS     @"push.setAndroidShowNotifications"
+#define PUSH_SHOULD_SHOW_ANDROID_NOTIFICATIONS  @"push.shouldShowAndroidNotifications"
+
 #define PUSH_REFRESH_TOKEN                  @"push.iOS.refreshToken"
 #define PUSH_REQUEST_AUTHORIZATION          @"push.requestAuthorization"
 #define PUSH_REQUEST_PROVISIONAL_AUTH       @"push.iOS.requestProvisionalAuthorization"

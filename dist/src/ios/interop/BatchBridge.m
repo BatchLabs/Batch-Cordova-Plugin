@@ -270,7 +270,12 @@ static dispatch_once_t onceToken;
     }
 
     // Android Push Only
-    else if ([action caseInsensitiveCompare:SET_ANDROIDNOTIF_TYPES] == NSOrderedSame)
+    else if ([action caseInsensitiveCompare:PUSH_SET_ANDROID_SHOW_NOTIFICATIONS] == NSOrderedSame)
+    {
+        // Do nothing
+    }
+    // Android Push Only
+    else if ([action caseInsensitiveCompare:PUSH_SHOULD_SHOW_ANDROID_NOTIFICATIONS] == NSOrderedSame)
     {
         // Do nothing
     }
