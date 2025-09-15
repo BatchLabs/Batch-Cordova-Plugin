@@ -4,7 +4,6 @@ Batch Cordova Plugin
 
 **Plugin**
 * Updated Batch to 2.1
-* Batch requires to compile with SDK 35 (Android 15) (cordova-android@14).
 
 **iOS**
 * `BatchBridgeNotificationCenterDelegate` now defaults to showing foreground notifications.
