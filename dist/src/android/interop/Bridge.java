@@ -26,7 +26,6 @@ import com.batch.android.BatchTagCollectionsFetchListener;
 import com.batch.android.BatchUserAttribute;
 import com.batch.android.BatchProfileAttributeEditor;
 import com.batch.android.LoggerDelegate;
-import com.batch.android.PushNotificationType;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -145,9 +144,11 @@ public class Bridge {
             case PUSH_SET_IOSNOTIF_TYPES:
                 // iOS only, do nothing
                 return null;
-            case PUSH_SET_ANDROIDNOTIF_TYPES:
-                setNotificationTypes(getTypedParameter(parameters, "notifTypes", Integer.class));
+            case PUSH_SET_ANDROID_SHOW_NOTIFICATIONS:
+                setShowNotifications(getTypedParameter(parameters, "show", Boolean.class));
                 break;
+            case PUSH_SHOULD_SHOW_ANDROID_NOTIFICATIONS:
+                return convertModernPromiseToLegacy(shouldShowNotifications(activity));
             case PUSH_SET_IOSSHOW_FOREGROUND:
                 // iOS only, do nothing
                 return null;
@@ -320,10 +321,12 @@ public class Bridge {
         Batch.Push.dismissNotifications();
     }
 
-    private static void setNotificationTypes(Integer types) {
-        // Setup notification types.
-        EnumSet<PushNotificationType> pushTypes = PushNotificationType.fromValue(types.intValue());
-        Batch.Push.setNotificationsType(pushTypes);
+    private static void setShowNotifications(boolean show) {
+        Batch.Push.setShowNotifications(show);
+    }
+
+    private static SimplePromise<Object> shouldShowNotifications(Activity activity) {
+        return SimplePromise.resolved(Collections.singletonMap("shouldShow", Batch.Push.shouldShowNotifications(activity)));
     }
 
     private static void requestAuthorization(Activity activity) {

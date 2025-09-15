@@ -359,7 +359,6 @@ export declare namespace BatchSDK {
    * Batch's push module
    */
   interface PushModule {
-    AndroidNotificationTypes: typeof AndroidNotificationTypes;
     iOSNotificationTypes: typeof iOSNotificationTypes;
 
     /**
@@ -396,11 +395,21 @@ export declare namespace BatchSDK {
     requestProvisionalNotificationAuthorization(): void;
 
     /**
-     * Change the used remote notification types on Android. (Ex: sound, vibrate, alert)
-     * Example : setAndroidNotificationTypes(batch.push.AndroidNotificationTypes.ALERT | batch.push.AndroidNotificationTypes.SOUND)
-     * @param notifTypes Any combined value of the AndroidNotificationTypes enum.
+     * Adjust the way Batch will display Android notifications.
+     *
+     * You should use this method if you want to avoid notifications for this user.
+     * Note that Batch will remember this value, even if your Application reboots.
+     * @param show Whether Batch should show notifications or not
      */
-    setAndroidNotificationTypes(notifTypes: AndroidNotificationTypes): void;
+    setAndroidShowNotifications(show: boolean): void;
+
+    /**
+     * Whether Batch should show Android notifications or not.
+     *
+     * Default: true if you never used setAndroidShowNotifications().
+     * @return Whether Batch should show notifications or not
+     */
+    shouldShowAndroidNotifications(): Promise<undefined | boolean>;
 
     /**
      * Change the used remote notification types on iOS. (Ex: sound, vibrate, alert)
