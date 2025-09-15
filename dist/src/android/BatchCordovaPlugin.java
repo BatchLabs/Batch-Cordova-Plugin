@@ -11,6 +11,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.batch.android.Batch;
 import com.batch.android.BatchMessage;
+import com.batch.android.BatchMessagingException;
+import com.batch.android.BatchMessagingView;
 import com.batch.android.BatchPushPayload;
 import com.batch.android.LoggerDelegate;
 import com.batch.cordova.android.interop.Action;
@@ -356,7 +358,7 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
     }
 
     @Override
-    public void onBatchMessageClosed(String messageIdentifier) {
+    public void onBatchMessageClosed(String messageIdentifier, MessagingCloseReason messagingCloseReason) {
         dispatchMessagingEvent("closed", messageIdentifier);
     }
 
@@ -417,12 +419,12 @@ public class BatchCordovaPlugin extends CordovaPlugin implements Callback, Logge
     private void displayLandingBanner(Bundle messageBundle) {
         try {
             BatchMessage message = BatchMessage.getMessageForBundle(messageBundle);
-            BatchMessage.Format format = message.getFormat();
-            if (format == BatchMessage.Format.BANNER) {
-                Batch.Messaging.show(cordova.getActivity(), message);
+            BatchMessagingView messagingView = Batch.Messaging.loadMessagingView(cordova.getActivity(), message);
+            if (messagingView.getKind() == BatchMessagingView.Kind.View) {
+                messagingView.showView(cordova.getActivity());
             }
-        } catch (Exception e) {
-            Log.e(TAG, "Could not display banner", e);
+        } catch (BatchMessagingException | BatchPushPayload.ParsingException e) {
+            Log.e(TAG, "Could not display message of kind View", e);
         }
     }
 
