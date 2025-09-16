@@ -218,8 +218,7 @@
 {
     [self sendMessagingLifecycleEvent:@"shown" forMessageIdentifier:messageIdentifier];
 }
-
-- (void)batchMessageDidDisappear:(NSString* _Nullable)messageIdentifier
+- (void)batchMessageDidDisappear:(NSString* _Nullable)messageIdentifier reason:(BatchMessagingCloseReason)reason
 {
     [self sendMessagingLifecycleEvent:@"closed" forMessageIdentifier:messageIdentifier];
 }
