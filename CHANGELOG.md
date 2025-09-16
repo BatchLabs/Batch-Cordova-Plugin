@@ -3,10 +3,11 @@ Batch Cordova Plugin
 ## 7.0.0
 
 **Plugin**
-* Updated Batch to 3.0
+- Updated Batch to 3.1
+- Batch requires iOS 15.0 or higher.
 
 **iOS**
-* `BatchBridgeNotificationCenterDelegate` now defaults to showing foreground notifications.
+- `BatchBridgeNotificationCenterDelegate` now defaults to showing foreground notifications.
 
 **Profile**
 - Added `setPhoneNumber` API to the `BatchProfileAttributeEditor` class. This requires having a user identifier registered or to call the `identify` method beforehand.
@@ -19,15 +20,15 @@ Batch Cordova Plugin
 - Removed `AndroidNotificationTypes` enum and related method `setAndroidNotificationTypes` from Batch.Push. You should now use `setAndroidShowNotifications` to control whether Batch should display notifications or not. Note that Batch still preserves your previous values and `shouldShowAndroidNotifications` will reflect them.
 
 **Messaging**
-- Added support for Mobile Landings with Push v2 which can be created from the drag and drop composer in the Batch Dashboard.
-
+- Added support for Mobile Landings within the Customer Engagement Platform.
+- Added support for In-App Automations within the Customer Engagement Platform.
 
 ## 6.0.0
 
 This is a major release, please see our [migration guide](https://doc.batch.com/cordova/migrations/5x-migration/) for more info on how to update your current Batch implementation.
 
 **Plugin**
-* Updated Batch to 2.0. For more information see the [ios](https://doc.batch.com/ios/sdk-changelog/#2_0_0) and [android](https://doc.batch.com/android/sdk-changelog/#2_0_0) changelog .
+* Updated Batch to 2.0. For more information, see the [ios](https://doc.batch.com/ios/sdk-changelog/#2_0_0) and [android](https://doc.batch.com/android/sdk-changelog/#2_0_0) changelog.
 * Batch requires iOS 13.0 or higher.
 * Batch requires a `minSdk` level of 21 or higher.
 
