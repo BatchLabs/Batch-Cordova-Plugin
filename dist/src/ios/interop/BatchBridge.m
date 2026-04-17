@@ -226,6 +226,11 @@ static dispatch_once_t onceToken;
         [BatchPush requestNotificationAuthorization];
     }
 
+    else if ([action caseInsensitiveCompare:PUSH_REQUEST_AUTHORIZATION_ASYNC] == NSOrderedSame)
+    {
+        return [self convertPromiseToLegacyBridge:[self requestAuthorizationAsync]];
+    }
+
     else if ([action caseInsensitiveCompare:PUSH_REQUEST_PROVISIONAL_AUTH] == NSOrderedSame)
     {
         [BatchPush requestProvisionalNotificationAuthorization];
@@ -370,6 +375,24 @@ static dispatch_once_t onceToken;
 
 #pragma mark -
 #pragma mark Helpers
+
++ (BACSimplePromise<NSDictionary*> *)requestAuthorizationAsync
+{
+    BACSimplePromise<NSDictionary*> *resultPromise = [BACSimplePromise new];
+
+    [BatchPush requestNotificationAuthorizationWithCompletionHandler:^(BOOL granted, NSError * _Nullable error) {
+        if (error != nil) {
+            [resultPromise reject:error];
+            return;
+        }
+
+        [resultPromise resolve:@{
+            @"granted": @(granted)
+        }];
+    }];
+
+    return resultPromise;
+}
 
 // Converts a "new format" Promise matching newer bridges like Flutter (can be resolved to a Dictionary, or rejected)
 // to a "legacy" one that is resolved with a string and shouldn't reject.
