@@ -158,6 +158,8 @@ public class Bridge {
             case PUSH_REQUEST_AUTHORIZATION:
                 requestAuthorization(activity);
                 break;
+            case PUSH_REQUEST_AUTHORIZATION_ASYNC:
+                return convertModernPromiseToLegacy(requestAuthorizationAsync(activity));
             case PUSH_IOS_REQUEST_PROVISIONAL_AUTH:
                 // iOS only, do nothing
                 return null;
@@ -332,6 +334,13 @@ public class Bridge {
     private static void requestAuthorization(Activity activity) {
         // Ask for android 13 notification permission
         Batch.Push.requestNotificationPermission(activity);
+    }
+
+    private static SimplePromise<Object> requestAuthorizationAsync(Activity activity) {
+        return new SimplePromise<>(promise ->
+                Batch.Push.requestNotificationPermission(activity, granted ->
+                        promise.resolve(Collections.singletonMap("granted", granted)))
+        );
     }
 
     // endregion

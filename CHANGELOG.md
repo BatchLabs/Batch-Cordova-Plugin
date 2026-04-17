@@ -1,5 +1,10 @@
 Batch Cordova Plugin
 
+## UPCOMING
+
+**Push**
+- Added `batch.push.requestNotificationAuthorizationAsync` to request notification authorization and return a promise that resolve with the authorization result.
+
 ## 7.0.0
 
 **Plugin**

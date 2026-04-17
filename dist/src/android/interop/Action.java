@@ -30,6 +30,7 @@ public enum Action
     PUSH_SET_IOSSHOW_FOREGROUND("push.setIOSShowForegroundNotifications"),
     PUSH_IOS_REFRESH_TOKEN("push.iOS.refreshToken"),
     PUSH_REQUEST_AUTHORIZATION("push.requestAuthorization"),
+    PUSH_REQUEST_AUTHORIZATION_ASYNC("push.requestAuthorizationAsync"),
     PUSH_IOS_REQUEST_PROVISIONAL_AUTH("push.iOS.requestProvisionalAuthorization"),
 	PROFILE_EDIT("profile.edit"),
 	PROFILE_IDENTIFY("profile.identify"),

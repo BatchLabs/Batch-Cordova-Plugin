@@ -19,6 +19,7 @@ export enum Push {
   ClearBadge = "push.clearBadge",
   RefreshToken = "push.iOS.refreshToken",
   RequestAuthorization = "push.requestAuthorization",
+  RequestAuthorizationAsync = "push.requestAuthorizationAsync",
   RequestProvisionalAuthorization = "push.iOS.requestProvisionalAuthorization",
 }
 

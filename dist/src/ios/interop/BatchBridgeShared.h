@@ -28,6 +28,7 @@ if (error == NULL) {\
 
 #define PUSH_REFRESH_TOKEN                  @"push.iOS.refreshToken"
 #define PUSH_REQUEST_AUTHORIZATION          @"push.requestAuthorization"
+#define PUSH_REQUEST_AUTHORIZATION_ASYNC    @"push.requestAuthorizationAsync"
 #define PUSH_REQUEST_PROVISIONAL_AUTH       @"push.iOS.requestProvisionalAuthorization"
 
 #define DISMISS_NOTIFS                      @"push.dismissNotifications"
