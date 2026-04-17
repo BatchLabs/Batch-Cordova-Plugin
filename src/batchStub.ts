@@ -19,6 +19,9 @@ class PushStub implements BatchSDK.PushModule {
 
   public refreshToken() {}
   public requestNotificationAuthorization() {}
+  public requestNotificationAuthorizationAsync(): Promise<boolean> {
+    return Promise.resolve(false);
+  }
   public requestProvisionalNotificationAuthorization() {}
   public setiOSShowForegroundNotifications(_showForeground: boolean) {}
   public setAndroidShowNotifications(_show: boolean) {}

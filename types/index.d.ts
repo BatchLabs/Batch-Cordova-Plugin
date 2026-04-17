@@ -368,15 +368,29 @@ export declare namespace BatchSDK {
     refreshToken(): void;
 
     /**
-     * Call this method to trigger the iOS popup that asks the user if they want
-     * to allow notifications to be displayed, then get a Push token.
-     * The default registration is made with Badge, Sound and Alert.
+     * Call this method to trigger the native notification authorization request that asks the user if they want
+     * to allow notifications to be displayed.
+     * The default registration is made with Badge, Sound, and Alert.
      * You should call this at a strategic moment, like at the end of your onboarding.
      *
-     * Batch will automatically ask for a push token if the user replies positively.
+     * On iOS, Batch will automatically ask for a push token if the user replies positively.
      * You should then call `refreshToken` on every application start.
      */
     requestNotificationAuthorization(): void;
+
+    /**
+     * Call this method to trigger the native notification authorization request and
+     * get the resulting grant state as a promise.
+     *
+     * The default registration is made with Badge, Sound, and Alert.
+     *
+     * You should call this at a strategic moment, like at the end of your onboarding.
+     *
+     * On iOS, Batch will automatically ask for a push token if the user replies positively.
+     * You should then call `refreshToken` on every application start.
+     * @return A promise resolving to whether notifications were authorized
+     */
+    requestNotificationAuthorizationAsync(): Promise<boolean>;
 
     /**
      * Call this method to ask iOS for a provisional notification authorization.

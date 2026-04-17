@@ -34,6 +34,13 @@ export class PushModule implements BatchSDK.PushModule {
     sendToBridge(null, PushActions.RequestAuthorization, null);
   }
 
+  public async requestNotificationAuthorizationAsync(): Promise<boolean> {
+    const { granted } = (await invokeModernBridge(
+      PushActions.RequestAuthorizationAsync
+    )) as { granted: boolean };
+    return granted;
+  }
+
   public requestProvisionalNotificationAuthorization(): void {
     sendToBridge(null, PushActions.RequestProvisionalAuthorization, null);
   }
