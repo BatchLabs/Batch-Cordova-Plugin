@@ -122,7 +122,7 @@ describe("it enqueues operations correctly", () => {
     (editor as any).setTopicPreferences("sports");
     editor.addToTopicPreferences([]);
 
-    expect(enqueueMock.mock.calls.length).toBe(4);
+    expect(enqueueMock.mock.calls.length).toBe(6);
     expect(enqueueMock).toBeCalledWith(
       ProfileAttributeOperation.SetTopicPreferences,
       {
