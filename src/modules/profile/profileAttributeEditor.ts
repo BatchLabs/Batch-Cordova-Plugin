@@ -132,6 +132,30 @@ export class BatchProfileAttributeEditor
     return this;
   }
 
+  public setTopicPreferences(topics: Array<string> | null): this {
+    this._enqueueOperation(ProfileAttributeOperation.SetTopicPreferences, {
+      value: topics,
+    });
+    return this;
+  }
+
+  public addToTopicPreferences(topics: Array<string>): this {
+    this._enqueueOperation(ProfileAttributeOperation.AddToTopicPreferences, {
+      value: topics,
+    });
+    return this;
+  }
+
+  public removeFromTopicPreferences(topics: Array<string>): this {
+    this._enqueueOperation(
+      ProfileAttributeOperation.RemoveFromTopicPreferences,
+      {
+        value: topics,
+      }
+    );
+    return this;
+  }
+
   public setAttribute(
     key: string,
     value: string | number | boolean | Date | URL | Array<string>
