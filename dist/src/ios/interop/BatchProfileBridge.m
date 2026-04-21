@@ -74,6 +74,29 @@
                 NSLog(@"Batch Bridge - Invalid value for SMS marketing subscription state. Must be `subscribed` or `unsubscribed`.");
             }
         }
+        else if([@"SET_TOPIC_PREFERENCES" isEqualToString:operationName])
+        {
+            id value = operationDescription[@"value"];
+            if (value == nil || value == [NSNull null]) {
+                [editor setTopicPreferences:nil error:nil];
+            } else if ([value isKindOfClass:[NSArray class]]) {
+                [editor setTopicPreferences:value error:nil];
+            }
+        }
+        else if([@"ADD_TO_TOPIC_PREFERENCES" isEqualToString:operationName])
+        {
+            NSArray<NSString *> *value = operationDescription[@"value"];
+            if ([value isKindOfClass:[NSArray class]]) {
+                [editor addToTopicPreferences:value error:nil];
+            }
+        }
+        else if([@"REMOVE_FROM_TOPIC_PREFERENCES" isEqualToString:operationName])
+        {
+            NSArray<NSString *> *value = operationDescription[@"value"];
+            if ([value isKindOfClass:[NSArray class]]) {
+                [editor removeFromTopicPreferences:value error:nil];
+            }
+        }
         else if ([@"SET_ATTRIBUTE" isEqualToString:operationName])
         {
             NSString *type = operationDescription[@"type"];

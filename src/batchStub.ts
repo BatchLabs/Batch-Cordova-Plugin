@@ -147,6 +147,15 @@ class BatchUserDataEditorStub implements BatchSDK.BatchProfileAttributeEditor {
   public setSMSMarketingSubscription(_state: "subscribed" | "unsubscribed") {
     return this;
   }
+  public setTopicPreferences(_topics: Array<string> | null) {
+    return this;
+  }
+  public addToTopicPreferences(_topics: Array<string>) {
+    return this;
+  }
+  public removeFromTopicPreferences(_topics: Array<string>) {
+    return this;
+  }
   public setAttribute(
     _key: string,
     _value: string | number | boolean | Date | URL
