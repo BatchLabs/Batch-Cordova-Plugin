@@ -9,6 +9,8 @@ Batch Cordova Plugin
 - Added `setTopicPreferences` API to the `BatchProfileAttributeEditor`.
 - Added `addToTopicPreferences` API to the `BatchProfileAttributeEditor`.
 - Added `removeFromTopicPreferences` API to the `BatchProfileAttributeEditor`.
+- Profile string attributes now support up to 300 characters for the Customer Engagement Platform (CEP). The limit for the Mobile Engagement Platform (MEP) remains 64 characters. Attributes set via `BatchProfileAttributeEditor.setAttribute()` longer than 64 characters will only be applied to the CEP.
+- Event string attributes now support up to 300 characters for the Customer Engagement Platform (CEP). The limit for the Mobile Engagement Platform (MEP) remains 200 characters. Attributes set via `BatchEventAttributes.put()` longer than 200 characters will only be applied to the CEP.
 
 **Push**
 - Added `batch.push.requestNotificationAuthorizationAsync` to request notification authorization and return a promise that resolve with the authorization result.

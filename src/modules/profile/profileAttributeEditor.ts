@@ -1,12 +1,12 @@
 import { BatchSDK } from "../../../types";
 import { Profile, ProfileAttributeOperation } from "../../actions";
-import Consts from "../../consts";
 import {
-  isNumber,
-  isString,
-  isStringArray,
-  sendToBridge,
-  writeBatchLog,
+    isBoolean,
+    isNumber,
+    isString,
+    isStringArray,
+    sendToBridge,
+    writeBatchLog,
 } from "../../helpers";
 
 interface IOperation {
@@ -160,15 +160,6 @@ export class BatchProfileAttributeEditor
     key: string,
     value: string | number | boolean | Date | URL | Array<string>
   ): this {
-    if (!Consts.AttributeKeyRegexp.test(key || "")) {
-      writeBatchLog(
-        false,
-        "BatchProfileAttributeEditor - Invalid key. Please make sure that the key is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring attribute '" +
-          key +
-          "'"
-      );
-      return this;
-    }
 
     if (typeof key === "undefined" || key === null) {
       writeBatchLog(
@@ -199,41 +190,10 @@ export class BatchProfileAttributeEditor
     } else if (isNumber(value)) {
       operationData.type = (value as number) % 1 === 0 ? "integer" : "float";
     } else if (isString(value)) {
-      if (
-        value.length === 0 ||
-        value.length > Consts.AttributeStringMaxLength
-      ) {
-        writeBatchLog(
-          false,
-          "BatchProfileAttributeEditor - String attributes can't be empty or longer than " +
-            Consts.AttributeStringMaxLength +
-            " characters. Ignoring attribute '" +
-            key +
-            "'."
-        );
-        return this;
-      }
       operationData.type = "string";
     } else if (isStringArray(value)) {
-      if (
-        value.length === 0 ||
-        value.length > Consts.AttributeStringArrayMaxSize
-      ) {
-        writeBatchLog(
-          false,
-          "BatchProfileAttributeEditor - String Array attributes can't be empty or longer than " +
-            Consts.AttributeStringArrayMaxSize +
-            " characters. Ignoring attribute '" +
-            key +
-            "'."
-        );
-        return this;
-      }
       operationData.type = "array";
-    } else if (
-      (value as unknown) instanceof Boolean ||
-      typeof value === "boolean"
-    ) {
+    } else if (isBoolean(value)) {
       operationData.type = "boolean";
     } else {
       writeBatchLog(
@@ -252,16 +212,13 @@ export class BatchProfileAttributeEditor
   }
 
   public removeAttribute(key: string): this {
-    if (!Consts.AttributeKeyRegexp.test(key || "")) {
+    if (!isString(key)) {
       writeBatchLog(
-        false,
-        "BatchProfileAttributeEditor - Invalid key. Please make sure that the key is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring attribute '" +
-          key +
-          "'"
+          false,
+          "BatchProfileAttributeEditor - Key argument must be a string"
       );
       return this;
     }
-
     this._enqueueOperation(ProfileAttributeOperation.RemoveAttribute, {
       key,
     });
@@ -278,54 +235,9 @@ export class BatchProfileAttributeEditor
       return this;
     }
 
-    if (!Consts.AttributeKeyRegexp.test(key || "")) {
-      writeBatchLog(
-        false,
-        "BatchProfileAttributeEditor - Invalid Key. Please make sure that the key is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring key '" +
-          key +
-          "'"
-      );
-      return this;
-    }
-
     if (typeof value === "undefined") {
       writeBatchLog(false, "BatchProfileAttributeEditor - A value is required");
       return this;
-    }
-
-    if (isString(value)) {
-      if (
-        value.length === 0 ||
-        value.length > Consts.AttributeStringMaxLength
-      ) {
-        writeBatchLog(
-          false,
-          "BatchProfileAttributeEditor - String item can't be empty or longer than " +
-            Consts.AttributeStringMaxLength +
-            " characters. Ignoring item '" +
-            value +
-            "'."
-        );
-        return this;
-      }
-    } else if (isStringArray(value)) {
-      if (
-        value.length === 0 ||
-        value.length > Consts.AttributeStringArrayMaxSize
-      ) {
-        writeBatchLog(
-          false,
-          "BatchProfileAttributeEditor - String Array attribute can't be empty or longer than " +
-            Consts.AttributeStringMaxLength +
-            "'."
-        );
-        return this;
-      }
-    } else {
-      writeBatchLog(
-        false,
-        "BatchProfileAttributeEditor - Value argument must be a string or an array of string"
-      );
     }
 
     this._enqueueOperation(ProfileAttributeOperation.AddToArray, {
@@ -337,20 +249,10 @@ export class BatchProfileAttributeEditor
   }
 
   public removeFromArray(key: string, value: string | Array<string>): this {
-    if (typeof key !== "string" && !((key as unknown) instanceof String)) {
+    if (!isString(key)) {
       writeBatchLog(
-        false,
-        "BatchProfileAttributeEditor - Key argument must be a string"
-      );
-      return this;
-    }
-
-    if (!Consts.AttributeKeyRegexp.test(key || "")) {
-      writeBatchLog(
-        false,
-        "BatchProfileAttributeEditor - Invalid key. Please make sure that the key is made of letters, underscores and numbers only (a-zA-Z0-9_). It also can't be longer than 30 characters. Ignoring key '" +
-          key +
-          "'"
+          false,
+          "BatchProfileAttributeEditor - Key argument must be a string"
       );
       return this;
     }
@@ -360,40 +262,6 @@ export class BatchProfileAttributeEditor
       return this;
     }
 
-    if (isString(value)) {
-      if (
-        value.length === 0 ||
-        value.length > Consts.AttributeStringMaxLength
-      ) {
-        writeBatchLog(
-          false,
-          "BatchProfileAttributeEditor - Array item can't be empty or longer than " +
-            Consts.AttributeStringMaxLength +
-            " characters. Ignoring item '" +
-            value +
-            "'."
-        );
-        return this;
-      }
-    } else if (isStringArray(value)) {
-      if (
-        value.length === 0 ||
-        value.length > Consts.AttributeStringArrayMaxSize
-      ) {
-        writeBatchLog(
-          false,
-          "BatchProfileAttributeEditor - String Array attribute can't be empty or longer than " +
-            Consts.AttributeStringMaxLength +
-            "'."
-        );
-        return this;
-      }
-    } else {
-      writeBatchLog(
-        false,
-        "BatchProfileAttributeEditor - Value argument must be a string or an array of string"
-      );
-    }
     this._enqueueOperation(ProfileAttributeOperation.RemoveFromArray, {
       key,
       value,
