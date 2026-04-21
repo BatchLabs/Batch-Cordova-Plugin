@@ -2,6 +2,14 @@ Batch Cordova Plugin
 
 ## UPCOMING
 
+**Plugin**
+- Updated Batch to 3.3.
+
+**Profile**
+- Added `setTopicPreferences` API to the `BatchProfileAttributeEditor`.
+- Added `addToTopicPreferences` API to the `BatchProfileAttributeEditor`.
+- Added `removeFromTopicPreferences` API to the `BatchProfileAttributeEditor`.
+
 **Push**
 - Added `batch.push.requestNotificationAuthorizationAsync` to request notification authorization and return a promise that resolve with the authorization result.
 

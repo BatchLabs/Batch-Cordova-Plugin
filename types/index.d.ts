@@ -729,6 +729,33 @@ export declare namespace BatchSDK {
     ): BatchProfileAttributeEditor;
 
     /**
+     * Set the profile topic preferences.
+     *
+     * @param topics Array of topics to set. Null to reset.
+     *               Must be a valid string array not longer than 25 items.
+     *               String should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 300 characters.
+     */
+    setTopicPreferences(topics: Array<string> | null): BatchProfileAttributeEditor;
+
+    /**
+     * Add topics to the profile topic preferences.
+     *
+     * @param topics Topics to add.
+     *               Must be a valid string array not longer than 25 items or a single string.
+     *               String should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 300 characters.
+     */
+    addToTopicPreferences(topics: Array<string>): BatchProfileAttributeEditor;
+
+    /**
+     * Remove topics from the profile topic preferences.
+     *
+     * @param topics Topics to remove.
+     *               Must be a valid string array not longer than 25 items or a single string.
+     *               String should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 300 characters.
+     */
+    removeFromTopicPreferences(topics: Array<string>): BatchProfileAttributeEditor;
+
+    /**
      * Set an attribute for a key
      * @param key Attribute key. Cannot be null, empty or undefined. It should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 30 characters.
      * @param value Attribute value. Accepted types are numbers, booleans, Date objects and strings. Strings must not be empty or longer than 64 characters.

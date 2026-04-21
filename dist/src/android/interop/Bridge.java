@@ -445,6 +445,27 @@ public class Bridge {
                             Log.e(TAG, "Invalid SET_SMS_MARKETING_SUB value: it can only be `subscribed` or `unsubscribed`.");
                         }
                     }
+                    case "SET_TOPIC_PREFERENCES" -> {
+                        Object rawValue = operationDescription.get("value");
+                        if (rawValue == null) {
+                            editor.setTopicPreferences(null);
+                        } else if (rawValue instanceof ArrayList) {
+                            List<String> value = getTypedParameter(operationDescription, "value", ArrayList.class);
+                            editor.setTopicPreferences(new ArrayList<>(value));
+                        }
+                    }
+                    case "ADD_TO_TOPIC_PREFERENCES" -> {
+                        List<String> value = getTypedParameter(operationDescription, "value", ArrayList.class);
+                        if (value != null) {
+                            editor.addToTopicPreferences(new ArrayList<>(value));
+                        }
+                    }
+                    case "REMOVE_FROM_TOPIC_PREFERENCES" -> {
+                        List<String> value = getTypedParameter(operationDescription, "value", ArrayList.class);
+                        if (value != null) {
+                            editor.removeFromTopicPreferences(new ArrayList<>(value));
+                        }
+                    }
                     case "SET_ATTRIBUTE" -> {
                         String key = getTypedParameter(operationDescription, "key", String.class);
                         String type = getTypedParameter(operationDescription, "type", String.class);

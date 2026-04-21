@@ -114,6 +114,41 @@ describe("it enqueues operations correctly", () => {
       });
   });
 
+  it("can update topic preferences", () => {
+    editor.setTopicPreferences(["sports", "culture"]);
+    editor.setTopicPreferences(null);
+    editor.addToTopicPreferences(["breaking_news"]);
+    editor.removeFromTopicPreferences(["culture"]);
+    (editor as any).setTopicPreferences("sports");
+    editor.addToTopicPreferences([]);
+
+    expect(enqueueMock.mock.calls.length).toBe(4);
+    expect(enqueueMock).toBeCalledWith(
+      ProfileAttributeOperation.SetTopicPreferences,
+      {
+        value: ["sports", "culture"],
+      }
+    );
+    expect(enqueueMock).toBeCalledWith(
+      ProfileAttributeOperation.SetTopicPreferences,
+      {
+        value: null,
+      }
+    );
+    expect(enqueueMock).toBeCalledWith(
+      ProfileAttributeOperation.AddToTopicPreferences,
+      {
+        value: ["breaking_news"],
+      }
+    );
+    expect(enqueueMock).toBeCalledWith(
+      ProfileAttributeOperation.RemoveFromTopicPreferences,
+      {
+        value: ["culture"],
+      }
+    );
+  });
+
   it("can remove attribute", () => {
     editor.removeAttribute("foo");
     (editor as any).removeAttribute(null);
@@ -128,6 +163,7 @@ describe("it enqueues operations correctly", () => {
 test("can save operations", () => {
   new BatchProfileAttributeEditor(true)
     .setAttribute("foo", "bar")
+    .setTopicPreferences(["sports"])
     .setAttribute("foo2", ["bar"])
     .save();
 
@@ -140,6 +176,10 @@ test("can save operations", () => {
           operation: ProfileAttributeOperation.SetAttribute,
           type: "string",
           value: "bar",
+        },
+        {
+          operation: ProfileAttributeOperation.SetTopicPreferences,
+          value: ["sports"],
         },
         { operation: ProfileAttributeOperation.SetAttribute, type: "array", key: "foo2", value: ["bar"] },
       ],
