@@ -1,6 +1,6 @@
 Batch Cordova Plugin
 
-## UPCOMING
+## 7.1.0
 
 **Plugin**
 - Updated Batch to 3.3.
