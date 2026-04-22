@@ -735,7 +735,9 @@ export declare namespace BatchSDK {
      *               Must be a valid string array not longer than 25 items.
      *               String should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 300 characters.
      */
-    setTopicPreferences(topics: Array<string> | null): BatchProfileAttributeEditor;
+    setTopicPreferences(
+      topics: Array<string> | null
+    ): BatchProfileAttributeEditor;
 
     /**
      * Add topics to the profile topic preferences.
@@ -753,7 +755,9 @@ export declare namespace BatchSDK {
      *               Must be a valid string array not longer than 25 items or a single string.
      *               String should be made of letters, numbers or underscores ([a-z0-9_]) and can't be longer than 300 characters.
      */
-    removeFromTopicPreferences(topics: Array<string>): BatchProfileAttributeEditor;
+    removeFromTopicPreferences(
+      topics: Array<string>
+    ): BatchProfileAttributeEditor;
 
     /**
      * Set an attribute for a key

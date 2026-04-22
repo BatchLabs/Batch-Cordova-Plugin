@@ -1,12 +1,12 @@
 import { BatchSDK } from "../../../types";
 import { Profile, ProfileAttributeOperation } from "../../actions";
 import {
-    isBoolean,
-    isNumber,
-    isString,
-    isStringArray,
-    sendToBridge,
-    writeBatchLog,
+  isBoolean,
+  isNumber,
+  isString,
+  isStringArray,
+  sendToBridge,
+  writeBatchLog,
 } from "../../helpers";
 
 interface IOperation {
@@ -160,7 +160,6 @@ export class BatchProfileAttributeEditor
     key: string,
     value: string | number | boolean | Date | URL | Array<string>
   ): this {
-
     if (typeof key === "undefined" || key === null) {
       writeBatchLog(
         false,
@@ -214,8 +213,8 @@ export class BatchProfileAttributeEditor
   public removeAttribute(key: string): this {
     if (!isString(key)) {
       writeBatchLog(
-          false,
-          "BatchProfileAttributeEditor - Key argument must be a string"
+        false,
+        "BatchProfileAttributeEditor - Key argument must be a string"
       );
       return this;
     }
@@ -251,8 +250,8 @@ export class BatchProfileAttributeEditor
   public removeFromArray(key: string, value: string | Array<string>): this {
     if (!isString(key)) {
       writeBatchLog(
-          false,
-          "BatchProfileAttributeEditor - Key argument must be a string"
+        false,
+        "BatchProfileAttributeEditor - Key argument must be a string"
       );
       return this;
     }

@@ -26,7 +26,7 @@ class PushStub implements BatchSDK.PushModule {
   public setiOSShowForegroundNotifications(_showForeground: boolean) {}
   public setAndroidShowNotifications(_show: boolean) {}
   public shouldShowAndroidNotifications(): Promise<undefined | boolean> {
-      return Promise.resolve(false);
+    return Promise.resolve(false);
   }
   public setiOSNotificationTypes(_notifTypes: unknown) {}
   public clearBadge() {}
