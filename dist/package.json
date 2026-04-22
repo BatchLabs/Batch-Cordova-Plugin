@@ -3,6 +3,10 @@
   "version": "7.1.0",
   "description": "Batch.com SDK Cordova/Ionic plugin for Android and iOS",
   "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:BatchLabs/Batch-Cordova-Plugin.git"
+  },
   "cordova": {
     "id": "@batch.com/cordova-plugin",
     "platforms": [
