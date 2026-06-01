@@ -1,2 +1,7 @@
 www/batch.js
 index.d.ts
+
+# Ignore Swift generated files
+.build
+.swiftpm
+Package.resolved
