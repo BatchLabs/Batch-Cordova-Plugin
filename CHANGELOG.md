@@ -1,5 +1,10 @@
 Batch Cordova Plugin
 
+## UPCOMING
+
+**iOS**
+- Added Swift Package Manager (SPM) support. Projects using cordova-ios 8+ can now resolve the Batch SDK via SPM instead of CocoaPods. CocoaPods remain the fallback for older cordova-ios versions.
+
 ## 7.1.0
 
 **Plugin**
