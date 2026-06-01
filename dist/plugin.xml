@@ -77,7 +77,7 @@
 
     </platform>
 
-    <platform name="ios">
+    <platform name="ios" package="swift">
 
         <preference name="BATCHSDK_IOS_VERSION" default="~> 3.3"/>
 
@@ -130,7 +130,7 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods>
-                <pod name="Batch" spec="$BATCHSDK_IOS_VERSION" />
+                <pod name="Batch" spec="$BATCHSDK_IOS_VERSION" nospm="true" />
             </pods>
         </podspec>
 
