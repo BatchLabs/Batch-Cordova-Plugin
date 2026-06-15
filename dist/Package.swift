@@ -9,14 +9,14 @@ let package = Package(
         .library(name: "@batch.com/cordova-plugin", targets: ["BatchCordovaPlugin"])
     ],
     dependencies: [
-        .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", from: "8.3.4"),
+        .package(url: "https://github.com/apache/cordova-ios.git", from: "8.1.0"),
         .package(url: "https://github.com/BatchLabs/Batch-iOS-SDK.git", from: "3.3.0")
     ],
     targets: [
         .target(
             name: "BatchCordovaPlugin",
             dependencies: [
-                .product(name: "Cordova", package: "capacitor-swift-pm"),
+                .product(name: "Cordova", package: "cordova-ios"),
                 .product(name: "Batch", package: "Batch-iOS-SDK")
             ],
             path: "src/ios",
