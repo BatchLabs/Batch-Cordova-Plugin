@@ -10,7 +10,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apache/cordova-ios.git", from: "8.1.0"),
-        .package(url: "https://github.com/BatchLabs/Batch-iOS-SDK.git", from: "3.3.0")
+        .package(url: "https://github.com/BatchLabs/Batch-iOS-SDK.git", from: "3.4.0")
     ],
     targets: [
         .target(
