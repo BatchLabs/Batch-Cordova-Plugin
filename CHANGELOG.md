@@ -1,9 +1,12 @@
 Batch Cordova Plugin
 
-## UPCOMING
+## 7.2.0
+
+**Plugin**
+- Updated Batch to 3.4.
 
 **iOS**
-- Added Swift Package Manager (SPM) support. Projects using cordova-ios 8+ can now resolve the Batch SDK via SPM instead of CocoaPods. CocoaPods remain the fallback for older cordova-ios versions.
+- Added Swift Package Manager (SPM) support. Projects using cordova-ios 8+ can now resolve the Batch SDK via SPM instead of CocoaPods. CocoaPods remain the fallback for older cordova-ios versions. Capacitor iOS projects using SPM will also resolve the Batch SDK dependency.
 
 ## 7.1.0
 
